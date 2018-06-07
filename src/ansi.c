@@ -223,5 +223,18 @@ void windowBG(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, char text[], uint8
     color(15, 0);
 }
 
-
-
+//This function will read from the console and get the input from it.
+char * getInput()
+{
+    char * line = malloc(32 * sizeof(char));
+    uint8_t x;
+    line[0] = uart_getc();
+    x = 1;
+    while (line[x - 1] != 0x0D)
+    {
+        line[x] = uart_getc();
+        x++;
+    }
+    line[x-1] = '\0';
+    return line;
+}
