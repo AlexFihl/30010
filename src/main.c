@@ -336,30 +336,19 @@ void alex()
 
     struct wall_t wall;
     struct vector_t v1, v2, v3, v4;
+    uint16_t i, x, y;
     intVector(&v1, 3, 1);
     intVector(&v2, 218, 63);
     intWall(&wall, &v1, &v2);
     drawWall(&wall);
     struct block_t* blocks = malloc(100 * sizeof *blocks);
-    uint8_t i, j, x;
-    x = 0;
-    /*for (i = 0; i < 4; i++)
-    {
-        for (j = 0; j < 3; j++)
-        {
-            struct block_t b;
-            intVector(&v1, 4 + i*3, 4 + j*3);
-            intVector(&v2, 7 + i*3, 7 + j*3);
-            intBlock(&b, &v1, &v2, 1, 2);
-            blocks[x] = b;
-            x++;
-        }
-    }*/
     intVector(&v3, 5, 5);
-    intVector(&v4, 20, 20);
-    intMultipleBlocks(&blocks, v3, v4, 1, 2);
-    for (i = 0; i < 6; i++)
-        drawBlock(&blocks[0]);
+    intVector(&v4, 40, 40);
+    x = 3;
+    y = 2;
+    intMultipleBlocks(&blocks, v3, v4, x, y, 2);
+    for (i = 0; i < x * y; i++)
+        drawBlock(&blocks[i]);
 }
 
 int main(void)

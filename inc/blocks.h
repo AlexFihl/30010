@@ -16,6 +16,7 @@ struct block_t {
     struct vector_t v1;
     struct vector_t v2;
     uint8_t state;
+    uint8_t oldState;
     uint8_t life;
     uint8_t hits;
     uint8_t color;
@@ -33,7 +34,8 @@ struct block_t {
           7        Light Gray      15       White
 */
 
-void intBlock(struct block_t *b, struct vector_t *v_1, struct vector_t *v_2, uint8_t life, uint8_t color);
+void intBlock(struct block_t *b, struct vector_t *v1, struct vector_t *v2, uint8_t life, uint8_t color);
+void intMultipleBlocks(struct block_t ** blocks, struct vector_t v1, struct vector_t v2, uint8_t quantityX, uint8_t quantityY, uint8_t spaceing);
 void drawBlock(struct block_t *b);
 
 #endif //BLOCK_H
