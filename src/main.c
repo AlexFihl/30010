@@ -336,7 +336,7 @@ void alex()
     struct vector_t v1, v2;
     intVector(&v1, 2, 1);
     intVector(&v2, 12, 10);
-    intBlock(&block, &v1, &v2, 1);
+    intBlock(&block, &v1, &v2, 1, 6);
     drawBlock(&block);
 }
 

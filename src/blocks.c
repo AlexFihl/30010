@@ -1,6 +1,6 @@
 #include "blocks.h"
 
-void intBlock(struct block_t *b, struct vector_t *v_1, struct vector_t *v_2, uint8_t life)
+void intBlock(struct block_t *b, struct vector_t *v_1, struct vector_t *v_2, uint8_t life,  uint8_t color)
 {
     b->v1.x = v_1->x;
     b->v1.y = v_1->y;
@@ -9,10 +9,12 @@ void intBlock(struct block_t *b, struct vector_t *v_1, struct vector_t *v_2, uin
     b->state = 3;
     b->hits = 0;
     b->life = life;
+    b->color = color;
 }
 
 void drawBlock(struct block_t *b)
 {
+    fgcolor(b->color);
     uint16_t i, j;
     for(i = ((b->v1.y) >> FIX14_SHIFT); i <= ((b->v2.y) >> FIX14_SHIFT); i++)
     {
@@ -33,6 +35,6 @@ void drawBlock(struct block_t *b)
                 printf("%c", noLife);
                 break;
             }
-
     }
+    fgcolor(15);
 }

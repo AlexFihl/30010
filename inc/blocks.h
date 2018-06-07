@@ -18,9 +18,22 @@ struct block_t {
     uint8_t state;
     uint8_t life;
     uint8_t hits;
+    uint8_t color;
 };
+//Taking from ANSI
+/*  Value      foreground     Value     foreground
+        ------------------------------------------------
+          0        Black            8       Dark Gray
+          1        Red              9       Light Red
+          2        Green           10       Light Green
+          3        Brown           11       Yellow
+          4        Blue            12       Light Blue
+          5        Purple          13       Light Purple
+          6        Cyan            14       Light Cyan
+          7        Light Gray      15       White
+*/
 
-void intBlock(struct block_t *b, struct vector_t *v_1, struct vector_t *v_2, uint8_t life);
+void intBlock(struct block_t *b, struct vector_t *v_1, struct vector_t *v_2, uint8_t life, uint8_t color);
 void drawBlock(struct block_t *b);
 
 #endif //BLOCK_H
