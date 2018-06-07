@@ -25,4 +25,8 @@ void windowBG(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, char text[], uint8
 //A function for get a input from the computer, until a enter have been send
 char * getInput();
 
+//To draw the ball, from an ball struct
+void drawBall(struct ball_t *b);
+
+
 #endif

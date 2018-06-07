@@ -17,8 +17,7 @@ void drawBall(struct ball_t *b)
         gotoxy((b->oldPos.x) >> FIX14_SHIFT, (b->oldPos.y) >> FIX14_SHIFT);
         printf("%c", 32);
         gotoxy((b->position.x) >> FIX14_SHIFT, (b->position.y) >> FIX14_SHIFT);
-        //printf("%c", 111);
-        printf("%c", 176);
+        printf("%c", 111);
     }
 }
 
