@@ -2,10 +2,7 @@
 #include <stdio.h>
 #include "trigomentri.h"
 #include "ansi.h"
-
-#define FIX14_SHIFT 14
-#define FIX14_MULT(a, b) ( (a)*(b) >> FIX14_SHIFT )
-#define FIX14_DIV(a, b) ( (a) << FIX14_SHIFT / (b) )
+#include "fix14.h"
 
 #ifndef BALL_H
 #define BALL_H

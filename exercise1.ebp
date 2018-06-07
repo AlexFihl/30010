@@ -92,7 +92,9 @@
 		<Unit filename="inc\30010_io.h" />
 		<Unit filename="inc\ansi.h" />
 		<Unit filename="inc\ball.h" />
+		<Unit filename="inc\blocks.h" />
 		<Unit filename="inc\charset.h" />
+		<Unit filename="inc\fix14.h" />
 		<Unit filename="inc\io.h" />
 		<Unit filename="inc\lcd.h" />
 		<Unit filename="inc\stm32f30x.h" />
@@ -197,6 +199,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src\ball.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src\blocks.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src\charset.c">
