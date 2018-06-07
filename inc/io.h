@@ -22,6 +22,8 @@ void joyStickSetUp();
 void setLed (uint8_t r, uint8_t g, uint8_t b);
 void ledSetup ();
 
+//A function for get a input from the computer, until a enter have been send
+char * getInput();
 
 
 

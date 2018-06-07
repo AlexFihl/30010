@@ -30,3 +30,13 @@ void updatePosition(struct ball_t *b, uint8_t wallx1, uint8_t wally1, uint8_t wa
     } else b->position.y = newY;
 }
 
+void drawBall(struct ball_t *b)
+{
+    if ((b->oldPos.x >> FIX14_SHIFT) != (b->position.x >> FIX14_SHIFT) || (b->oldPos.y >> FIX14_SHIFT) != (b->position.y >> FIX14_SHIFT))
+    {
+        gotoxy((b->oldPos.x) >> FIX14_SHIFT, (b->oldPos.y) >> FIX14_SHIFT);
+        printf("%c", 32);
+        gotoxy((b->position.x) >> FIX14_SHIFT, (b->position.y) >> FIX14_SHIFT);
+        printf("%c", 111);
+    }
+}

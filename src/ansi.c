@@ -223,29 +223,6 @@ void windowBG(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, char text[], uint8
     color(15, 0);
 }
 
-//This function will read from the console and get the input from it.
-char * getInput()
-{
-    char * line = malloc(32 * sizeof(char));
-    uint8_t x;
-    line[0] = uart_getc();
-    x = 1;
-    while (line[x - 1] != 0x0D)
-    {
-        line[x] = uart_getc();
-        x++;
-    }
-    line[x-1] = '\0';
-    return line;
-}
 
-void drawBall(struct ball_t *b)
-{
-    if ((b->oldPos.x >> FIX14_SHIFT) != (b->position.x >> FIX14_SHIFT) || (b->oldPos.y >> FIX14_SHIFT) != (b->position.y >> FIX14_SHIFT))
-    {
-        gotoxy((b->oldPos.x) >> FIX14_SHIFT, (b->oldPos.y) >> FIX14_SHIFT);
-        printf("%c", 32);
-        gotoxy((b->position.x) >> FIX14_SHIFT, (b->position.y) >> FIX14_SHIFT);
-        printf("%c", 111);
-    }
-}
+
+

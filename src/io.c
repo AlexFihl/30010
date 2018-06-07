@@ -201,3 +201,19 @@ uint16_t readADC2()
     while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0);
     return ADC_GetConversionValue(ADC1);
 }
+
+//This function will read from the console and get the input from it.
+char * getInput()
+{
+    char * line = malloc(32 * sizeof(char));
+    uint8_t x;
+    line[0] = uart_getc();
+    x = 1;
+    while (line[x - 1] != 0x0D)
+    {
+        line[x] = uart_getc();
+        x++;
+    }
+    line[x-1] = '\0';
+    return line;
+}

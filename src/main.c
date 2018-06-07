@@ -329,8 +329,8 @@ void dag3_6_2_StopWatch()
 
 int main(void)
 {
-
     startUpABC();
+    //PuTTy need to be in 220 times 65.
     init_usb_uart(115200); // Initialize USB serial at 9600 baud
     clrsrc();
     showCursor();
