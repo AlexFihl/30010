@@ -6,6 +6,7 @@
 #include "io.h"
 #include "time.h"
 #include "lcd.h"
+#include "blocks.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -327,6 +328,15 @@ void dag3_6_2_StopWatch()
     }
 }
 
+void alex()
+{
+    struct block_t block;
+    struct vector_t v1, v2;
+    intVector(&v1, 2, 1);
+    intVector(&v2, 12, 10);
+    intBlock(&block, &v1, &v2);
+    drawBlock(&block);
+}
 
 int main(void)
 {
@@ -340,6 +350,7 @@ int main(void)
     setUpTimer2();
     startTimer2();
     setupLCD();
+    alex();
 
     while(1)
     {
