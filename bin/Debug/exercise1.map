@@ -3953,12 +3953,14 @@ Discarded input sections
                 0x00000000       0x24 obj\debug\src\striker.o
  .text.changeStrikerLength
                 0x00000000       0x20 obj\debug\src\striker.o
- .debug_info    0x00000000      0x19c obj\debug\src\striker.o
+ .text.drawStriker
+                0x00000000       0x50 obj\debug\src\striker.o
+ .debug_info    0x00000000      0x1ca obj\debug\src\striker.o
  .debug_abbrev  0x00000000       0xe9 obj\debug\src\striker.o
  .debug_aranges
-                0x00000000       0x30 obj\debug\src\striker.o
- .debug_ranges  0x00000000       0x20 obj\debug\src\striker.o
- .debug_macro   0x00000000      0x32b obj\debug\src\striker.o
+                0x00000000       0x38 obj\debug\src\striker.o
+ .debug_ranges  0x00000000       0x28 obj\debug\src\striker.o
+ .debug_macro   0x00000000      0x33f obj\debug\src\striker.o
  .debug_macro   0x00000000      0x892 obj\debug\src\striker.o
  .debug_macro   0x00000000       0x74 obj\debug\src\striker.o
  .debug_macro   0x00000000       0x35 obj\debug\src\striker.o
@@ -4024,10 +4026,10 @@ Discarded input sections
  .debug_macro   0x00000000       0x29 obj\debug\src\striker.o
  .debug_macro   0x00000000       0x16 obj\debug\src\striker.o
  .debug_macro   0x00000000       0x1c obj\debug\src\striker.o
- .debug_line    0x00000000      0x5b3 obj\debug\src\striker.o
- .debug_str     0x00000000    0x55ff1 obj\debug\src\striker.o
+ .debug_line    0x00000000      0x5ef obj\debug\src\striker.o
+ .debug_str     0x00000000    0x56015 obj\debug\src\striker.o
  .comment       0x00000000       0x6f obj\debug\src\striker.o
- .debug_frame   0x00000000       0x84 obj\debug\src\striker.o
+ .debug_frame   0x00000000       0xa8 obj\debug\src\striker.o
  .ARM.attributes
                 0x00000000       0x33 obj\debug\src\striker.o
  .group         0x00000000        0x8 obj\debug\src\system_stm32f30x.o
