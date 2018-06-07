@@ -88,6 +88,7 @@ const signed short SIN[512]=
 
 void printFix(int32_t i)
 {
+    // Prints a signed 16.16 fixed point number
     if((i & 0x80000000) != 0)
     {
         printf("-");
@@ -96,7 +97,7 @@ void printFix(int32_t i)
     printf("%ld.%04ld", i >> 16, 10000 * (uint32_t)(i & 0xFFFF) >> 16);
 }
 
-int32_t expand(int32_t i) //converts an 2.14 to 16.16
+int32_t expand(int32_t i) //converts an 18.14 to 16.16
 {
     return i << 2;
 }

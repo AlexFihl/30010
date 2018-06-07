@@ -6,8 +6,11 @@
 #include "io.h"
 #include "time.h"
 #include "lcd.h"
+#include "blocks.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "fix14.h"
 
 extern struct timer_t mainTimer;
 extern uint8_t updateLCD;
@@ -327,6 +330,16 @@ void dag3_6_2_StopWatch()
     }
 }
 
+void alex()
+{
+    struct block_t block;
+    struct vector_t v1, v2;
+    intVector(&v1, 2, 1);
+    intVector(&v2, 12, 10);
+    intBlock(&block, &v1, &v2, 1, 6);
+    drawBlock(&block);
+}
+
 int main(void)
 {
     startUpABC();
@@ -339,16 +352,11 @@ int main(void)
     setUpTimer2();
     startTimer2();
     setupLCD();
-
-    lcd_write_string("Alex, Mads og Simon",0x0000,0x0002);
-    lcd_push_buffer(lcdBuffer);
-
-    setScrolling(0x04);
-    setADCPrinting(0x03);
+    alex();
 
     while(1)
     {
-        lcd_update();
+
     }
 }
 
