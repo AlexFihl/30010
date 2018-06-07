@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "fix14.h"
+
 extern struct timer_t mainTimer;
 extern uint8_t updateLCD;
 
@@ -334,7 +336,7 @@ void alex()
     struct vector_t v1, v2;
     intVector(&v1, 2, 1);
     intVector(&v2, 12, 10);
-    intBlock(&block, &v1, &v2);
+    intBlock(&block, &v1, &v2, 1);
     drawBlock(&block);
 }
 
