@@ -53,3 +53,4 @@ dkms.conf
 
 # No cursor placesment saving to git
 *.elay
+*.depend

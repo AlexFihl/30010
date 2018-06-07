@@ -543,3 +543,13 @@
 	<stdio.h>
 	<stdlib.h>
 
+1528377668 source:c:\users\alex\documents\github\30010\src\striker.c
+	"striker.h"
+
+1528377672 c:\users\alex\documents\github\30010\inc\striker.h
+	"stm32f30x_conf.h"
+	"trigomentri.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
