@@ -327,6 +327,7 @@ void dag3_6_2_StopWatch()
     }
 }
 
+
 int main(void)
 {
     startUpABC();
@@ -340,15 +341,9 @@ int main(void)
     startTimer2();
     setupLCD();
 
-    lcd_write_string("Alex, Mads og Simon",0x0000,0x0002);
-    lcd_push_buffer(lcdBuffer);
-
-    setScrolling(0x04);
-    setADCPrinting(0x03);
-
     while(1)
     {
-        lcd_update();
+
     }
 }
 
