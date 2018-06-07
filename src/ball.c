@@ -10,17 +10,6 @@ void intBall(struct ball_t *b, int32_t x, int32_t y, int32_t vx, int32_t vy)
     b->hitCount = 0;
 }
 
-void drawBall(struct ball_t *b)
-{
-    if ((b->oldPos.x >> FIX14_SHIFT) != (b->position.x >> FIX14_SHIFT) || (b->oldPos.y >> FIX14_SHIFT) != (b->position.y >> FIX14_SHIFT))
-    {
-        gotoxy((b->oldPos.x) >> FIX14_SHIFT, (b->oldPos.y) >> FIX14_SHIFT);
-        printf("%c", 32);
-        gotoxy((b->position.x) >> FIX14_SHIFT, (b->position.y) >> FIX14_SHIFT);
-        printf("%c", 111);
-    }
-}
-
 void updatePosition(struct ball_t *b, uint8_t wallx1, uint8_t wally1, uint8_t wallx2, uint8_t wally2)
 {
     b->oldPos.x = b->position.x;
