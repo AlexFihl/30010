@@ -1,5 +1,6 @@
 #include "stm32f30x_conf.h"
 #include "trigomentri.h"
+#include "ansi.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,6 +20,6 @@ struct striker_t {
 void intStriker(struct striker_t *s);
 void updateStriker(struct striker_t *s, uint32_t deltaCenter);
 void changeStrikerLength(struct striker_t *s, uint32_t deltaLength);
-
+void drawStriker(struct striker_t *s);
 
 #endif //STRIKER_H
