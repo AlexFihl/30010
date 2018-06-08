@@ -10,8 +10,13 @@ void intBall(struct ball_t *b, int32_t x, int32_t y, int32_t vx, int32_t vy)
     b->hitCount = 0;
 }
 
-void updatePosition(struct ball_t *b, uint8_t wallx1, uint8_t wally1, uint8_t wallx2, uint8_t wally2)
+void updatePosition(struct ball_t *b, struct wall_t *w)
 {
+    uint32_t wallx1, wallx2, wally1, wally2;
+    wallx1 = (w->v1.x) >> FIX14_SHIFT;
+    wally1 = (w->v1.y) >> FIX14_SHIFT;
+    wallx2 = (w->v2.x) >> FIX14_SHIFT;
+    wally2 = (w->v2.y) >> FIX14_SHIFT;
     b->oldPos.x = b->position.x;
     b->oldPos.y = b->position.y;
     int32_t newX = b->position.x + FIX14_MULT(b->velocity.x, speed);
