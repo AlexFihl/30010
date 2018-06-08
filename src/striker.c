@@ -5,7 +5,7 @@
 void intStriker(struct striker_t *s)
 {
     struct vector_t v;
-    intVector(&v, 110, 63);
+    intVector(&v, 110, 62);
     s->center.x = v.x;
     s->center.y = v.y;
     s->oldCenter.x = v.x;

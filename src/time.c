@@ -22,6 +22,12 @@ void TIM2_IRQHandler(void)
     }
     if (mainTimer.hseconds == 0x0000 || (mainTimer.hseconds & updateSpeed) == updateSpeed)
         updateLCD = 1;
+    gameSpeedCounter++;
+    if (gameSpeedCounter == gameSpeed)
+    {
+        updateGame = 1;
+        gameSpeedCounter = 0;
+    }
     TIM2->SR &= ~0x0001;
 }
 
@@ -38,6 +44,8 @@ void setUpTimer2()
 
     //Setting the updateLCD to 0
     updateLCD = 0;
+    updateGame = 0;
+    gameSpeedCounter = 0;
 }
 
 void resetTimer(struct timer_t *t)

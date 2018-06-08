@@ -7,8 +7,10 @@
 
 //A flag for updating the LCD
 extern uint8_t updateLCD;
+extern uint8_t updateGame;
+extern uint8_t gameSpeed;
 #define updateSpeed 0x000a
-
+uint8_t gameSpeedCounter;
 
 struct timer_t
 {

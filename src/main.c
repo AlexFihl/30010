@@ -17,10 +17,12 @@
 extern struct timer_t mainTimer;
 extern uint8_t updateLCD;
 
+uint8_t updateGame;
+uint8_t gameSpeed;
+
 
 void alex()
 {
-
     struct wall_t wall;
     struct vector_t v1, v2, v3, v4;
     uint16_t i, x, y;
@@ -39,6 +41,18 @@ void alex()
     struct striker_t striker1;
     intStriker(&striker1);
     drawStriker(&striker1);
+    struct ball_t b;
+    intBall(&b, 110, 62, 1, 5);
+    drawBall(&b);
+    while(1)
+    {
+        if (updateGame > 0)
+        {
+            updatePosition(&b, &wall);
+            drawBall(&b);
+            updateGame = 0;
+        }
+    }
 }
 
 int main(void)
@@ -51,6 +65,7 @@ int main(void)
     showCursor();
     joyStickSetUp();
     ledSetup();
+    gameSpeed = 10;
     setUpTimer2();
     startTimer2();
     setupLCD();

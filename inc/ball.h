@@ -9,7 +9,7 @@
 #define BALL_H
 
 //Thee speed factor which it will be 0400 = 0.0625
-#define speed 0x00000200
+#define speed 0x00001000
 
 struct ball_t
 {
