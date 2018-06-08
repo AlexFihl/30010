@@ -7,7 +7,8 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#define fullLife    178
+#define fullLife    219
+#define midHighLife 178
 #define midLife     177
 #define lowLife     176
 #define noLife      32
