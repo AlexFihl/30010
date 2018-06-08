@@ -48,12 +48,36 @@ void alex()
     struct ball_t b;
     intBall(&b, 110, 62, -5, -5);
     drawBall(&b);
-    while(1)
-    {
-        if (updateGame > 0)
-        {
+    uint8_t k = 1;
+    while(1){
+        if (updateGame > 0){
             updatePosition(&b, &wall, &blocks, x * y);
             drawBall(&b);
+            switch (k)
+            {
+            case(1):
+                changeStrikerLength(&striker1,-4);
+                drawStriker(&striker1);
+                break;
+            case(2):
+                updateStriker(&striker1,-10);
+                drawStriker(&striker1);
+                break;
+            case(3):
+                changeStrikerLength(&striker1,4);
+                drawStriker(&striker1);
+                break;
+            case(4):
+                updateStriker(&striker1,10);
+                drawStriker(&striker1);
+                break;
+            case(5):
+                k = 0;
+                break;
+            default:
+                break;
+            }
+            k++;
             for (i = 0; i < x*y; i++)
                 drawBlock(&blocks[i]);
             updateGame = 0;
@@ -62,8 +86,7 @@ void alex()
     }
 }
 
-int main(void)
-{
+int main(void){
     startUpABC();
     //PuTTy need to be in 220 times 65.
     init_usb_uart(115200); // Initialize USB serial at 9600 baud
