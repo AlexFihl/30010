@@ -26,18 +26,23 @@ void drawWall(struct wall_t *w) //The same style as the windows style 0
     }
 }
 
-void window(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, char text[], uint8_t style)
+void window(struct wall_t *w, char text[], uint8_t style)
 {
-    windowBG(x1, y1, x2, y2, text, style, 15, 0, 15, 0);
+    windowBG(w, text, style, 15, 0, 15, 0);
 }
 
-void windowFG(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, char text[], uint8_t style, uint8_t colorText, uint8_t colorBond)
+void windowFG(struct wall_t *w, char text[], uint8_t style, uint8_t colorText, uint8_t colorBond)
 {
-    windowBG(x1, y1, x2, y2, text, style, colorText, 0, colorBond, 0);
+    windowBG(w, text, style, colorText, 0, colorBond, 0);
 }
 
-void windowBG(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, char text[], uint8_t style, uint8_t colorText, uint8_t colorTextbg, uint8_t colorBond, uint8_t colorBondbg)
+void windowBG(struct wall_t *w, char text[], uint8_t style, uint8_t colorText, uint8_t colorTextbg, uint8_t colorBond, uint8_t colorBondbg)
 {
+    uint32_t x1, y1, x2, y2;
+    x1 = (w->v1.x) >> FIX14_SHIFT;
+    y1 = (w->v1.y) >> FIX14_SHIFT;
+    x2 = (w->v2.x) >> FIX14_SHIFT;
+    y2 = (w->v2.y) >> FIX14_SHIFT;
     uint8_t topLenght = 6 + strlen(text);
     uint8_t spaces1, spaces2;
     if (x2-x1+1 <= 6)

@@ -85,16 +85,16 @@ void pinSetup(uint16_t port, char portName, uint32_t moder, uint32_t puder)
     }
     else if (portName == 'C')
     {
-        GPIOB->MODER &= ~(0x00000003 << (port * 2));
-        GPIOB->MODER |= (moder << (port * 2));
-        GPIOB->PUPDR &= ~(0x00000003 << (port * 2));
-        GPIOB->PUPDR |= (puder << (port * 2));
+        GPIOC->MODER &= ~(0x00000003 << (port * 2));
+        GPIOC->MODER |= (moder << (port * 2));
+        GPIOC->PUPDR &= ~(0x00000003 << (port * 2));
+        GPIOC->PUPDR |= (puder << (port * 2));
         if (moder == 0x00000001)
         {
-            GPIOB->OSPEEDR &= ~(0x00000003 << (port * 2));
-            GPIOB->OSPEEDR |=  (0x00000002 << (port * 2));
-            GPIOB->OTYPER &= ~(0x0003 << (port * 2));
-            GPIOB->OTYPER |=  (0x0000 << (port * 2));
+            GPIOC->OSPEEDR &= ~(0x00000003 << (port * 2));
+            GPIOC->OSPEEDR |=  (0x00000002 << (port * 2));
+            GPIOC->OTYPER &= ~(0x0003 << (port * 2));
+            GPIOC->OTYPER |=  (0x0000 << (port * 2));
         }
     }
 }
@@ -121,7 +121,6 @@ uint8_t readJoyStick()
 //This function sets the joystick pins for the joy stick
 void joyStickSetUp()
 {
-
     pinSetup(0,'C', 0x00000000, 0x00000000); //Right
     pinSetup(4,'A', 0x00000000, 0x00000000); //Up
     pinSetup(5,'B', 0x00000000, 0x00000000); //Center
