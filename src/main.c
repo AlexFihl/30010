@@ -17,7 +17,7 @@
 
 extern struct timer_t mainTimer;
 extern uint8_t updateLCD;
-extern const char customcharacter_data[1][16];
+extern const char customcharacter_data[2][16];
 extern uint8_t lcdBuffer[512];
 
 uint8_t updateGame;
@@ -75,11 +75,12 @@ int main(void)
     setupLCD();
     //alex();
     bufferReset();
-  //  uint8_t i;
-    //for(i=0;i<16;i++)
-      //      lcdBuffer[i]=customcharacter_data[1][i];
-    //lcd_push_buffer(lcdBuffer);
-    setLed(1,1,0);
+    uint8_t i;
+    for(i=0;i<16;i++)
+        lcdBuffer[i]=customcharacter_data[0][i];
+    lcd_write_string("Hej", 0, 1);
+    lcd_push_buffer(lcdBuffer);
+    setLed(0,1,1);
     while(1)
     {
 
