@@ -18,7 +18,6 @@ void intMultipleBlocks(struct block_t ** blocks, struct vector_t v1, struct vect
     struct vector_t v3, v4;
     uint32_t deltaX, deltaY;
     uint8_t i, j;
-    uint32_t x;
     deltaX = FIX14_DIV(((v2.x>>FIX14_SHIFT) - (v1.x>>FIX14_SHIFT) + 1) , quantityX);
     deltaY = FIX14_DIV(((v2.y>>FIX14_SHIFT) - (v1.y>>FIX14_SHIFT) + 1) , quantityY);
     for (i = 0; i < quantityY; i++)

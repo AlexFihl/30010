@@ -13,6 +13,7 @@ void intBall(struct ball_t *b, int32_t x, int32_t y, int32_t vx, int32_t vy)
 void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks, uint16_t numberOfBlocks)
 {
     uint32_t wallx1, wallx2, wally1, wally2;
+    uint8_t i;
     wallx1 = (w->v1.x) >> FIX14_SHIFT;
     wally1 = (w->v1.y) >> FIX14_SHIFT;
     wallx2 = (w->v2.x) >> FIX14_SHIFT;
@@ -41,7 +42,14 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
     }
 
     //Checking if it hits a block
+   for(i = 0; i < numberOfBlocks; i++)
+    {
+        if (newX > blocks[i]->v1.x && newX < blocks[i]->v2.x && newY > blocks[i]->v1.y && newY < blocks[i]->v1.y)
+        {
 
+            (blocks[i]->hits)++;
+        }
+    }
 
     b->position.x = newX;
     b->position.y = newY;

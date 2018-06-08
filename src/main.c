@@ -50,7 +50,10 @@ void alex()
         {
             updatePosition(&b, &wall, &blocks, x * y);
             drawBall(&b);
+            for (i = 0; i < x*y; i++)
+                drawBlock(&blocks[i]);
             updateGame = 0;
+            setLed(1,1,0);
         }
     }
 }
