@@ -13,6 +13,7 @@
 
 struct striker_t {
     struct vector_t center;
+    struct vector_t oldCenter;
     uint32_t length;
 };
 
