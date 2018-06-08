@@ -11,14 +11,18 @@
 #include <stdlib.h>
 #include "gameWall.h"
 #include "striker.h"
+#include "customcharset.h"
 
 #include "fix14.h"
 
 extern struct timer_t mainTimer;
 extern uint8_t updateLCD;
+extern const char costumcharacter_data[2][16];
+extern uint8_t lcdBuffer[512];
 
 uint8_t updateGame;
 uint8_t gameSpeed;
+
 
 
 void alex()
@@ -69,8 +73,12 @@ int main(void)
     setUpTimer2();
     startTimer2();
     setupLCD();
-    alex();
-
+    //alex();
+    bufferReset();
+    uint8_t i;
+    for(i=0;i<16;i++)
+            lcdBuffer[i]=costumcharacter_data[2][i];
+    lcd_push_buffer(lcdBuffer);
     setLed(1,1,1);
     while(1)
     {

@@ -94,6 +94,7 @@
 		<Unit filename="inc\ball.h" />
 		<Unit filename="inc\blocks.h" />
 		<Unit filename="inc\charset.h" />
+		<Unit filename="inc\customcharset.h" />
 		<Unit filename="inc\fix14.h" />
 		<Unit filename="inc\gameWall.h" />
 		<Unit filename="inc\io.h" />
@@ -206,6 +207,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src\charset.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src\costumcharset.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src\gameWall.c">
