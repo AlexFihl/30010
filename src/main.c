@@ -75,11 +75,11 @@ int main(void)
     setupLCD();
     //alex();
     bufferReset();
-    uint8_t i;
-    for(i=0;i<16;i++)
-            lcdBuffer[i]=customcharacter_data[1][i];
-    lcd_push_buffer(lcdBuffer);
-    setLed(1,0,0);
+  //  uint8_t i;
+    //for(i=0;i<16;i++)
+      //      lcdBuffer[i]=customcharacter_data[1][i];
+    //lcd_push_buffer(lcdBuffer);
+    setLed(1,1,0);
     while(1)
     {
 
