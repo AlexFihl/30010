@@ -1,15 +1,33 @@
 #include "minigame.h"
 
-
-void drawSpaceship (uint8_t line)
+void intminigame(struct minigame_t *s)
 {
+    s->shipLine=1;
+    s->oldShipLine=0;
 
-
- uint8_t i;
-    for(i=0;i<16;i++)
-        lcdBuffer[i+(line*128)]=customcharacter_data[0][i];
-    lcd_push_buffer(lcdBuffer);
 }
+void drawSpaceship (struct minigame_t *s)
+{
+ uint8_t i;
+
+ for(i=0;i<16;i++)
+        lcdBuffer[i+(s->oldShipLine*128)]=0x00;
+
+
+
+    for(i=0;i<16;i++)
+        lcdBuffer[i+(s->shipLine*128)]=customcharacter_data[0][i];
+    lcd_push_buffer(lcdBuffer);
+
+    s->oldShipLine=s->shipLine;
+}
+
+void moveShip (struct minigame_t *s, int8_t deltaLine)
+{
+    s->shipLine+=deltaLine;
+
+}
+
 
 void temp (){
  uint8_t currentJoyStick = readJoyStick();

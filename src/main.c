@@ -79,7 +79,11 @@ int main(void)
     setupLCD();
     //alex();
     bufferReset();
-    drawSpaceship(2);
+    struct minigame_t minigame1;
+    intminigame(&minigame1);
+    drawSpaceship(&minigame1);
+    moveShip(&minigame1,1);
+    drawSpaceship(&minigame1);
     setLed(0,0,1);
     while(1)
     {
