@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "gameWall.h"
+#include "striker.h"
 
 #include "fix14.h"
 
@@ -349,6 +350,9 @@ void alex()
     intMultipleBlocks(&blocks, v3, v4, x, y);
     for (i = 0; i < x * y; i++)
         drawBlock(&blocks[i]);
+    struct striker_t striker1;
+    intStriker(&striker1);
+    drawStriker(&striker1);
 }
 
 int main(void)
