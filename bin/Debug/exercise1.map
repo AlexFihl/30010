@@ -3729,7 +3729,7 @@ Discarded input sections
  .bss           0x00000000        0x0 obj\debug\src\gamewall.o
  .text.window   0x00000000       0x30 obj\debug\src\gamewall.o
  .text.windowFG
-                0x00000000       0x3c obj\debug\src\gamewall.o
+                0x00000000       0x38 obj\debug\src\gamewall.o
  .text.windowBG
                 0x00000000      0x3ec obj\debug\src\gamewall.o
  .debug_macro   0x00000000      0x892 obj\debug\src\gamewall.o

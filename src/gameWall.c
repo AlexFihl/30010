@@ -28,12 +28,12 @@ void drawWall(struct wall_t *w) //The same style as the windows style 0
 
 void window(struct wall_t *w, char text[], uint8_t style)
 {
-    windowBG(&w, text, style, 15, 0, 15, 0);
+    windowBG(w, text, style, 15, 0, 15, 0);
 }
 
 void windowFG(struct wall_t *w, char text[], uint8_t style, uint8_t colorText, uint8_t colorBond)
 {
-    windowBG(&w, text, style, colorText, 0, colorBond, 0);
+    windowBG(w, text, style, colorText, 0, colorBond, 0);
 }
 
 void windowBG(struct wall_t *w, char text[], uint8_t style, uint8_t colorText, uint8_t colorTextbg, uint8_t colorBond, uint8_t colorBondbg)
