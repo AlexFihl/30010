@@ -11,17 +11,22 @@
 #include <stdlib.h>
 #include "gameWall.h"
 #include "striker.h"
+#include "customcharset.h"
 
 #include "fix14.h"
 
 extern struct timer_t mainTimer;
 extern uint8_t updateLCD;
+extern const char customcharacter_data[2][16];
+extern uint8_t lcdBuffer[512];
 
 uint8_t updateGame;
 uint8_t gameSpeed;
 
 
-void simon(){
+
+void alex()
+{
     struct wall_t wall;
     struct vector_t v1, v2, v3, v4;
     uint16_t i, x, y;
@@ -30,8 +35,8 @@ void simon(){
     intWall(&wall, &v1, &v2);
     drawWall(&wall);
     struct block_t* blocks = malloc(100 * sizeof *blocks);
-    intVector(&v3, 5, 5);
-    intVector(&v4, 40, 40);
+    intVector(&v3, 10, 10);
+    intVector(&v4, 45, 45);
     x = 4;
     y = 12;
     intMultipleBlocks(&blocks, v3, v4, x, y);
@@ -41,7 +46,7 @@ void simon(){
     intStriker(&striker1);
     drawStriker(&striker1);
     struct ball_t b;
-    intBall(&b, 110, 62, 2, 5);
+    intBall(&b, 110, 62, -5, -5);
     drawBall(&b);
     uint8_t k = 1;
     while(1){
@@ -73,7 +78,10 @@ void simon(){
                 break;
             }
             k++;
+            for (i = 0; i < x*y; i++)
+                drawBlock(&blocks[i]);
             updateGame = 0;
+            setLed(1,1,0);
         }
     }
 }
@@ -87,13 +95,17 @@ int main(void){
     showCursor();
     joyStickSetUp();
     ledSetup();
-    gameSpeed = 10;
+    gameSpeed = 5;
     setUpTimer2();
     startTimer2();
     setupLCD();
-    simon();
-
-    setLed(1,1,1);
+    //alex();
+    bufferReset();
+    uint8_t i;
+    for(i=0;i<16;i++)
+        lcdBuffer[i]=customcharacter_data[1][i];
+    lcd_push_buffer(lcdBuffer);
+    setLed(0,0,1);
     while(1)
     {
 

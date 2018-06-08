@@ -102,14 +102,14 @@ int32_t expand(int32_t i) //converts an 18.14 to 16.16
     return i << 2;
 }
 
-int32_t sin(int32_t i)
+int32_t sinn(int32_t i)
 {
     return SIN[i & 0x1FF];
 }
 
-int32_t cos(int32_t i)
+int32_t coss(int32_t i)
 {
-    return sin(i + 128);
+    return sinn(i + 128);
 }
 
 void intVector(struct vector_t *v, int32_t x, int32_t y)
@@ -120,7 +120,7 @@ void intVector(struct vector_t *v, int32_t x, int32_t y)
 
 void rotate(struct vector_t *v, int32_t angle)
 {
-    int32_t newX = FIX14_MULT(v->x,cos(angle)) - FIX14_MULT(v->y,sin(angle));
-    v->y = FIX14_MULT(v->x,sin(angle)) + FIX14_MULT(v->y,cos(angle));
+    int32_t newX = FIX14_MULT(v->x,coss(angle)) - FIX14_MULT(v->y,sinn(angle));
+    v->y = FIX14_MULT(v->x,sinn(angle)) + FIX14_MULT(v->y,coss(angle));
     v->x = newX;
 }
