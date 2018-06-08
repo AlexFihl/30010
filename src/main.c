@@ -108,14 +108,17 @@ void alex()
     intMultipleBlocks(&blocks, v3, v4, x, y);
     for (i = 0; i < numberOfBlocks; i++)
         drawBlock(&blocks[i]);
+
     //Setting up the striker
     struct striker_t striker1;
     intStriker(&striker1);
     drawStriker(&striker1);
+
     //Setting up the wall
     struct ball_t b;
     intBall(&b, 110, 62, -5, -5);
     drawBall(&b);
+
     //Making a player
     struct player_t player;
     intPlayer(&player);
@@ -150,10 +153,17 @@ void alex()
             for (i = 0; i < numberOfBlocks; i++)
                 if(blocks[i].state > 0)
                     numberOfBlocksLeft++;
+            if (numberOfBlocksLeft == 0)
+                break;
             gotoxy(12, 63);
             printf("Number of blocks left: %02d", numberOfBlocksLeft);
+
         }
     }
+
+    clrsrc();
+    gotoxy(1,1);
+    printf("game is gone, well gone");
 }
 
 int main(void){
