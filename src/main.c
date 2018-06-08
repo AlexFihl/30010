@@ -12,6 +12,7 @@
 #include "gameWall.h"
 #include "striker.h"
 #include "customcharset.h"
+#include "player.h"
 
 #include "fix14.h"
 
@@ -47,9 +48,11 @@ void simon()
     intBall(&b, 110, 62, -5, -5);
     drawBall(&b);
     uint8_t k = 1;
+    struct player_t player;
+    intPlayer(&player);
     while(1){
         if (updateGame > 0){
-            updatePosition(&b, &wall, &blocks, x * y);
+            updatePosition(&b, &wall, &blocks, x * y, &player);
             drawBall(&b);
             switch (k)
             {
@@ -107,40 +110,20 @@ void alex()
     struct ball_t b;
     intBall(&b, 110, 62, -5, -5);
     drawBall(&b);
-    uint8_t k = 1;
+    struct player_t player;
+    intPlayer(&player);
+    gotoxy(1,64);
+    printf("Hits: %03lu", player.score);
     while(1){
         if (updateGame > 0){
-            updatePosition(&b, &wall, &blocks, x * y);
+            updatePosition(&b, &wall, &blocks, x * y, &player);
             drawBall(&b);
-            switch (k)
-            {
-            case(1):
-                changeStrikerLength(&striker1,-4);
-                drawStriker(&striker1);
-                break;
-            case(2):
-                updateStriker(&striker1,-10);
-                drawStriker(&striker1);
-                break;
-            case(3):
-                changeStrikerLength(&striker1,4);
-                drawStriker(&striker1);
-                break;
-            case(4):
-                updateStriker(&striker1,10);
-                drawStriker(&striker1);
-                break;
-            case(5):
-                k = 0;
-                break;
-            default:
-                break;
-            }
-            k++;
             for (i = 0; i < x*y; i++)
                 drawBlock(&blocks[i]);
             updateGame = 0;
             setLed(1,1,0);
+            gotoxy(7,64);
+            printf("%03lu", player.score);
         }
     }
 }
@@ -158,7 +141,8 @@ int main(void){
     setUpTimer2();
     startTimer2();
     setupLCD();
-    //alex();
+    alex();
+
     bufferReset();
     uint8_t i;
     for(i=0;i<16;i++)

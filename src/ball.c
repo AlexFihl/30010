@@ -10,7 +10,7 @@ void intBall(struct ball_t *b, int32_t x, int32_t y, int32_t vx, int32_t vy)
     b->hitCount = 0;
 }
 
-void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks, uint16_t numberOfBlocks)
+void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks, uint16_t numberOfBlocks, struct player_t *p)
 {
     uint32_t wallx1, wallx2, wally1, wally2;
     uint8_t i;
@@ -73,6 +73,7 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
                 else if (FIX14_DIV((*blocks)[i].hits, block.life) >= 0x00001000)
                      (((*blocks)[i]).state) = 3;
                 else (((*blocks)[i]).state) = 4;
+                p->score += (*blocks)[i].pointGiver;
             }
         }
     }
