@@ -174,8 +174,19 @@ void mads()
     struct minigame_t minigame1;
     intminigame(&minigame1);
     drawSpaceship(&minigame1);
-    moveShip(&minigame1,1);
-    drawSpaceship(&minigame1);
+    uint8_t currentJoyStick = readJoyStick();
+    uint8_t oldJoystick = readJoyStick();
+    while (1){
+            currentJoyStick = readJoyStick();
+            if (currentJoyStick != oldJoystick){
+                if      (   (currentJoyStick & 0x02) == 0x02) //When clicking the up button
+                    moveShip(&minigame1, 1);
+                else if (   (currentJoyStick & 0x01) == 0x01) //When clicking the down button
+                    moveShip(&minigame1, -1);
+                drawSpaceship(&minigame1);
+                oldJoystick = currentJoyStick;
+            }
+    }
 }
 
 int main(void){
@@ -191,7 +202,7 @@ int main(void){
     setUpTimer2();
     startTimer2();
     setupLCD();
-    alex();
+//    alex();
     mads();
 
     setLed(0,0,1);
