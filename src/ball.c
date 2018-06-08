@@ -42,12 +42,24 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
     }
 
     //Checking if it hits a block
-   for(i = 0; i < numberOfBlocks; i++)
+    for(i = 0; i < numberOfBlocks; i++)
     {
-        if (newX > blocks[i]->v1.x && newX < blocks[i]->v2.x && newY > blocks[i]->v1.y && newY < blocks[i]->v1.y)
+        struct block_t block;
+        block = (*blocks)[i];
+        if (newX > block.v1.x && newX < block.v2.x && newY > block.v1.y && newY < block.v1.y)
         {
-
-            (blocks[i]->hits)++;
+            if(newX < b->oldPos.x || newX > b->oldPos.x)
+            {
+                b->velocity.x = -b->velocity.x;
+                b->hitCount++;
+            }
+            if(newX < b->oldPos.y || newX > b->oldPos.y)
+            {
+                b->velocity.y = -b->velocity.y;
+                b->hitCount++;
+            }
+            (block.hits)++;
+            (*blocks[i]) = block;
         }
     }
 
