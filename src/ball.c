@@ -34,7 +34,8 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
         b->velocity.y = -b->velocity.y;
         newY = b->position.y + FIX14_MULT(b->velocity.y, speed);
         b->hitCount++;
-    } else if (newY >= (wally2 << FIX14_SHIFT))
+    }
+    else if (newY >= (wally2 << FIX14_SHIFT))
     {
         b->velocity.y = -b->velocity.y;
         newY = b->position.y + FIX14_MULT(b->velocity.y, speed);
@@ -46,20 +47,32 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
     {
         struct block_t block;
         block = (*blocks)[i];
-        if (newX > block.v1.x && newX < block.v2.x && newY > block.v1.y && newY < block.v1.y)
+        if(block.state > 0)
         {
-            if(newX < b->oldPos.x || newX > b->oldPos.x)
+            if (newX > block.v1.x && newX < (block.v2.x + (1 << 14)) && newY > block.v1.y && newY < (block.v2.y + (1 << 14)))
             {
-                b->velocity.x = -b->velocity.x;
-                b->hitCount++;
+                if(block.v1.x > b->oldPos.x || block.v2.x < (b->oldPos.x + (1 << 14)))
+                {
+                    b->velocity.x = -b->velocity.x;
+                    newX = b->position.x + FIX14_MULT(b->velocity.x, speed);
+                    b->hitCount++;
+                }
+                if(block.v1.y > b->oldPos.y || block.v2.y < (b->oldPos.y + (1 << 14)))
+                {
+                    b->velocity.y = -b->velocity.y;
+                    newY = b->position.y + FIX14_MULT(b->velocity.y, speed);
+                    b->hitCount++;
+                }
+                (((*blocks)[i]).hits)++;
+                if (FIX14_DIV((*blocks)[i].hits, block.life) < 0x00001000)
+                    (((*blocks)[i]).state) = 3;
+                else if (FIX14_DIV(block.life, (*blocks)[i].hits) < 0x00002000)
+                    (((*blocks)[i]).state) = 2;
+                else if (FIX14_DIV(block.life, (*blocks)[i].hits) < 0x00003000)
+                    (((*blocks)[i]).state) = 1;
+                else if (FIX14_DIV(block.life, (*blocks)[i].hits) < 0x00004000)
+                    (((*blocks)[i]).state) = 0;
             }
-            if(newX < b->oldPos.y || newX > b->oldPos.y)
-            {
-                b->velocity.y = -b->velocity.y;
-                b->hitCount++;
-            }
-            (block.hits)++;
-            (*blocks[i]) = block;
         }
     }
 
