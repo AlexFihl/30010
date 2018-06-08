@@ -6,8 +6,8 @@ void intBlock(struct block_t *b, struct vector_t *v1, struct vector_t *v2, uint8
     b->v1.y = v1->y;
     b->v2.x = v2->x;
     b->v2.y = v2->y;
-    b->state = 3;
-    b->oldState = 4;
+    b->state = 4;
+    b->oldState = 5;
     b->hits = 0;
     b->life = life;
     b->color = color;
@@ -56,8 +56,11 @@ void drawBlock(struct block_t *b)
             for(j = ((b->v1.x) >> FIX14_SHIFT); j <= ((b->v2.x) >> FIX14_SHIFT); j++)
                 switch(b->state)
                 {
-                case(3):
+                case(4):
                     printf("%c", fullLife);
+                    break;
+                case(3):
+                    printf("%c", midHighLife);
                     break;
                 case(2):
                     printf("%c", midLife);
@@ -70,6 +73,7 @@ void drawBlock(struct block_t *b)
                     break;
                 }
         }
+        b->oldState = b->state;
         fgcolor(15);
     }
 }

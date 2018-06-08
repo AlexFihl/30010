@@ -349,12 +349,6 @@ void alex()
     intMultipleBlocks(&blocks, v3, v4, x, y);
     for (i = 0; i < x * y; i++)
         drawBlock(&blocks[i]);
-    gotoxy(5,4);
-    printf("Start");
-    gotoxy(40,41);
-    printf("Slut");
-    gotoxy(5,41);
-    printf("56789012345678901234567890123456789");
 }
 
 int main(void)
@@ -371,7 +365,7 @@ int main(void)
     startTimer2();
     setupLCD();
     alex();
-    gotoxy(50,6);
+
     setLed(1,1,1);
     while(1)
     {
