@@ -31,8 +31,8 @@ void alex()
     intWall(&wall, &v1, &v2);
     drawWall(&wall);
     struct block_t* blocks = malloc(100 * sizeof *blocks);
-    intVector(&v3, 5, 5);
-    intVector(&v4, 40, 40);
+    intVector(&v3, 10, 10);
+    intVector(&v4, 45, 45);
     x = 4;
     y = 12;
     intMultipleBlocks(&blocks, v3, v4, x, y);
@@ -42,7 +42,7 @@ void alex()
     intStriker(&striker1);
     drawStriker(&striker1);
     struct ball_t b;
-    intBall(&b, 110, 62, 1, 5);
+    intBall(&b, 110, 62, -5, -5);
     drawBall(&b);
     while(1)
     {
@@ -68,7 +68,7 @@ int main(void)
     showCursor();
     joyStickSetUp();
     ledSetup();
-    gameSpeed = 10;
+    gameSpeed = 5;
     setUpTimer2();
     startTimer2();
     setupLCD();
