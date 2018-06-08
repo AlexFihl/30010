@@ -169,24 +169,7 @@ void alex()
 
 void mads()
 {
-
-    bufferReset();
-    struct minigame_t minigame1;
-    intminigame(&minigame1);
-    drawSpaceship(&minigame1);
-    uint8_t currentJoyStick = readJoyStick();
-    uint8_t oldJoystick = readJoyStick();
-    while (1){
-            currentJoyStick = readJoyStick();
-            if (currentJoyStick != oldJoystick){
-                if      (   (currentJoyStick & 0x02) == 0x02) //When clicking the up button
-                    moveShip(&minigame1, 1);
-                else if (   (currentJoyStick & 0x01) == 0x01) //When clicking the down button
-                    moveShip(&minigame1, -1);
-                drawSpaceship(&minigame1);
-                oldJoystick = currentJoyStick;
-            }
-    }
+    playMinigame1();
 }
 
 int main(void){
