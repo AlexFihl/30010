@@ -3684,11 +3684,11 @@ Discarded input sections
  .comment       0x00000000       0x6f obj\debug\src\charset.o
  .ARM.attributes
                 0x00000000       0x33 obj\debug\src\charset.o
- .group         0x00000000        0x8 obj\debug\src\costumcharset.o
- .text          0x00000000        0x0 obj\debug\src\costumcharset.o
- .data          0x00000000        0x0 obj\debug\src\costumcharset.o
- .bss           0x00000000        0x0 obj\debug\src\costumcharset.o
- .debug_macro   0x00000000      0x892 obj\debug\src\costumcharset.o
+ .group         0x00000000        0x8 obj\debug\src\customcharset.o
+ .text          0x00000000        0x0 obj\debug\src\customcharset.o
+ .data          0x00000000        0x0 obj\debug\src\customcharset.o
+ .bss           0x00000000        0x0 obj\debug\src\customcharset.o
+ .debug_macro   0x00000000      0x892 obj\debug\src\customcharset.o
  .group         0x00000000        0x8 obj\debug\src\gamewall.o
  .group         0x00000000        0x8 obj\debug\src\gamewall.o
  .group         0x00000000        0x8 obj\debug\src\gamewall.o
@@ -5329,9 +5329,9 @@ LOAD c:/program files (x86)/embitz/1.11/share/em_armgcc/bin/../lib/gcc/arm-none-
  *(.rodata*)
  .rodata        0x0800299c       0x4e obj\debug\src\ansi.o
  *fill*         0x080029ea        0x2 
- .rodata.costumcharacter_data
-                0x080029ec       0x20 obj\debug\src\costumcharset.o
-                0x080029ec                costumcharacter_data
+ .rodata.customcharacter_data
+                0x080029ec       0x20 obj\debug\src\customcharset.o
+                0x080029ec                customcharacter_data
  .rodata.str1.1
                 0x08002a0c        0x2 c:/program files (x86)/embitz/1.11/share/em_armgcc/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m\libg_n.a(lib_a-impure.o)
  *fill*         0x08002a0e        0x2 
@@ -5494,7 +5494,7 @@ LOAD obj\debug\src\ansi.o
 LOAD obj\debug\src\ball.o
 LOAD obj\debug\src\blocks.o
 LOAD obj\debug\src\charset.o
-LOAD obj\debug\src\costumcharset.o
+LOAD obj\debug\src\customcharset.o
 LOAD obj\debug\src\gamewall.o
 LOAD obj\debug\src\io.o
 LOAD obj\debug\src\lcd.o
@@ -5537,7 +5537,7 @@ OUTPUT(bin\Debug\exercise1.elf elf32-littlearm)
  .ARM.attributes
                 0x00000134       0x33 obj\debug\src\ansi.o
  .ARM.attributes
-                0x00000167       0x33 obj\debug\src\costumcharset.o
+                0x00000167       0x33 obj\debug\src\customcharset.o
  .ARM.attributes
                 0x0000019a       0x33 obj\debug\src\io.o
  .ARM.attributes
@@ -5632,7 +5632,7 @@ OUTPUT(bin\Debug\exercise1.elf elf32-littlearm)
  .comment       0x0000006e       0x6f obj\debug\spl\src\stm32f30x_usart.o
  .comment       0x0000006e       0x6f obj\debug\src\30010_io.o
  .comment       0x0000006e       0x6f obj\debug\src\ansi.o
- .comment       0x0000006e       0x6f obj\debug\src\costumcharset.o
+ .comment       0x0000006e       0x6f obj\debug\src\customcharset.o
  .comment       0x0000006e       0x6f obj\debug\src\io.o
  .comment       0x0000006e       0x6f obj\debug\src\lcd.o
  .comment       0x0000006e       0x6f obj\debug\src\main.o
@@ -5645,7 +5645,7 @@ OUTPUT(bin\Debug\exercise1.elf elf32-littlearm)
  .debug_info    0x00001656      0xecc obj\debug\spl\src\stm32f30x_usart.o
  .debug_info    0x00002522      0xf04 obj\debug\src\30010_io.o
  .debug_info    0x00003426      0x233 obj\debug\src\ansi.o
- .debug_info    0x00003659       0x61 obj\debug\src\costumcharset.o
+ .debug_info    0x00003659       0x61 obj\debug\src\customcharset.o
  .debug_info    0x000036ba      0x6cd obj\debug\src\io.o
  .debug_info    0x00003d87      0x2d1 obj\debug\src\lcd.o
  .debug_info    0x00004058      0x385 obj\debug\src\main.o
@@ -5659,7 +5659,7 @@ OUTPUT(bin\Debug\exercise1.elf elf32-littlearm)
  .debug_abbrev  0x0000037a      0x15c obj\debug\spl\src\stm32f30x_usart.o
  .debug_abbrev  0x000004d6      0x27d obj\debug\src\30010_io.o
  .debug_abbrev  0x00000753       0xaf obj\debug\src\ansi.o
- .debug_abbrev  0x00000802       0x48 obj\debug\src\costumcharset.o
+ .debug_abbrev  0x00000802       0x48 obj\debug\src\customcharset.o
  .debug_abbrev  0x0000084a      0x1a5 obj\debug\src\io.o
  .debug_abbrev  0x000009ef      0x13d obj\debug\src\lcd.o
  .debug_abbrev  0x00000b2c      0x11e obj\debug\src\main.o
@@ -5679,7 +5679,7 @@ OUTPUT(bin\Debug\exercise1.elf elf32-littlearm)
  .debug_aranges
                 0x00000460       0x70 obj\debug\src\ansi.o
  .debug_aranges
-                0x000004d0       0x18 obj\debug\src\costumcharset.o
+                0x000004d0       0x18 obj\debug\src\customcharset.o
  .debug_aranges
                 0x000004e8       0x70 obj\debug\src\io.o
  .debug_aranges
@@ -5741,7 +5741,7 @@ OUTPUT(bin\Debug\exercise1.elf elf32-littlearm)
  .debug_macro   0x0000247d       0x16 obj\debug\src\ansi.o
  .debug_macro   0x00002493       0x29 obj\debug\src\ansi.o
  .debug_macro   0x000024bc       0x16 obj\debug\src\ansi.o
- .debug_macro   0x000024d2       0x1b obj\debug\src\costumcharset.o
+ .debug_macro   0x000024d2       0x1b obj\debug\src\customcharset.o
  .debug_macro   0x000024ed      0x316 obj\debug\src\io.o
  .debug_macro   0x00002803      0x34b obj\debug\src\lcd.o
  .debug_macro   0x00002b4e      0x3ed obj\debug\src\main.o
@@ -5755,7 +5755,7 @@ OUTPUT(bin\Debug\exercise1.elf elf32-littlearm)
  .debug_line    0x00000f1b      0x86c obj\debug\spl\src\stm32f30x_usart.o
  .debug_line    0x00001787      0x6da obj\debug\src\30010_io.o
  .debug_line    0x00001e61      0x682 obj\debug\src\ansi.o
- .debug_line    0x000024e3       0x4d obj\debug\src\costumcharset.o
+ .debug_line    0x000024e3       0x4d obj\debug\src\customcharset.o
  .debug_line    0x00002530      0x70c obj\debug\src\io.o
  .debug_line    0x00002c3c      0x67d obj\debug\src\lcd.o
  .debug_line    0x000032b9      0x668 obj\debug\src\main.o
@@ -5774,7 +5774,7 @@ OUTPUT(bin\Debug\exercise1.elf elf32-littlearm)
                               0x564fc (size before relaxing)
  .debug_str     0x000577fe      0x16f obj\debug\src\ansi.o
                               0x55f95 (size before relaxing)
- .debug_str     0x0005796d       0x3c obj\debug\src\costumcharset.o
+ .debug_str     0x0005796d       0x3c obj\debug\src\customcharset.o
                                0x2530 (size before relaxing)
  .debug_str     0x000579a9      0x123 obj\debug\src\io.o
                               0x5612a (size before relaxing)

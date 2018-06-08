@@ -209,7 +209,7 @@
 		<Unit filename="src\charset.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src\costumcharset.c">
+		<Unit filename="src\customcharset.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src\gameWall.c">
