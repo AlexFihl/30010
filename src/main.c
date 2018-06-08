@@ -12,6 +12,7 @@
 #include "gameWall.h"
 #include "striker.h"
 #include "customcharset.h"
+#include "player.h"
 #include "minigame.h"
 
 #include "fix14.h"
@@ -48,9 +49,11 @@ void simon()
     intBall(&b, 110, 62, -5, -5);
     drawBall(&b);
     uint8_t k = 1;
+    struct player_t player;
+    intPlayer(&player);
     while(1){
         if (updateGame > 0){
-            updatePosition(&b, &wall, &blocks, x * y);
+            updatePosition(&b, &wall, &blocks, x * y, &player);
             drawBall(&b);
             switch (k)
             {
@@ -87,63 +90,81 @@ void simon()
 
 void alex()
 {
+    //Making the wall
     struct wall_t wall;
     struct vector_t v1, v2, v3, v4;
-    uint16_t i, x, y;
+    uint16_t i, x, y; //used for blocks
     intVector(&v1, 3, 1);
     intVector(&v2, 218, 63);
     intWall(&wall, &v1, &v2);
     drawWall(&wall);
+
+    //Setting up the blocks
     struct block_t* blocks = malloc(100 * sizeof *blocks);
     intVector(&v3, 10, 10);
     intVector(&v4, 45, 45);
     x = 4;
     y = 12;
+    uint16_t numberOfBlocks = x * y;
     intMultipleBlocks(&blocks, v3, v4, x, y);
-    for (i = 0; i < x * y; i++)
+    for (i = 0; i < numberOfBlocks; i++)
         drawBlock(&blocks[i]);
+
+    //Setting up the striker
     struct striker_t striker1;
     intStriker(&striker1);
     drawStriker(&striker1);
+
+    //Setting up the wall
     struct ball_t b;
     intBall(&b, 110, 62, -5, -5);
     drawBall(&b);
-    uint8_t k = 1;
+
+    //Making a player
+    struct player_t player;
+    intPlayer(&player);
+    //Printing score
+    gotoxy(1,64);
+    printf("Hits: %03lu", player.score);
+    uint8_t currentJoyStick = readJoyStick();
+    uint16_t numberOfBlocksLeft;
     while(1){
         if (updateGame > 0){
-            updatePosition(&b, &wall, &blocks, x * y);
-            drawBall(&b);
-            switch (k)
-            {
-            case(1):
-                changeStrikerLength(&striker1,-4);
-                drawStriker(&striker1);
-                break;
-            case(2):
-                updateStriker(&striker1,-10);
-                drawStriker(&striker1);
-                break;
-            case(3):
-                changeStrikerLength(&striker1,4);
-                drawStriker(&striker1);
-                break;
-            case(4):
-                updateStriker(&striker1,10);
-                drawStriker(&striker1);
-                break;
-            case(5):
-                k = 0;
-                break;
-            default:
-                break;
-            }
-            k++;
+            //Drawing the blocks
             for (i = 0; i < x*y; i++)
                 drawBlock(&blocks[i]);
+            //Moving the striker
+            currentJoyStick = readJoyStick();
+            if      (   (currentJoyStick & 0x04) == 0x04) //When clicking the left button
+                updateStriker(&striker1, -2);
+            else if (   (currentJoyStick & 0x08) == 0x08) //When clicking the right button
+                updateStriker(&striker1, 2);
+            drawStriker(&striker1);
+            //Update the ball
+            updatePosition(&b, &wall, &blocks, x * y, &player);
+            drawBall(&b);
+
+            //Printing the ball
+            gotoxy(7,64);
+            printf("%03lu", player.score);
             updateGame = 0;
-            setLed(1,1,0);
+
+            //Check have many blocks there are
+            numberOfBlocksLeft = 0;
+            for (i = 0; i < numberOfBlocks; i++)
+                if(blocks[i].state > 0)
+                    numberOfBlocksLeft++;
+            if (numberOfBlocksLeft == 0)
+                break;
+            gotoxy(12, 63);
+            printf("Number of blocks left: %02d", numberOfBlocksLeft);
+
         }
     }
+
+    clrsrc();
+    gotoxy(1,1);
+    printf("game is gone, well gone");
 }
 
 int main(void){
@@ -159,7 +180,8 @@ int main(void){
     setUpTimer2();
     startTimer2();
     setupLCD();
-    //alex();
+    alex();
+
     bufferReset();
     struct minigame_t minigame1;
     intminigame(&minigame1);
