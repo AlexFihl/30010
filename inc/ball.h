@@ -4,6 +4,7 @@
 #include "ansi.h"
 #include "fix14.h"
 #include "gameWall.h"
+#include "blocks.h"
 
 #ifndef BALL_H
 #define BALL_H
@@ -20,7 +21,7 @@ struct ball_t
 };
 
 void intBall(struct ball_t *b, int32_t x, int32_t y, int32_t vx, int32_t vy);
-void updatePosition(struct ball_t *b, struct wall_t *w);
+void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks, uint16_t numberOfBlocks);
 
 //To draw the ball, from an ball struct
 void drawBall(struct ball_t *b);

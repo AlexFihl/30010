@@ -48,7 +48,7 @@ void alex()
     {
         if (updateGame > 0)
         {
-            updatePosition(&b, &wall);
+            updatePosition(&b, &wall, &blocks, x * y);
             drawBall(&b);
             updateGame = 0;
         }

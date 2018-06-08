@@ -10,7 +10,7 @@ void intBall(struct ball_t *b, int32_t x, int32_t y, int32_t vx, int32_t vy)
     b->hitCount = 0;
 }
 
-void updatePosition(struct ball_t *b, struct wall_t *w)
+void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks, uint16_t numberOfBlocks)
 {
     uint32_t wallx1, wallx2, wally1, wally2;
     wallx1 = (w->v1.x) >> FIX14_SHIFT;
@@ -21,18 +21,30 @@ void updatePosition(struct ball_t *b, struct wall_t *w)
     b->oldPos.y = b->position.y;
     int32_t newX = b->position.x + FIX14_MULT(b->velocity.x, speed);
     int32_t newY = b->position.y + FIX14_MULT(b->velocity.y, speed);
+    //Checking that it hits the wall
     if (newX < ((wallx1 + 1) << FIX14_SHIFT) || newX >= (wallx2 << FIX14_SHIFT))
     {
         b->velocity.x = -b->velocity.x;
-        b->position.x += FIX14_MULT(b->velocity.x, speed);
+        newX = b->position.x + FIX14_MULT(b->velocity.x, speed);
         b->hitCount++;
-    } else b->position.x = newX;
-    if (newY < ((wally1 + 1) << FIX14_SHIFT) || newY >= (wally2 << FIX14_SHIFT))
+    }
+    if (newY < ((wally1 + 1) << FIX14_SHIFT))
     {
         b->velocity.y = -b->velocity.y;
-        b->position.y += FIX14_MULT(b->velocity.y, speed);
+        newY = b->position.y + FIX14_MULT(b->velocity.y, speed);
         b->hitCount++;
-    } else b->position.y = newY;
+    } else if (newY >= (wally2 << FIX14_SHIFT))
+    {
+        b->velocity.y = -b->velocity.y;
+        newY = b->position.y + FIX14_MULT(b->velocity.y, speed);
+        b->hitCount++;
+    }
+
+    //Checking if it hits a block
+
+
+    b->position.x = newX;
+    b->position.y = newY;
 }
 
 void drawBall(struct ball_t *b)
