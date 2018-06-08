@@ -13,26 +13,30 @@ void intBlock(struct block_t *b, struct vector_t *v1, struct vector_t *v2, uint8
     b->color = color;
 }
 
-void intMultipleBlocks(struct block_t ** blocks, struct vector_t v1, struct vector_t v2, uint8_t quantityX, uint8_t quantityY, uint8_t spaceing)
+void intMultipleBlocks(struct block_t ** blocks, struct vector_t v1, struct vector_t v2, uint8_t quantityX, uint8_t quantityY)
 {
     struct vector_t v3, v4;
     uint32_t deltaX, deltaY;
     uint8_t i, j;
-    deltaX = ((v2.x>>FIX14_SHIFT) - (v1.x>>FIX14_SHIFT)) / quantityX;
-    deltaY = ((v2.y>>FIX14_SHIFT) - (v1.y>>FIX14_SHIFT)) / quantityY;
+    uint32_t x;
+    deltaX = FIX14_DIV(((v2.x>>FIX14_SHIFT) - (v1.x>>FIX14_SHIFT) + 1) , quantityX);
+    deltaY = FIX14_DIV(((v2.y>>FIX14_SHIFT) - (v1.y>>FIX14_SHIFT) + 1) , quantityY);
     for (i = 0; i < quantityY; i++)
     {
+        uint32_t new1Y, new2Y;
+        new1Y = ((deltaY * i) + v1.y)           >> FIX14_SHIFT;
+        new2Y = ((deltaY * i) + v1.y + deltaY)  >> FIX14_SHIFT;
+        if(new2Y > (v2.y >> FIX14_SHIFT)) new2Y = (v2.y >> FIX14_SHIFT);
         for (j = 0; j < quantityX; j++)
         {
             struct block_t block;
-            uint32_t new1X, new1Y, new2X, new2Y;
-            new1X = (deltaX + spaceing) * j + (v1.x>>FIX14_SHIFT);
-            new2X = (deltaX + spaceing) * j + (v1.x>>FIX14_SHIFT) + deltaX - 1;
-            new1Y = (deltaY + spaceing) * i + (v1.y>>FIX14_SHIFT);
-            new2Y = (deltaY + spaceing) * i + (v1.y>>FIX14_SHIFT) + deltaY - 1;
+            uint32_t new1X, new2X;
+            new1X = ((deltaX * j) + v1.x)           >> FIX14_SHIFT;
+            new2X = ((deltaX * j) + v1.x + deltaX)  >> FIX14_SHIFT;
+            if(new2X > (v2.x >> FIX14_SHIFT)) new2X = (v2.x >> FIX14_SHIFT);
             intVector(&v3, new1X, new1Y);
             intVector(&v4, new2X, new2Y);
-            intBlock(&block, &v3, &v4, 3, 6);
+            intBlock(&block, &v3, &v4, 3, j+1 + i);
             uint16_t k;
             k = i * quantityX;
             (*blocks)[j + k] = block;
