@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "gameWall.h"
+#include "striker.h"
 
 #include "fix14.h"
 
@@ -344,11 +345,14 @@ void alex()
     struct block_t* blocks = malloc(100 * sizeof *blocks);
     intVector(&v3, 5, 5);
     intVector(&v4, 40, 40);
-    x = 3;
-    y = 2;
-    intMultipleBlocks(&blocks, v3, v4, x, y, 2);
+    x = 4;
+    y = 12;
+    intMultipleBlocks(&blocks, v3, v4, x, y);
     for (i = 0; i < x * y; i++)
         drawBlock(&blocks[i]);
+    struct striker_t striker1;
+    intStriker(&striker1);
+    drawStriker(&striker1);
 }
 
 int main(void)
@@ -356,6 +360,7 @@ int main(void)
     startUpABC();
     //PuTTy need to be in 220 times 65.
     init_usb_uart(115200); // Initialize USB serial at 9600 baud
+    resetbgcolor();
     clrsrc();
     showCursor();
     joyStickSetUp();
@@ -364,6 +369,7 @@ int main(void)
     startTimer2();
     setupLCD();
     alex();
+
     setLed(1,1,1);
     while(1)
     {
