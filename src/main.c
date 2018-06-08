@@ -13,6 +13,7 @@
 #include "striker.h"
 #include "customcharset.h"
 #include "player.h"
+#include "minigame.h"
 
 #include "fix14.h"
 
@@ -182,10 +183,11 @@ int main(void){
     alex();
 
     bufferReset();
-    uint8_t i;
-    for(i=0;i<16;i++)
-        lcdBuffer[i]=customcharacter_data[1][i];
-    lcd_push_buffer(lcdBuffer);
+    struct minigame_t minigame1;
+    intminigame(&minigame1);
+    drawSpaceship(&minigame1);
+    moveShip(&minigame1,1);
+    drawSpaceship(&minigame1);
     setLed(0,0,1);
     while(1)
     {
