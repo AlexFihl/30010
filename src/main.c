@@ -167,6 +167,17 @@ void alex()
     printf("game is gone, well gone");
 }
 
+void mads()
+{
+
+    bufferReset();
+    struct minigame_t minigame1;
+    intminigame(&minigame1);
+    drawSpaceship(&minigame1);
+    moveShip(&minigame1,1);
+    drawSpaceship(&minigame1);
+}
+
 int main(void){
     startUpABC();
     //PuTTy need to be in 220 times 65.
@@ -181,13 +192,8 @@ int main(void){
     startTimer2();
     setupLCD();
     alex();
+    mads();
 
-    bufferReset();
-    struct minigame_t minigame1;
-    intminigame(&minigame1);
-    drawSpaceship(&minigame1);
-    moveShip(&minigame1,1);
-    drawSpaceship(&minigame1);
     setLed(0,0,1);
     while(1)
     {
