@@ -21,8 +21,7 @@ uint8_t updateGame;
 uint8_t gameSpeed;
 
 
-void alex()
-{
+void simon(){
     struct wall_t wall;
     struct vector_t v1, v2, v3, v4;
     uint16_t i, x, y;
@@ -42,21 +41,44 @@ void alex()
     intStriker(&striker1);
     drawStriker(&striker1);
     struct ball_t b;
-    intBall(&b, 110, 62, 1, 5);
+    intBall(&b, 110, 62, 2, 5);
     drawBall(&b);
-    while(1)
-    {
-        if (updateGame > 0)
-        {
+    uint8_t k = 1;
+    while(1){
+        if (updateGame > 0){
             updatePosition(&b, &wall, &blocks, x * y);
             drawBall(&b);
+            switch (k)
+            {
+            case(1):
+                changeStrikerLength(&striker1,-4);
+                drawStriker(&striker1);
+                break;
+            case(2):
+                updateStriker(&striker1,-10);
+                drawStriker(&striker1);
+                break;
+            case(3):
+                changeStrikerLength(&striker1,4);
+                drawStriker(&striker1);
+                break;
+            case(4):
+                updateStriker(&striker1,10);
+                drawStriker(&striker1);
+                break;
+            case(5):
+                k = 0;
+                break;
+            default:
+                break;
+            }
+            k++;
             updateGame = 0;
         }
     }
 }
 
-int main(void)
-{
+int main(void){
     startUpABC();
     //PuTTy need to be in 220 times 65.
     init_usb_uart(115200); // Initialize USB serial at 9600 baud
@@ -69,7 +91,7 @@ int main(void)
     setUpTimer2();
     startTimer2();
     setupLCD();
-    alex();
+    simon();
 
     setLed(1,1,1);
     while(1)

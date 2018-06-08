@@ -15,11 +15,13 @@ struct striker_t {
     struct vector_t center;
     struct vector_t oldCenter;
     uint32_t length;
+    uint32_t oldLength;
+
 };
 
 void intStriker(struct striker_t *s);
-void updateStriker(struct striker_t *s, uint32_t deltaCenter);
-void changeStrikerLength(struct striker_t *s, uint32_t deltaLength);
+void updateStriker(struct striker_t *s, int32_t deltaCenter);
+void changeStrikerLength(struct striker_t *s, int32_t deltaLength);
 void drawStriker(struct striker_t *s);
 
 #endif //STRIKER_H
