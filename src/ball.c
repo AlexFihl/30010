@@ -39,8 +39,6 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
     wally1 = (w->v1.y) >> FIX14_SHIFT;
     wallx2 = (w->v2.x) >> FIX14_SHIFT;
     wally2 = (w->v2.y) >> FIX14_SHIFT;
-    b->oldPos.x = b->position.x;
-    b->oldPos.y = b->position.y;
     int32_t newX = b->position.x + getXVel(b);
     int32_t newY = b->position.y + getYVel(b);
     //Checking that it hits the wall
@@ -126,5 +124,7 @@ void drawBall(struct ball_t *b)
         printf("%c", 32);
         gotoxy((b->position.x) >> FIX14_SHIFT, (b->position.y) >> FIX14_SHIFT);
         printf("%c", 111);
+        b->oldPos.x = b->position.x;
+        b->oldPos.y = b->position.y;
     }
 }
