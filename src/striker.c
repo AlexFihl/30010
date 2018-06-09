@@ -38,3 +38,26 @@ void drawStriker(struct striker_t *s)
         s->oldLength = s->length;
     }
 }
+
+void resetStriker(struct striker_t *s)
+{
+    struct vector_t v;
+    intVector(&v, 110, 61);
+    s->center.x = v.x;
+    s->center.y = v.y;
+}
+
+int8_t updateStrikerPlacment(struct striker_t *s)
+{
+    uint8_t currentJoyStick = readJoyStick();
+    if      ((currentJoyStick & 0x04) == 0x04) //When clicking the left button
+    {
+        updateStriker(s, -2);
+        return -2;
+    }
+    else if ((currentJoyStick & 0x08) == 0x08) //When clicking the right button
+    {
+         updateStriker(s, 2);
+         return 2;
+    }
+}

@@ -4,10 +4,10 @@
 void intBall(struct ball_t *b, int32_t x, int32_t y, int32_t vx, int32_t vy)
 {
     intVector(&(b->position), x, y);
-    b->oldPos.x = b->position.x;
-    b->oldPos.y = b->position.y;
+    //b->oldPos.x = b->position.x;
+    //b->oldPos.y = b->position.y;
     b->velocity = 2 << FIX14_SHIFT;
-    b->angle = -64; //-45 deg
+    b->angle = 0; //-45 deg
     b->hitCount = 0;
     ballSpeed = 0x00004000; //0x4000 = 1
 }
@@ -15,6 +15,12 @@ void intBall(struct ball_t *b, int32_t x, int32_t y, int32_t vx, int32_t vy)
 void setBallSpeedFactor(int32_t speedFactor)
 {
     ballSpeed = speedFactor;
+}
+
+void moveBall(struct ball_t *b, int32_t deltaX, int32_t deltaY)
+{
+    b->position.x += deltaX;
+    b->position.y += deltaY;
 }
 
 int32_t getXVel(struct ball_t *b)
@@ -39,8 +45,6 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
     wally1 = (w->v1.y) >> FIX14_SHIFT;
     wallx2 = (w->v2.x) >> FIX14_SHIFT;
     wally2 = (w->v2.y) >> FIX14_SHIFT;
-    b->oldPos.x = b->position.x;
-    b->oldPos.y = b->position.y;
     int32_t newX = b->position.x + getXVel(b);
     int32_t newY = b->position.y + getYVel(b);
     //Checking that it hits the wall
@@ -58,9 +62,8 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
     }
     else if (newY >= (wally2 << FIX14_SHIFT))
     {
-        b->angle = 256 - b->angle;
-        newY = b->position.y + getYVel(b);
-        b->hitCount++;
+        (p->life)--;
+        return;
     }
 
     //Checking if it hits a block
@@ -112,6 +115,13 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
     b->position.y = newY;
 }
 
+void resetBall(struct ball_t *b)
+{
+    intVector(&(b->position), 110, 60);
+    b->velocity = 2 << FIX14_SHIFT;
+    b->angle = -64; //-45 deg //Sholud be 0* when the striker can change the angle
+}
+
 void drawBall(struct ball_t *b)
 {
     if ((b->oldPos.x >> FIX14_SHIFT) != (b->position.x >> FIX14_SHIFT) || (b->oldPos.y >> FIX14_SHIFT) != (b->position.y >> FIX14_SHIFT))
@@ -120,5 +130,7 @@ void drawBall(struct ball_t *b)
         printf("%c", 32);
         gotoxy((b->position.x) >> FIX14_SHIFT, (b->position.y) >> FIX14_SHIFT);
         printf("%c", 111);
+        b->oldPos.x = b->position.x;
+        b->oldPos.y = b->position.y;
     }
 }

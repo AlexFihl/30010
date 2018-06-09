@@ -20,6 +20,7 @@ void lcd_update(); //moving the buffer on pixel to the right.
 void bufferReset();
 void leftScrollingText(uint8_t lineNumber);
 void setScrolling(uint8_t x);
+void putInBuffer(uint8_t byte, uint16_t slice, uint16_t line);
 void printADC();
 void setADCPrinting(uint8_t x);
 

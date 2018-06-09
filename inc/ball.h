@@ -25,7 +25,9 @@ struct ball_t
 
 void intBall(struct ball_t *b, int32_t x, int32_t y, int32_t vx, int32_t vy);
 void setBallSpeedFactor(int32_t speedFactor);
+void moveBall(struct ball_t *b, int32_t deltaX, int32_t deltaY);
 void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks, uint16_t numberOfBlocks, struct player_t *p, struct striker_t *s);
+void resetBall(struct ball_t *b);
 
 //To draw the ball, from an ball struct
 void drawBall(struct ball_t *b);
