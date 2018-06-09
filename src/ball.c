@@ -4,8 +4,8 @@
 void intBall(struct ball_t *b, int32_t x, int32_t y, int32_t vx, int32_t vy)
 {
     intVector(&(b->position), x, y);
-    b->oldPos.x = b->position.x;
-    b->oldPos.y = b->position.y;
+    //b->oldPos.x = b->position.x;
+    //b->oldPos.y = b->position.y;
     b->velocity = 2 << FIX14_SHIFT;
     b->angle = 0; //-45 deg
     b->hitCount = 0;
@@ -15,6 +15,12 @@ void intBall(struct ball_t *b, int32_t x, int32_t y, int32_t vx, int32_t vy)
 void setBallSpeedFactor(int32_t speedFactor)
 {
     ballSpeed = speedFactor;
+}
+
+void moveBall(struct ball_t *b, int32_t deltaX, int32_t deltaY)
+{
+    b->position.x += deltaX;
+    b->position.y += deltaY;
 }
 
 int32_t getXVel(struct ball_t *b)

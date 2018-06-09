@@ -4,6 +4,8 @@ const uint8_t heart[] = {
     0x1C, 0x3E, 0x7E, 0xFC, 0xFC, 0x7E, 0x3E, 0x1C
 };
 
+
+
 void aGame1(struct player_t *p)
 {
     //Making the wall
@@ -35,8 +37,7 @@ void aGame1(struct player_t *p)
     struct ball_t b;
     intBall(&b, 110, 60, -5, -5);
     drawBall(&b);
-    uint8_t oldLife = p->life;
-    uint8_t currentJoyStick = readJoyStick();
+    uint8_t oldLife = p->life + 1;
     uint16_t numberOfBlocksLeft;
     while(1){
         if (updateGame > 0){
@@ -47,16 +48,22 @@ void aGame1(struct player_t *p)
                 resetBall(&b);
                 resetStriker(&striker1);
                 oldLife = p->life;
+                while(((readJoyStick() & 0x10) != 0x10))
+                {
+                    if (updateGame > 0){
+                        moveBall(&b, updateStrikerPlacment(&striker1) << FIX14_SHIFT, 0);
+                        drawStriker(&striker1);
+                        drawBall(&b);
+                        updateGame = 0;
+                    }
+                }
             }
             //Drawing the blocks
             for (i = 0; i < x*y; i++)
                 drawBlock(&blocks[i]);
+
             //Moving the striker
-            currentJoyStick = readJoyStick();
-            if      ((currentJoyStick & 0x04) == 0x04) //When clicking the left button
-                updateStriker(&striker1, -2);
-            else if ((currentJoyStick & 0x08) == 0x08) //When clicking the right button
-                updateStriker(&striker1, 2);
+            updateStrikerPlacment(&striker1);
             drawStriker(&striker1);
             //Update the ball
             updatePosition(&b, &wall, &blocks, numberOfBlocks, p, &striker1);
