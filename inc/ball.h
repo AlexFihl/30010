@@ -12,13 +12,14 @@
 #define BALL_H
 
 //Thee speed factor which it will be 0400 = 0.0625
-#define speed 0x00001000
+#define speed 0x00004000
 
 struct ball_t
 {
     struct vector_t position;
     struct vector_t oldPos;
-    struct vector_t velocity;
+    uint32_t velocity;
+    int32_t angle;
     uint16_t hitCount;
 };
 
