@@ -10,7 +10,7 @@ void intBall(struct ball_t *b, int32_t x, int32_t y, int32_t vx, int32_t vy)
     b->hitCount = 0;
 }
 
-void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks, uint16_t numberOfBlocks, struct player_t *p)
+void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks, uint16_t numberOfBlocks, struct player_t *p, struct striker_t *s)
 {
     uint32_t wallx1, wallx2, wally1, wally2;
     uint8_t i;
@@ -76,6 +76,15 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
                 p->score += (*blocks)[i].pointGiver;
             }
         }
+    }
+    //Checking the striker
+    int32_t lenghtHalf = FIX14_DIV((s->length >> FIX14_SHIFT), 2);
+    if ((newX >= s->center.x - lenghtHalf) && (newX <= s->center.x + lenghtHalf) && (newY >= s->center.y - 0x00003000)) //0x00004000 = 0.750
+    {
+        b->velocity.y = -b->velocity.y;
+        newX = b->position.x + FIX14_MULT(b->velocity.x, speed);
+        newY = b->position.y + FIX14_MULT(b->velocity.y, speed);
+        b->hitCount++;
     }
 
     b->position.x = newX;

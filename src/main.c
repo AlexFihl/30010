@@ -53,7 +53,7 @@ void simon()
     intPlayer(&player);
     while(1){
         if (updateGame > 0){
-            updatePosition(&b, &wall, &blocks, x * y, &player);
+            updatePosition(&b, &wall, &blocks, x * y, &player, &striker1);
             drawBall(&b);
             switch (k)
             {
@@ -117,7 +117,7 @@ void alex()
 
     //Setting up the wall
     struct ball_t b;
-    intBall(&b, 110, 62, -5, -5);
+    intBall(&b, 110, 60, -5, -5);
     drawBall(&b);
 
     //Making a player
@@ -141,7 +141,7 @@ void alex()
                 updateStriker(&striker1, 2);
             drawStriker(&striker1);
             //Update the ball
-            updatePosition(&b, &wall, &blocks, x * y, &player);
+            updatePosition(&b, &wall, &blocks, x * y, &player, &striker1);
             drawBall(&b);
 
             //Printing the ball
@@ -192,7 +192,7 @@ int main(void){
     startTimer2();
     setupLCD();
     alex();
-    mads();
+    //mads();
 
     setLed(0,0,1);
     while(1)
