@@ -11,8 +11,8 @@
 #ifndef BALL_H
 #define BALL_H
 
-//Thee speed factor which it will be 0400 = 0.0625
-#define speed 0x00004000
+
+int32_t ballSpeed;
 
 struct ball_t
 {
@@ -24,6 +24,7 @@ struct ball_t
 };
 
 void intBall(struct ball_t *b, int32_t x, int32_t y, int32_t vx, int32_t vy);
+void setBallSpeedFactor(int32_t speedFactor);
 void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks, uint16_t numberOfBlocks, struct player_t *p, struct striker_t *s);
 
 //To draw the ball, from an ball struct
