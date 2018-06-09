@@ -1,12 +1,12 @@
 #include "minigame.h"
 
-void intminigame(struct minigame_t *s)
+void intminigame(struct minigame_t *s) //08/06
 {
     s->shipLine=1;
     s->oldShipLine=0;
 
 }
-void drawSpaceship (struct minigame_t *s)
+void drawSpaceship (struct minigame_t *s) //08/06
 {
     uint8_t i;
 
@@ -19,13 +19,13 @@ void drawSpaceship (struct minigame_t *s)
     s->oldShipLine=s->shipLine;
 }
 
-void moveShip (struct minigame_t *s, int8_t deltaLine)
+void moveShip (struct minigame_t *s, int8_t deltaLine) //08/06
 {
     if (s->shipLine+deltaLine>=0 && s->shipLine+deltaLine<=3)
     s->shipLine+=deltaLine;
 }
 
-void playMinigame1()
+void playMinigame1() //08/06
 {
     uint8_t bufferTemp[512];
     memcpy(bufferTemp, lcdBuffer, 512 * sizeof(int));

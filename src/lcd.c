@@ -73,7 +73,7 @@ void setScrolling(uint8_t x)
     scrolling = x;
 }
 
-void putInBuffer(uint8_t byte, uint16_t slice, uint16_t line)
+void putInBuffer(uint8_t byte, uint16_t slice, uint16_t line) //09/06
 {
     lcdBuffer[slice + line*128] = byte;
 }

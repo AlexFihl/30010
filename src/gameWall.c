@@ -1,7 +1,7 @@
 #include "gameWall.h"
 
 
-void intWall(struct wall_t *w, struct vector_t *v1, struct vector_t *v2)
+void intWall(struct wall_t *w, struct vector_t *v1, struct vector_t *v2) //08/06
 {
     w->v1.x = v1->x;
     w->v1.y = v1->y;
@@ -9,7 +9,7 @@ void intWall(struct wall_t *w, struct vector_t *v1, struct vector_t *v2)
     w->v2.y = v2->y;
 }
 
-void drawWall(struct wall_t *w) //The same style as the windows style 0
+void drawWall(struct wall_t *w) //The same style as the windows style 0  //08/06
 {
     uint8_t i;
     gotoxy((w->v1.x) >> FIX14_SHIFT, (w->v1.y) >> FIX14_SHIFT);

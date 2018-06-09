@@ -12,25 +12,25 @@ void intBall(struct ball_t *b, int32_t x, int32_t y, int32_t vx, int32_t vy)
     ballSpeed = 0x00004000; //0x4000 = 1
 }
 
-void setBallSpeedFactor(int32_t speedFactor)
+void setBallSpeedFactor(int32_t speedFactor) //09/06
 {
     ballSpeed = speedFactor;
 }
 
-void moveBall(struct ball_t *b, int32_t deltaX, int32_t deltaY)
+void moveBall(struct ball_t *b, int32_t deltaX, int32_t deltaY) //09/06
 {
     b->position.x += deltaX;
     b->position.y += deltaY;
 }
 
-int32_t getXVel(struct ball_t *b)
+int32_t getXVel(struct ball_t *b) //09/06
 {
     int32_t rad = sinn(b->angle);
     int32_t vel = b->velocity;
     return FIX14_MULT(FIX14_MULT(vel, rad), ballSpeed);
 }
 
-int32_t getYVel(struct ball_t *b)
+int32_t getYVel(struct ball_t *b) //09/06
 {
     int32_t rad = -coss(b->angle);
     int32_t vel = b->velocity;
@@ -115,7 +115,7 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
     b->position.y = newY;
 }
 
-void resetBall(struct ball_t *b)
+void resetBall(struct ball_t *b) //09/06
 {
     intVector(&(b->position), 110, 60);
     b->velocity = 2 << FIX14_SHIFT;

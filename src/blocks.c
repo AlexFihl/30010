@@ -14,7 +14,7 @@ void intBlock(struct block_t *b, struct vector_t *v1, struct vector_t *v2, uint8
     b->pointGiver = 1;
 }
 
-void intMultipleBlocks(struct block_t ** blocks, struct vector_t v1, struct vector_t v2, uint8_t quantityX, uint8_t quantityY)
+void intMultipleBlocks(struct block_t ** blocks, struct vector_t v1, struct vector_t v2, uint8_t quantityX, uint8_t quantityY) //08/06
 {
     struct vector_t v3, v4;
     uint32_t deltaX, deltaY;
@@ -44,7 +44,7 @@ void intMultipleBlocks(struct block_t ** blocks, struct vector_t v1, struct vect
     }
 }
 
-void drawBlock(struct block_t *b)
+void drawBlock(struct block_t *b) //08/06
 {
     if(b->oldState != b->state)
     {

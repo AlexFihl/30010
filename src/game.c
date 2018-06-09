@@ -1,12 +1,12 @@
 #include "game.h"
 
-const uint8_t heart[] = {
+const uint8_t heart[] = { //09/06
     0x1C, 0x3E, 0x7E, 0xFC, 0xFC, 0x7E, 0x3E, 0x1C
 };
 
 
 
-void aGame1(struct player_t *p)
+void aGame1(struct player_t *p) //09/06
 {
     //Making the wall
     struct wall_t wall;
@@ -103,4 +103,4 @@ void aGame1(struct player_t *p)
 
 }
 
-void setGameSpeed(int8_t gameSpeedIn) {gameSpeed = gameSpeedIn;}
+void setGameSpeed(int8_t gameSpeedIn) {gameSpeed = gameSpeedIn;} //09/06
