@@ -16,14 +16,14 @@ int32_t getXVel(struct ball_t *b)
     //return FIX14_MULT(FIX14_MULT(b->velocity, sinn(b->angle)), speed);
     int32_t rad = sinn(b->angle);
     int32_t vel = b->velocity;
-    return FIX14_MULT(vel, rad);
+    return FIX14_MULT(FIX14_MULT(vel, rad), speed);
 }
 
 int32_t getYVel(struct ball_t *b)
 {
     int32_t rad = -coss(b->angle);
     int32_t vel = b->velocity;
-    return FIX14_MULT(vel, rad);
+    return FIX14_MULT(FIX14_MULT(vel, rad), speed);
 }
 
 void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks, uint16_t numberOfBlocks, struct player_t *p, struct striker_t *s)
