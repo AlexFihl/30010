@@ -47,7 +47,6 @@ void aGame1(struct player_t *p)
             {
                 resetBall(&b);
                 resetStriker(&striker1);
-                oldLife = p->life;
                 while(((readJoyStick() & 0x10) != 0x10))
                 {
                     if (updateGame > 0){
@@ -57,6 +56,7 @@ void aGame1(struct player_t *p)
                         updateGame = 0;
                     }
                 }
+                oldLife = p->life;
             }
             //Drawing the blocks
             for (i = 0; i < x*y; i++)
