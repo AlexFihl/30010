@@ -24,8 +24,8 @@ void drawSpaceship (struct minigame_t *s)
 
 void moveShip (struct minigame_t *s, int8_t deltaLine)
 {
+    if (s->shipLine+deltaLine>=0 && s->shipLine+deltaLine<=3)
     s->shipLine+=deltaLine;
-
 }
 
 
