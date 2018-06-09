@@ -100,6 +100,7 @@
 		<Unit filename="inc\gameWall.h" />
 		<Unit filename="inc\io.h" />
 		<Unit filename="inc\lcd.h" />
+		<Unit filename="inc\minigame.h" />
 		<Unit filename="inc\player.h" />
 		<Unit filename="inc\stm32f30x.h" />
 		<Unit filename="inc\stm32f30x_conf.h" />
@@ -232,7 +233,6 @@
 		<Unit filename="src\minigame.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src\minigame.h" />
 		<Unit filename="src\player.c">
 			<Option compilerVar="CC" />
 		</Unit>
