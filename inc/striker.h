@@ -23,5 +23,5 @@ void intStriker(struct striker_t *s);
 void updateStriker(struct striker_t *s, int32_t deltaCenter);
 void changeStrikerLength(struct striker_t *s, int32_t deltaLength);
 void drawStriker(struct striker_t *s);
-
+void resetStriker(struct striker_t *s);
 #endif //STRIKER_H

@@ -38,3 +38,11 @@ void drawStriker(struct striker_t *s)
         s->oldLength = s->length;
     }
 }
+
+void resetStriker(struct striker_t *s)
+{
+    struct vector_t v;
+    intVector(&v, 110, 61);
+    s->center.x = v.x;
+    s->center.y = v.y;
+}

@@ -31,11 +31,19 @@ void aGame1(struct player_t *p)
     struct ball_t b;
     intBall(&b, 110, 60, -5, -5);
     drawBall(&b);
-
+    uint8_t oldLife = p->life;
     uint8_t currentJoyStick = readJoyStick();
     uint16_t numberOfBlocksLeft;
     while(1){
         if (updateGame > 0){
+            if (p->life == 0)
+                break;
+            else if(p->life != oldLife)
+            {
+                resetBall(&b);
+                resetStriker(&striker1);
+                oldLife = p->life;
+            }
             //Drawing the blocks
             for (i = 0; i < x*y; i++)
                 drawBlock(&blocks[i]);
@@ -50,9 +58,6 @@ void aGame1(struct player_t *p)
             updatePosition(&b, &wall, &blocks, numberOfBlocks, p, &striker1);
             drawBall(&b);
 
-
-
-
             //Check have many blocks there are
             numberOfBlocksLeft = 0;
             for (i = 0; i < numberOfBlocks; i++)
@@ -60,6 +65,7 @@ void aGame1(struct player_t *p)
                     numberOfBlocksLeft++;
             if (numberOfBlocksLeft == 0)
                 break;
+            //Printing out to the display
             char str1[17], str2[12], str3[8];
             sprintf(str1, "Blocks left: %03d", numberOfBlocksLeft); //16 long
             lcd_write_string(str1, 0, 0);
@@ -75,7 +81,10 @@ void aGame1(struct player_t *p)
 
     clrsrc();
     gotoxy(1,1);
-    printf("game is gone, well gone");
+    if (p->life == 0)
+        printf("You Died");
+    else printf("You Won the level");
+
 }
 
 void setGameSpeed(int8_t gameSpeedIn) {gameSpeed = gameSpeedIn;}

@@ -7,7 +7,7 @@ void intBall(struct ball_t *b, int32_t x, int32_t y, int32_t vx, int32_t vy)
     b->oldPos.x = b->position.x;
     b->oldPos.y = b->position.y;
     b->velocity = 2 << FIX14_SHIFT;
-    b->angle = -64; //-45 deg
+    b->angle = 0; //-45 deg
     b->hitCount = 0;
     ballSpeed = 0x00004000; //0x4000 = 1
 }
@@ -58,9 +58,8 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
     }
     else if (newY >= (wally2 << FIX14_SHIFT))
     {
-        b->angle = 256 - b->angle;
-        newY = b->position.y + getYVel(b);
-        b->hitCount++;
+        (p->life)--;
+        return;
     }
 
     //Checking if it hits a block
@@ -110,6 +109,13 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
 
     b->position.x = newX;
     b->position.y = newY;
+}
+
+void resetBall(struct ball_t *b)
+{
+    intVector(&(b->position), 110, 60);
+    b->velocity = 2 << FIX14_SHIFT;
+    b->angle = -64; //-45 deg //Sholud be 0* when the striker can change the angle
 }
 
 void drawBall(struct ball_t *b)
