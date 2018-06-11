@@ -14,10 +14,11 @@ void intBlock(struct block_t *b, struct vector_t *v1, struct vector_t *v2, uint8
     b->pointGiver = 1;
 }
 
-void intMultipleBlocks(struct block_t ** blocks, struct vector_t v1, struct vector_t v2, uint8_t quantityX, uint8_t quantityY) //08/06
+uint16_t intMultipleBlocks(struct block_t ** blocks, struct vector_t v1, struct vector_t v2, uint8_t quantityX, uint8_t quantityY, uint8_t lifeOnBlocks) //08/06
 {
     struct vector_t v3, v4;
     uint32_t deltaX, deltaY;
+    uint16_t countBlocks = 0;
     uint8_t i, j;
     deltaX = FIX14_DIV(((v2.x>>FIX14_SHIFT) - (v1.x>>FIX14_SHIFT) + 1) , quantityX);
     deltaY = FIX14_DIV(((v2.y>>FIX14_SHIFT) - (v1.y>>FIX14_SHIFT) + 1) , quantityY);
@@ -36,12 +37,14 @@ void intMultipleBlocks(struct block_t ** blocks, struct vector_t v1, struct vect
             if(new2X > (v2.x >> FIX14_SHIFT)) new2X = (v2.x >> FIX14_SHIFT);
             intVector(&v3, new1X, new1Y);
             intVector(&v4, new2X, new2Y);
-            intBlock(&block, &v3, &v4, 4, i + 1);
+            intBlock(&block, &v3, &v4, lifeOnBlocks, i + 1);
             uint16_t k;
             k = i * quantityX;
             (*blocks)[j + k] = block;
+            countBlocks++;
         }
     }
+    return countBlocks;
 }
 
 void drawBlock(struct block_t *b) //08/06

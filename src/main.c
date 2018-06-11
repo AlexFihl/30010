@@ -30,9 +30,10 @@ void simon()
     struct block_t* blocks = malloc(100 * sizeof *blocks);
     intVector(&v3, 10, 10);
     intVector(&v4, 45, 45);
+    uint8_t lifeOnBlocks = 1;
     x = 4;
     y = 12;
-    intMultipleBlocks(&blocks, v3, v4, x, y);
+    intMultipleBlocks(&blocks, v3, v4, x, y, lifeOnBlocks);
     for (i = 0; i < x * y; i++)
         drawBlock(&blocks[i]);
     struct striker_t striker1;
