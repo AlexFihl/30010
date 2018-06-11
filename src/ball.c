@@ -23,14 +23,14 @@ void moveBall(struct ball_t *b, int32_t deltaX, int32_t deltaY) //09/06
     b->position.y += deltaY;
 }
 
-int32_t getXVel(struct ball_t *b) //09/06
+static int32_t getXVel(struct ball_t *b) //09/06
 {
     int32_t rad = sinn(b->angle);
     int32_t vel = b->velocity;
     return FIX14_MULT(FIX14_MULT(vel, rad), ballSpeed);
 }
 
-int32_t getYVel(struct ball_t *b) //09/06
+static int32_t getYVel(struct ball_t *b) //09/06
 {
     int32_t rad = -coss(b->angle);
     int32_t vel = b->velocity;

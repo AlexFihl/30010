@@ -92,9 +92,32 @@ void simon()
 void alex()
 {
     //Making a player
+    uint8_t i;
     struct player_t player;
     intPlayer(&player);
-    aGame1(&player);
+    char name[] = "Alex\0";
+    setPlayerName(&player, name);
+    uint8_t gameEnd;
+    gameEnd = aGame1(&player);
+    clrsrc();
+    gotoxy(1,1);
+    if (gameEnd == 0)
+    {
+        struct wall_t w;
+        struct vector_t v1;
+        struct vector_t v2;
+        intVector(&v1, 100, 30);
+        intVector(&v2, 120, 35);
+        intWall(&w, &v1, &v2);
+        window(&w, "You Died", 1);
+        gotoxy(101,31);
+        printf("Name: ");
+        for (i = 0; i < strlen(player.name); i++)
+            printf("%c", player.name[i]);
+        gotoxy(101,32);
+        printf("Final Score: %06lu", player.score);
+    }
+    else printf("You Won the level");
 }
 
 void mads()

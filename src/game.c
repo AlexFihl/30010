@@ -6,7 +6,7 @@ const uint8_t heart[] = { //09/06
 
 
 
-void aGame1(struct player_t *p) //09/06
+uint8_t aGame1(struct player_t *p) //09/06
 {
     //Making the wall
     struct wall_t wall;
@@ -42,7 +42,7 @@ void aGame1(struct player_t *p) //09/06
     while(1){
         if (updateGame > 0){
             if (p->life == 0)
-                break;
+                return 0;
             else if(p->life != oldLife)
             {
                 resetBall(&b);
@@ -75,14 +75,14 @@ void aGame1(struct player_t *p) //09/06
                 if(blocks[i].state > 0)
                     numberOfBlocksLeft++;
             if (numberOfBlocksLeft == 0)
-                break;
+                return 1;
 
             //Printing out to the display
             bufferReset();
-            char str1[17], str2[12], str3[7];
+            char str1[17], str2[14], str3[7];
             sprintf(str1, "Blocks left: %03d", numberOfBlocksLeft); //16 long
             lcd_write_string(str1, 0, 0);
-            sprintf(str2, "Score: %04lu", p->score);
+            sprintf(str2, "Score: %06lu", p->score);
             lcd_write_string(str2, 0, 1);
             sprintf(str3, "Life: ");
             lcd_write_string(str3, 0, 2);
@@ -94,13 +94,6 @@ void aGame1(struct player_t *p) //09/06
             updateGame = 0;
         }
     }
-
-    clrsrc();
-    gotoxy(1,1);
-    if (p->life == 0)
-        printf("You Died");
-    else printf("You Won the level");
-
 }
 
 void setGameSpeed(int8_t gameSpeedIn) {gameSpeed = gameSpeedIn;} //09/06

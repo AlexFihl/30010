@@ -17,7 +17,7 @@
 uint8_t updateGame;
 uint8_t gameSpeed;
 
-void aGame1(struct player_t *p);
+uint8_t aGame1(struct player_t *p);
 void setGameSpeed(int8_t gameSpeedIn);
 
 
