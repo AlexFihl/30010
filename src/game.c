@@ -53,9 +53,9 @@ uint8_t aGame1(struct player_t *p, uint8_t gameSpeedIn) //09/06
     //Setting up the blocks
     struct block_t* blocks = malloc(100 * sizeof *blocks);
     intVector(&v3, 10, 10);
-    intVector(&v4, 45, 45);
-    x = 4;
-    y = 12;
+    intVector(&v4, 210, 50);
+    x = 18;
+    y = 10;
     uint16_t numberOfBlocks = x * y;
     intMultipleBlocks(&blocks, v3, v4, x, y);
     for (i = 0; i < numberOfBlocks; i++)
