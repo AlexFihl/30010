@@ -4,10 +4,43 @@ const uint8_t heart[] = { //09/06
     0x1C, 0x3E, 0x7E, 0xFC, 0xFC, 0x7E, 0x3E, 0x1C
 };
 
-
-
-void aGame1(struct player_t *p) //09/06
+static void deathScreen(struct player_t *p)
 {
+    uint8_t i;
+    struct wall_t w;
+    struct vector_t v1;
+    struct vector_t v2;
+    intVector(&v1, 100, 30);
+    intVector(&v2, 120, 35);
+    intWall(&w, &v1, &v2);
+    window(&w, "You Died", 1);
+    gotoxy(101,31);
+    printf("Name: ");
+    for (i = 0; i < strlen(p->name); i++)
+        printf("%c", p->name[i]);
+    gotoxy(101,32);
+    printf("Final Score: %06lu", p->score);
+}
+
+void fullGame(struct player_t *p)
+{
+    uint8_t gameEnd;
+    uint8_t gameSpeedIn = 5;
+    gameEnd = aGame1(p, gameSpeedIn);
+    clrsrc();
+    gotoxy(1,1);
+    if (gameEnd == 0)
+    {
+        deathScreen(p);
+    }
+    else printf("You Won the level");
+}
+
+uint8_t aGame1(struct player_t *p, uint8_t gameSpeedIn) //09/06
+{
+    //Setting the game speed
+    setGameSpeed(gameSpeedIn);
+
     //Making the wall
     struct wall_t wall;
     struct vector_t v1, v2, v3, v4;
@@ -42,7 +75,7 @@ void aGame1(struct player_t *p) //09/06
     while(1){
         if (updateGame > 0){
             if (p->life == 0)
-                break;
+                return 0;
             else if(p->life != oldLife)
             {
                 resetBall(&b);
@@ -75,14 +108,14 @@ void aGame1(struct player_t *p) //09/06
                 if(blocks[i].state > 0)
                     numberOfBlocksLeft++;
             if (numberOfBlocksLeft == 0)
-                break;
+                return 1;
 
             //Printing out to the display
             bufferReset();
-            char str1[17], str2[12], str3[7];
+            char str1[17], str2[14], str3[7];
             sprintf(str1, "Blocks left: %03d", numberOfBlocksLeft); //16 long
             lcd_write_string(str1, 0, 0);
-            sprintf(str2, "Score: %04lu", p->score);
+            sprintf(str2, "Score: %06lu", p->score);
             lcd_write_string(str2, 0, 1);
             sprintf(str3, "Life: ");
             lcd_write_string(str3, 0, 2);
@@ -94,13 +127,4 @@ void aGame1(struct player_t *p) //09/06
             updateGame = 0;
         }
     }
-
-    clrsrc();
-    gotoxy(1,1);
-    if (p->life == 0)
-        printf("You Died");
-    else printf("You Won the level");
-
 }
-
-void setGameSpeed(int8_t gameSpeedIn) {gameSpeed = gameSpeedIn;} //09/06

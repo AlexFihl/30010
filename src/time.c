@@ -2,6 +2,8 @@
 
 struct timer_t mainTimer = {0,0,0,0};
 
+uint8_t gameSpeed;
+
 void TIM2_IRQHandler(void)
 {
     mainTimer.hseconds++;
@@ -70,3 +72,5 @@ void stopTimer2()
 {
     TIM2->CR1 &= ~0x0001;
 }
+
+void setGameSpeed(int8_t gameSpeedIn) {gameSpeed = gameSpeedIn;} //09/06
