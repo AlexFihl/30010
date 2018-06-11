@@ -20,7 +20,7 @@
 
 extern struct timer_t mainTimer;
 extern uint8_t updateLCD;
-extern const char customcharacter_data[2][16];
+extern const char customcharacter_data[5][16];
 extern uint8_t lcdBuffer[512];
 
 extern uint8_t updateGame;
@@ -100,6 +100,7 @@ void alex()
 void mads()
 {
     playMinigame1();
+
 }
 
 int main(void){
@@ -115,8 +116,8 @@ int main(void){
     setUpTimer2();
     startTimer2();
     setupLCD();
-    alex();
-    //mads();
+    //alex();
+    mads();
 
     setLed(0,0,1);
     while(1)
