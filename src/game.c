@@ -4,10 +4,43 @@ const uint8_t heart[] = { //09/06
     0x1C, 0x3E, 0x7E, 0xFC, 0xFC, 0x7E, 0x3E, 0x1C
 };
 
-
-
-uint8_t aGame1(struct player_t *p) //09/06
+static void deathScreen(struct player_t *p)
 {
+    uint8_t i;
+    struct wall_t w;
+    struct vector_t v1;
+    struct vector_t v2;
+    intVector(&v1, 100, 30);
+    intVector(&v2, 120, 35);
+    intWall(&w, &v1, &v2);
+    window(&w, "You Died", 1);
+    gotoxy(101,31);
+    printf("Name: ");
+    for (i = 0; i < strlen(p->name); i++)
+        printf("%c", p->name[i]);
+    gotoxy(101,32);
+    printf("Final Score: %06lu", p->score);
+}
+
+void fullGame(struct player_t *p)
+{
+    uint8_t gameEnd;
+    uint8_t gameSpeedIn = 5;
+    gameEnd = aGame1(p, gameSpeedIn);
+    clrsrc();
+    gotoxy(1,1);
+    if (gameEnd == 0)
+    {
+        deathScreen(p);
+    }
+    else printf("You Won the level");
+}
+
+uint8_t aGame1(struct player_t *p, uint8_t gameSpeedIn) //09/06
+{
+    //Setting the game speed
+    setGameSpeed(gameSpeedIn);
+
     //Making the wall
     struct wall_t wall;
     struct vector_t v1, v2, v3, v4;
@@ -95,5 +128,3 @@ uint8_t aGame1(struct player_t *p) //09/06
         }
     }
 }
-
-void setGameSpeed(int8_t gameSpeedIn) {gameSpeed = gameSpeedIn;} //09/06
