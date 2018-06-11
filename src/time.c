@@ -2,6 +2,10 @@
 
 struct timer_t mainTimer = {0,0,0,0};
 
+
+uint8_t minigameSpeed;
+uint8_t gameSpeedCounter;
+uint8_t minigameSpeedCounter;
 uint8_t gameSpeed;
 uint8_t gameSpeedCounter;
 uint8_t updateGame;
@@ -27,10 +31,16 @@ void TIM2_IRQHandler(void)
     if (mainTimer.hseconds == 0x0000 || (mainTimer.hseconds & updateSpeed) == updateSpeed)
         updateLCD = 1;
     gameSpeedCounter++;
+    minigameSpeedCounter++;
     if (gameSpeedCounter == gameSpeed)
     {
         updateGame = 1;
         gameSpeedCounter = 0;
+    }
+    if (minigameSpeedCounter == minigameSpeed)
+    {
+        updateMinigame = 1;
+        minigameSpeedCounter = 0;
     }
     TIM2->SR &= ~0x0001;
 }
@@ -49,7 +59,9 @@ void setUpTimer2()
     //Setting the updateLCD to 0
     updateLCD = 0;
     updateGame = 0;
+    updateMinigame = 0;
     gameSpeedCounter = 0;
+    minigameSpeedCounter = 0;
 }
 
 void resetTimer(struct timer_t *t)

@@ -6,13 +6,12 @@
 #include "io.h"
 #include "customcharset.h"
 
+
 #ifndef LCD_H
 #define LCD_H
 
-uint8_t updateLCD;
-uint8_t scrolling;
-uint8_t adcPrinting;
-uint8_t lcdBuffer[512];
+extern uint8_t updateLCD;
+extern uint8_t lcdBuffer[512];
 
 void setupLCD();
 void lcd_write_string(char * s, uint16_t slice, uint16_t line);

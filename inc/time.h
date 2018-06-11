@@ -8,6 +8,9 @@
 //A flag for updating the LCD
 //extern uint8_t updateLCD;
 extern uint8_t updateGame;
+extern uint8_t updateMinigame;
+extern uint8_t gameSpeed;
+extern uint8_t minigameSpeed;
 #define updateSpeed 0x000a
 
 

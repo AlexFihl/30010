@@ -17,6 +17,7 @@
 #include "game.h"
 #include "fix14.h"
 
+
 void simon()
 {
     struct wall_t wall;
@@ -149,6 +150,7 @@ void alex()
 void mads()
 {
     playMinigame1();
+
 }
 
 int main(void)
@@ -164,8 +166,8 @@ int main(void)
     setUpTimer2();
     startTimer2();
     setupLCD();
-    alex();
-    //mads();
+    //alex();
+    mads();
 
     setLed(0,0,1);
     while(1)
@@ -173,4 +175,3 @@ int main(void)
 
     }
 }
-
