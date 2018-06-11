@@ -76,7 +76,7 @@ void playMinigame1() //08/06
     drawSpaceship(&minigame1);
     uint8_t currentJoyStick = readJoyStick();
     uint8_t oldJoystick = readJoyStick();
-    initObstacle(&obstacle1,0,minigame1.timeSinceStart);
+    initObstacle(&obstacle1,3,minigame1.timeSinceStart);
     minigameSpeed = 5;
     while (1){
         if (updateMinigame > 0){
