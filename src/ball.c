@@ -103,9 +103,20 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
     }
     //Checking the striker
     int32_t lenghtHalf = FIX14_DIV((s->length >> FIX14_SHIFT), 2);
-    if ((newX >= s->center.x - lenghtHalf) && (newX <= s->center.x + lenghtHalf) && (newY >= s->center.y - 0x00003000)) //0x00004000 = 0.750
+    if ((newX >= s->center.x - lenghtHalf) && (newX <= s->center.x + lenghtHalf) && (newY >= s->center.y - 0x00003000)) //0x00003000 = 0.750
     {
-        b->angle =  256 - b->angle;
+        int32_t legnhtTent = FIX14_DIV((s->length >> FIX14_SHIFT), 10);
+        int32_t x = b->angle;
+        if(newX > s->center.x - legnhtTent && newX < s->center.x + legnhtTent) //Checking the middle
+            b->angle =  256 - b->angle;
+        else if((newX >= s->center.x - FIX14_MULT(legnhtTent, 3 << FIX14_SHIFT)) && (newX <= s->center.x + FIX14_MULT(legnhtTent, 3 << FIX14_SHIFT))) //Checking the out mid section
+            b->angle = 256 - b->angle + ((newX > (s->center.x)) ? 14 : -14); //9.844*
+        else if((newX >= s->center.x - FIX14_MULT(legnhtTent, 5 << FIX14_SHIFT)) - (1 << FIX14_SHIFT) && (newX <= s->center.x + FIX14_MULT(legnhtTent, 5 << FIX14_SHIFT)) + (1 << FIX14_SHIFT)) //Checking the outter section
+            b->angle = 256 - b->angle + ((newX > (s->center.x)) ? 35 : -35); //24.609*
+        x = b->angle;
+        if (b->angle <= -128) b->angle = -120;
+        else if (b->angle >= 128) b->angle = 120;
+        x = b->angle;
         newX = b->position.x + getXVel(b);
         newY = b->position.y + getYVel(b);
         b->hitCount++;
@@ -119,7 +130,7 @@ void resetBall(struct ball_t *b) //09/06
 {
     intVector(&(b->position), 110, 60);
     b->velocity = 2 << FIX14_SHIFT;
-    b->angle = -64; //-45 deg //Sholud be 0* when the striker can change the angle
+    b->angle = 0; //Sholud be 0* when the striker can change the angle
 }
 
 void drawBall(struct ball_t *b)
