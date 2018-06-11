@@ -13,17 +13,20 @@ static void deathScreen(struct player_t *p)
     intVector(&v1, 100, 30);
     intVector(&v2, 120, 35);
     intWall(&w, &v1, &v2);
-    window(&w, "You Died", 1);
+    window(&w, "You Died", 0);
     gotoxy(101,31);
     printf("Name: ");
     for (i = 0; i < strlen(p->name); i++)
         printf("%c", p->name[i]);
     gotoxy(101,32);
     printf("Final Score: %06lu", p->score);
+    while(((readJoyStick() & 0x10) != 0x10)){}
+    clrsrc();
 }
 
 void fullGame(struct player_t *p)
 {
+    setGameSpeed(5);
     uint8_t gameEnd = 1, gameCount = 0;
     while (gameEnd > 0 && gameCount < 10)
     {
