@@ -106,17 +106,14 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
     if ((newX >= s->center.x - lenghtHalf) && (newX <= s->center.x + lenghtHalf) && (newY >= s->center.y - 0x00003000)) //0x00003000 = 0.750
     {
         int32_t legnhtTent = FIX14_DIV((s->length >> FIX14_SHIFT), 10);
-        int32_t x = b->angle;
         if(newX > s->center.x - legnhtTent && newX < s->center.x + legnhtTent) //Checking the middle
             b->angle =  256 - b->angle;
         else if((newX >= s->center.x - FIX14_MULT(legnhtTent, 3 << FIX14_SHIFT)) && (newX <= s->center.x + FIX14_MULT(legnhtTent, 3 << FIX14_SHIFT))) //Checking the out mid section
             b->angle = 256 - b->angle + ((newX > (s->center.x)) ? 14 : -14); //9.844*
         else if((newX >= s->center.x - FIX14_MULT(legnhtTent, 5 << FIX14_SHIFT)) - (1 << FIX14_SHIFT) && (newX <= s->center.x + FIX14_MULT(legnhtTent, 5 << FIX14_SHIFT)) + (1 << FIX14_SHIFT)) //Checking the outter section
             b->angle = 256 - b->angle + ((newX > (s->center.x)) ? 35 : -35); //24.609*
-        x = b->angle;
         if (b->angle <= -128) b->angle = -120;
         else if (b->angle >= 128) b->angle = 120;
-        x = b->angle;
         newX = b->position.x + getXVel(b);
         newY = b->position.y + getYVel(b);
         b->hitCount++;
