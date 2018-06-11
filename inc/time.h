@@ -8,10 +8,13 @@
 //A flag for updating the LCD
 extern uint8_t updateLCD;
 extern uint8_t updateGame;
+<<<<<<< HEAD
 extern uint8_t updateMinigame;
 extern uint8_t gameSpeed;
 extern uint8_t minigameSpeed;
 
+=======
+>>>>>>> master
 #define updateSpeed 0x000a
 
 struct timer_t
@@ -28,6 +31,6 @@ void resetTimer(struct timer_t *t);
 void drawAWatch(struct timer_t t);
 void startTimer2();
 void stopTimer2();
-
+void setGameSpeed(int8_t gameSpeedIn);
 
 #endif //TIME_H
