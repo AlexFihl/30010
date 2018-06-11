@@ -6,7 +6,7 @@
 #define TIME_H
 
 //A flag for updating the LCD
-//extern uint8_t updateLCD;
+extern uint8_t updateLCD;
 extern uint8_t updateGame;
 extern uint8_t updateMinigame;
 extern uint8_t gameSpeed;
