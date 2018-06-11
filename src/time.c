@@ -3,6 +3,8 @@
 struct timer_t mainTimer = {0,0,0,0};
 
 uint8_t gameSpeed;
+uint8_t gameSpeedCounter;
+uint8_t updateGame;
 
 void TIM2_IRQHandler(void)
 {

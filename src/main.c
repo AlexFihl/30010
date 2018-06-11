@@ -15,16 +15,7 @@
 #include "player.h"
 #include "minigame.h"
 #include "game.h"
-
 #include "fix14.h"
-
-extern struct timer_t mainTimer;
-extern uint8_t updateLCD;
-extern const char customcharacter_data[2][16];
-extern uint8_t lcdBuffer[512];
-
-extern uint8_t updateGame;
-extern uint8_t gameSpeed;
 
 void simon()
 {
