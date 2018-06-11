@@ -85,7 +85,8 @@ void simon()
 
 void alex()
 {
-    uint8_t menuPoint = 0;
+    uint8_t menuPoint = 0, oldMenuPoint = 1, returnFromSubMenu = 0;
+    clrsrc();
     struct wall_t w;
     struct vector_t v1, v2;
     intVector(&v1, 80, 20);
@@ -96,13 +97,19 @@ void alex()
     uint8_t currentJoyStick = readJoyStick();
     uint8_t oldJoystick = readJoyStick();
 
+    //Making a player
+    struct player_t player;
+    intPlayer(&player);
+    char * name = "Player 1\0";
+    setPlayerName(&player, name);
+
+
     gotoxy(106,23);
     printf("Play Game");
     gotoxy(106, 25);
     printf("Settings");
     gotoxy(105, 27);
     printf("High scores");
-
     while(1)
     {
         currentJoyStick = readJoyStick();
@@ -115,36 +122,83 @@ void alex()
             if(menuPoint < 0) menuPoint = 0;
             else if(menuPoint > 2) menuPoint = 2;
         }
-        /*
-        gotoxy(106,23);
-        printf("Play Game");
-        gotoxy(106, 25);
-        printf("Settings");
-        gotoxy(105, 27);
-        printf("High scores");
-        */
+        if(returnFromSubMenu == 1)
+        {
+            clrsrc();
+            window(&w, "Menu", 0);
+            returnFromSubMenu = 0;
+            gotoxy(106,23);
+            printf("Play Game");
+            gotoxy(106, 25);
+            printf("Settings");
+            gotoxy(105, 27);
+            printf("High scores");
+        }
+        if(menuPoint != oldMenuPoint)
+        {
+            gotoxy(106,23);
+            printf("Play Game");
+            gotoxy(106, 25);
+            printf("Settings");
+            gotoxy(105, 27);
+            printf("High scores");
+            inverse(1);
+        }
+
         switch(menuPoint)
         {
         case 0:
+            gotoxy(106,23);
+            if(menuPoint != oldMenuPoint)
+            {
+                printf("Play Game");
+                inverse(0);
+            }
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
-                //Making a player
-                struct player_t player;
-                intPlayer(&player);
-                char name[] = "Alex\0";
-                setPlayerName(&player, name);
+                setPlayerLife(&player, 3);
                 fullGame(&player);
+                returnFromSubMenu = 1;
             }
             break;
         case 1:
+            gotoxy(106, 25); //Settings
+            if(menuPoint != oldMenuPoint)
+            {
+                printf("Settings");
+                inverse(0);
+            }
+            if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+            {
+                clrsrc();
+                window(&w, "Settings", 0);
+                gotoxy(101, 23);
+                printf("Player name:");
+                gotoxy(101, 24);
+                printf("Max 10 charters!");
+                gotoxy(101, 25);
+                name = getInput();
+                setPlayerName(&player, name);
+                returnFromSubMenu = 1;
+            }
             break;
         case 2:
+            gotoxy(105, 27);
+            if(menuPoint != oldMenuPoint)
+            {
+                printf("High scores");
+                inverse(0);
+            }
+            break;
+        default:
+            menuPoint = 0;
+            inverse(0);
             break;
         }
+
+        oldMenuPoint = menuPoint;
         oldJoystick = currentJoyStick;
     }
-
-
 }
 
 void mads()

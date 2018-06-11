@@ -26,9 +26,10 @@ static void deathScreen(struct player_t *p)
 
 void fullGame(struct player_t *p)
 {
+    clrsrc();
     setGameSpeed(5);
     uint8_t gameEnd = 1, gameCount = 0;
-    while (gameEnd > 0 && gameCount < 10)
+    while (gameEnd != 2 && gameEnd > 0 && gameCount < 10)
     {
         gameEnd = aGame1(p, gameCount);
         gameCount++;
@@ -78,6 +79,8 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount) //09/06
     uint16_t numberOfBlocksLeft;
     while(1){
         if (updateGame > 0){
+            if (readADC2() >= 3000)
+                return 2;
             if (p->life == 0)
                 return 0;
             else if(p->life != oldLife)
