@@ -60,4 +60,5 @@ int8_t updateStrikerPlacment(struct striker_t *s) //09/06
          updateStriker(s, 2);
          return 2;
     }
+    return 0;
 }

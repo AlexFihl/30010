@@ -94,7 +94,9 @@ void alex()
     //Making a player
     struct player_t player;
     intPlayer(&player);
-    aGame1(&player);
+    char name[] = "Alex\0";
+    setPlayerName(&player, name);
+    fullGame(&player);
 }
 
 void mads()
@@ -112,7 +114,6 @@ int main(void){
     showCursor();
     joyStickSetUp();
     ledSetup();
-    setGameSpeed(5);
     setUpTimer2();
     startTimer2();
     setupLCD();

@@ -47,7 +47,7 @@ void startUpABC()
 /*
 *** moder:
 ****** 0x00000000 Input
-****** 0x00000000 Output
+****** 0x00000001 Output
 *** puder:
 ****** 0x00000000 no-pull
 ****** 0x00000001 Pull-up
@@ -215,4 +215,15 @@ char * getInput()
     }
     line[x-1] = '\0';
     return line;
+}
+
+void setUpSpeaker()
+{
+    pinSetup(10, 'B', 0x00000001, 0x00000000);
+}
+
+void playSound()
+{
+    digitalWrite(10, 'B', 1);
+    digitalWrite(10, 'B', 0);
 }
