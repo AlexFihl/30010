@@ -2,15 +2,10 @@
 
 struct timer_t mainTimer = {0,0,0,0};
 
-<<<<<<< HEAD
-
-
 uint8_t minigameSpeed;
 uint8_t gameSpeedCounter;
 uint8_t minigameSpeedCounter;
-=======
 uint8_t gameSpeed;
->>>>>>> master
 
 void TIM2_IRQHandler(void)
 {
