@@ -2,7 +2,6 @@
 
 struct timer_t mainTimer = {0,0,0,0};
 
-
 uint8_t minigameSpeed;
 uint8_t gameSpeedCounter;
 uint8_t minigameSpeedCounter;
