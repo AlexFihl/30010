@@ -7,6 +7,8 @@ uint8_t minigameSpeed;
 uint8_t gameSpeedCounter;
 uint8_t minigameSpeedCounter;
 uint8_t gameSpeed;
+uint8_t gameSpeedCounter;
+uint8_t updateGame;
 
 void TIM2_IRQHandler(void)
 {

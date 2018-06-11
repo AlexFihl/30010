@@ -10,14 +10,14 @@
 #include "ball.h"
 #include "io.h"
 #include "lcd.h"
+#include "time.h"
 
 #ifndef AGAME_H
 #define AGAME_H
 
-uint8_t updateGame;
 
 void fullGame(struct player_t *p);
-uint8_t aGame1(struct player_t *p, uint8_t gameSpeedIn);
+uint8_t aGame1(struct player_t *p, uint8_t gameCount);
 void setGameSpeed(int8_t gameSpeedIn);
 
 

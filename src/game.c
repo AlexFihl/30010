@@ -13,34 +13,38 @@ static void deathScreen(struct player_t *p)
     intVector(&v1, 100, 30);
     intVector(&v2, 120, 35);
     intWall(&w, &v1, &v2);
-    window(&w, "You Died", 1);
+    window(&w, "You Died", 0);
     gotoxy(101,31);
     printf("Name: ");
     for (i = 0; i < strlen(p->name); i++)
         printf("%c", p->name[i]);
     gotoxy(101,32);
     printf("Final Score: %06lu", p->score);
+    while(((readJoyStick() & 0x10) != 0x10)){}
+    clrsrc();
 }
 
 void fullGame(struct player_t *p)
 {
-    uint8_t gameEnd;
-    uint8_t gameSpeedIn = 5;
-    gameEnd = aGame1(p, gameSpeedIn);
+    setGameSpeed(5);
+    uint8_t gameEnd = 1, gameCount = 0;
+    while (gameEnd > 0 && gameCount < 10)
+    {
+        gameEnd = aGame1(p, gameCount);
+        gameCount++;
+    }
     clrsrc();
     gotoxy(1,1);
     if (gameEnd == 0)
     {
         deathScreen(p);
     }
-    else printf("You Won the level");
 }
 
-uint8_t aGame1(struct player_t *p, uint8_t gameSpeedIn) //09/06
+uint8_t aGame1(struct player_t *p, uint8_t gameCount) //09/06
 {
-    //Setting the game speed
-    setGameSpeed(gameSpeedIn);
-
+    //Setting the ball speed
+    setBallSpeedFactor(0x00004000); //0x00004000 = 1
     //Making the wall
     struct wall_t wall;
     struct vector_t v1, v2, v3, v4;
@@ -53,9 +57,9 @@ uint8_t aGame1(struct player_t *p, uint8_t gameSpeedIn) //09/06
     //Setting up the blocks
     struct block_t* blocks = malloc(100 * sizeof *blocks);
     intVector(&v3, 10, 10);
-    intVector(&v4, 45, 45);
-    x = 4;
-    y = 12;
+    intVector(&v4, 210, 45);
+    x = 18;
+    y = 9;
     uint16_t numberOfBlocks = x * y;
     intMultipleBlocks(&blocks, v3, v4, x, y);
     for (i = 0; i < numberOfBlocks; i++)
