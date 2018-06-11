@@ -16,5 +16,6 @@ void intPlayer(struct player_t *p);
 void setPlayerName(struct player_t *p, char *name);
 void lossLife(struct player_t *p);
 void gainLife(struct player_t *p);
+void setPlayerLife(struct player_t *p, int8_t life);
 
 #endif //PLAYER_H
