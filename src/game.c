@@ -24,9 +24,12 @@ static void deathScreen(struct player_t *p)
 
 void fullGame(struct player_t *p)
 {
-    uint8_t gameEnd;
-    uint8_t gameSpeedIn = 5;
-    gameEnd = aGame1(p, gameSpeedIn);
+    uint8_t gameEnd = 1;
+    while (gameEnd > 0)
+    {
+        setBallSpeedFactor(0x00004000); //0x00004000 = 1
+        gameEnd = aGame1(p);
+    }
     clrsrc();
     gotoxy(1,1);
     if (gameEnd == 0)
@@ -36,10 +39,9 @@ void fullGame(struct player_t *p)
     else printf("You Won the level");
 }
 
-uint8_t aGame1(struct player_t *p, uint8_t gameSpeedIn) //09/06
+uint8_t aGame1(struct player_t *p) //09/06
 {
     //Setting the game speed
-    setGameSpeed(gameSpeedIn);
 
     //Making the wall
     struct wall_t wall;
@@ -53,9 +55,9 @@ uint8_t aGame1(struct player_t *p, uint8_t gameSpeedIn) //09/06
     //Setting up the blocks
     struct block_t* blocks = malloc(100 * sizeof *blocks);
     intVector(&v3, 10, 10);
-    intVector(&v4, 210, 50);
+    intVector(&v4, 210, 45);
     x = 18;
-    y = 10;
+    y = 9;
     uint16_t numberOfBlocks = x * y;
     intMultipleBlocks(&blocks, v3, v4, x, y);
     for (i = 0; i < numberOfBlocks; i++)

@@ -12,7 +12,6 @@
 #define BALL_H
 
 
-int32_t ballSpeed;
 
 struct ball_t
 {
