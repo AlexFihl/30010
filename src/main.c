@@ -15,16 +15,8 @@
 #include "player.h"
 #include "minigame.h"
 #include "game.h"
-
 #include "fix14.h"
 
-extern struct timer_t mainTimer;
-extern uint8_t updateLCD;
-extern const char customcharacter_data[5][16];
-extern uint8_t lcdBuffer[512];
-
-extern uint8_t updateGame;
-extern uint8_t gameSpeed;
 
 void simon()
 {
@@ -52,8 +44,10 @@ void simon()
     uint8_t k = 1;
     struct player_t player;
     intPlayer(&player);
-    while(1){
-        if (updateGame > 0){
+    while(1)
+    {
+        if (updateGame > 0)
+        {
             updatePosition(&b, &wall, &blocks, x * y, &player, &striker1);
             drawBall(&b);
             switch (k)
@@ -91,12 +85,66 @@ void simon()
 
 void alex()
 {
-    //Making a player
-    struct player_t player;
-    intPlayer(&player);
-    char name[] = "Alex\0";
-    setPlayerName(&player, name);
-    fullGame(&player);
+    uint8_t menuPoint = 0;
+    struct wall_t w;
+    struct vector_t v1, v2;
+    intVector(&v1, 80, 20);
+    intVector(&v2, 140, 40);
+    intWall(&w, &v1, &v2);
+    window(&w, "Menu", 0);
+
+    uint8_t currentJoyStick = readJoyStick();
+    uint8_t oldJoystick = readJoyStick();
+
+    gotoxy(106,23);
+    printf("Play Game");
+    gotoxy(106, 25);
+    printf("Settings");
+    gotoxy(105, 27);
+    printf("High scores");
+
+    while(1)
+    {
+        currentJoyStick = readJoyStick();
+        if (currentJoyStick != oldJoystick)
+        {
+            if      ((currentJoyStick & 0x01) == 0x01) //When clicking the up button
+                menuPoint--;
+            else if ((currentJoyStick & 0x02) == 0x02) //When clicking the down button
+                menuPoint++;
+            if(menuPoint < 0) menuPoint = 0;
+            else if(menuPoint > 2) menuPoint = 2;
+        }
+        /*
+        gotoxy(106,23);
+        printf("Play Game");
+        gotoxy(106, 25);
+        printf("Settings");
+        gotoxy(105, 27);
+        printf("High scores");
+        */
+        switch(menuPoint)
+        {
+        case 0:
+            if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+            {
+                //Making a player
+                struct player_t player;
+                intPlayer(&player);
+                char name[] = "Alex\0";
+                setPlayerName(&player, name);
+                fullGame(&player);
+            }
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        }
+        oldJoystick = currentJoyStick;
+    }
+
+
 }
 
 void mads()
@@ -105,7 +153,8 @@ void mads()
 
 }
 
-int main(void){
+int main(void)
+{
     startUpABC();
     //PuTTy need to be in 220 times 65.
     init_usb_uart(115200); // Initialize USB serial at 9600 baud
@@ -117,8 +166,8 @@ int main(void){
     setUpTimer2();
     startTimer2();
     setupLCD();
-    //alex();
-    mads();
+    alex();
+    //mads();
 
     setLed(0,0,1);
     while(1)
@@ -126,4 +175,3 @@ int main(void){
 
     }
 }
-

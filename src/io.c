@@ -219,11 +219,10 @@ char * getInput()
 
 void setUpSpeaker()
 {
-    pinSetup(10, 'B', 0x00000001, 0x00000000);
+    pinSetup(10, 'B', 0x00000002, 0x00000000);
 }
 
 void playSound()
 {
-    digitalWrite(10, 'B', 1);
-    digitalWrite(10, 'B', 0);
+
 }

@@ -25,18 +25,18 @@ void intMultipleBlocks(struct block_t ** blocks, struct vector_t v1, struct vect
     {
         uint32_t new1Y, new2Y;
         new1Y = ((deltaY * i) + v1.y)           >> FIX14_SHIFT;
-        new2Y = ((deltaY * i) + v1.y + deltaY - 1)  >> FIX14_SHIFT;
+        new2Y = ((deltaY * i) + v1.y + deltaY - (1 << FIX14_SHIFT))  >> FIX14_SHIFT;
         if(new2Y > (v2.y >> FIX14_SHIFT)) new2Y = (v2.y >> FIX14_SHIFT);
         for (j = 0; j < quantityX; j++)
         {
             struct block_t block;
             uint32_t new1X, new2X;
             new1X = ((deltaX * j) + v1.x)           >> FIX14_SHIFT;
-            new2X = ((deltaX * j) + v1.x + deltaX - 1)  >> FIX14_SHIFT;
+            new2X = ((deltaX * j) + v1.x + deltaX - (1 << FIX14_SHIFT))  >> FIX14_SHIFT;
             if(new2X > (v2.x >> FIX14_SHIFT)) new2X = (v2.x >> FIX14_SHIFT);
             intVector(&v3, new1X, new1Y);
             intVector(&v4, new2X, new2Y);
-            intBlock(&block, &v3, &v4, 4, j+1 + i);
+            intBlock(&block, &v3, &v4, 4, i + 1);
             uint16_t k;
             k = i * quantityX;
             (*blocks)[j + k] = block;
