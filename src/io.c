@@ -221,8 +221,3 @@ void setUpSpeaker()
 {
     pinSetup(10, 'B', 0x00000002, 0x00000000);
 }
-
-void playSound()
-{
-
-}

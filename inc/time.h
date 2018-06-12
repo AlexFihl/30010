@@ -1,5 +1,4 @@
 #include "stm32f30x_conf.h"
-#include "lcd.h"
 #include <stdio.h>
 
 #ifndef TIME_H
