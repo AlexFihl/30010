@@ -150,6 +150,7 @@ static void startScreen()
     for (i=0;i<3;i++)
         for (j=0;j<127;j++)
             lcdBuffer[j+(i*128)]=customfullscreen[i][j];
+
     lcd_push_buffer(lcdBuffer);
 
 }
