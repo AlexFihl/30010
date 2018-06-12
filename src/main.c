@@ -226,7 +226,7 @@ int main(void)
     startTimer2();
     setupLCD();
     //The actual game
-    //menu();
+    menu();
     alex();
     //mads();
 

@@ -45,7 +45,7 @@ static void printLCDGame(uint16_t numberOfBlocksLeft, struct player_t *p)
 
 void fullGame(struct player_t *p)
 {
-    setGameSpeed(5);
+    setGameSpeed(4);
     uint8_t gameEnd = 1, gameCount = 0;
     while (gameEnd != 2 && gameEnd > 0 && gameCount < 10)
     {
@@ -62,10 +62,21 @@ void fullGame(struct player_t *p)
     }
 }
 
+static int8_t getDeltaX(struct striker_t *s, struct wall_t *w)
+{
+    int8_t deltaX = updateStrikerPlacment(s);
+    int32_t hl = FIX14_DIV((s->length >> 14), 2);
+    if(deltaX + s->center.x + hl >= w->v2.x)
+        deltaX = 0;
+    if(s->center.x + deltaX - hl < (w->v1.x + 0x00004000))
+        deltaX = 0;
+    return deltaX;
+}
+
 uint8_t aGame1(struct player_t *p, uint8_t gameCount) //09/06
 {
     //Setting the ball speed
-    setBallSpeedFactor(0x00004000); //0x00004000 = 1
+    setBallSpeedFactor(0x00003000); //0x00003000 = 0.750
     //Making the wall
     struct wall_t wall;
     struct vector_t v1, v2, v3, v4;
@@ -100,6 +111,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount) //09/06
     drawBall(&b);
     uint8_t oldLife = p->life + 1;
     uint16_t numberOfBlocksLeft;
+    int8_t deltaX;
     while(1)
     {
         if (updateGame > 0)
@@ -119,7 +131,9 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount) //09/06
                 {
                     if (updateGame > 0)
                     {
-                        moveBall(&b, updateStrikerPlacment(&striker1) << FIX14_SHIFT, 0);
+                        deltaX = getDeltaX(&striker1, &wall);
+                        moveBall(&b, deltaX << FIX14_SHIFT, 0);
+                        updateStriker(&striker1, deltaX);
                         drawStriker(&striker1);
                         drawBall(&b);
                         updateGame = 0;
@@ -132,7 +146,8 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount) //09/06
                 drawBlock(&blocks[i]);
 
             //Moving the striker
-            updateStrikerPlacment(&striker1);
+            deltaX = getDeltaX(&striker1, &wall);
+            updateStriker(&striker1, deltaX);
             drawStriker(&striker1);
             //Update the ball
             updatePosition(&b, &wall, &blocks, numberOfBlocks, p, &striker1);
