@@ -174,6 +174,14 @@ static void menu()
                 inverse(0);
             }
             break;
+        case 3:
+            gotoxy(108, 29);
+            if(menuPoint != oldMenuPoint)
+            {
+                printf("Help");
+                inverse(0);
+            }
+            break;
         default:
             menuPoint = 0;
             inverse(0);
