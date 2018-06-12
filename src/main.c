@@ -254,8 +254,8 @@ void simon()
 void alex()
 {
     uint8_t i, j;
-    char * name[] = {"Alex\0", "Simon\0", "Mads\0", "Alex\0", "Mads\0"};
-    uint32_t point[] = {0x0000039B,0x00000342,0x00000222,0x00000123,0x0000000B};
+    char * name[5] = {"Alex\0", "Simon\0", "Mads\0", "Alex\0", "Mads\0"};
+    uint32_t point[5] = {0x0000039B,0x00000342,0x00000222,0x00000123,0x0000000B};
     FLASH_Unlock(); // Unlock FLASH for modification
     FLASH_ClearFlag( FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPERR );
     FLASH_ErasePage( startAddress ); // Erase entire page before writing
