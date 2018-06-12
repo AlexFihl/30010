@@ -241,9 +241,9 @@ int main(void)
     startTimer2();
     setupLCD();
     //The actual game
-    alex();
-    menu();
-    //mads();
+    //alex();
+    //menu();
+    mads();
 
     setLed(0,0,1);
     while(1)
