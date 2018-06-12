@@ -17,6 +17,8 @@ struct minigame_t
     uint32_t timeSinceStart;
     uint8_t obstacleBuffer[64];
     uint8_t life;
+    uint8_t shootIsAlive;
+    uint8_t shootLine;
 
 };
 

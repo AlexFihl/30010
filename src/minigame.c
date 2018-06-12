@@ -6,6 +6,7 @@ void intminigame(struct minigame_t *s) //08/06
     s->oldShipLine=0;
     s->timeSinceStart=0;
     s->life=3;
+    s->shootIsAlive=0;
 }
 
 void drawSpaceship (struct minigame_t *s) //08/06
@@ -71,6 +72,50 @@ static void rndStartObstacle(struct obstacle_t *s,struct minigame_t *t, uint32_t
     }
 }
 
+static void shoot(struct minigame_t *s,struct obstacle_t *t)
+{
+    if (s->shipLine==t->obstacleLine)
+    {
+        t->isAlive=0;
+        s->shootIsAlive=5;
+        s->shootLine=s->shipLine;
+    }
+}
+
+static void drawShoot(struct minigame_t *s)
+{
+    uint8_t j;
+    uint8_t i;
+    if (s->shootIsAlive>1)
+        {
+            for (i = 0; i <16 ; i++)
+            {
+                lcdBuffer[i+16+128*s->shootLine] = customcharacter_data[5][i];
+            }
+            for (j=0;j<6;j++)
+            {
+                for (i = 0; i <16 ; i++)
+                {
+                    lcdBuffer[i+32+(j*16)+128*s->shootLine] = customcharacter_data[6][i];
+                }
+            }
+        }
+    else if (s->shootIsAlive==1)
+        {
+            for (j=0;j<7;j++)
+            {
+                for (i = 0; i <16 ; i++)
+                {
+                    lcdBuffer[i+16+(j*16)+128*s->shootLine] = 0x00;
+                }
+            }
+        }
+
+    if (s->shootIsAlive>0)
+        s->shootIsAlive--;
+
+}
+
 void initObstacle (struct obstacle_t *s,struct minigame_t *t,uint8_t obstacleline)
 {
     s->obstacleLine=obstacleline;
@@ -115,9 +160,17 @@ uint32_t playMinigame1() //08/06
                     moveShip(&minigame1, 1);
                 else if ((currentJoyStick & 0x01) == 0x01) //When clicking the down button
                     moveShip(&minigame1, -1);
+                else if ((currentJoyStick & 0x10) == 0x10) //When clicking the center button
+                    {
+                        shoot(&minigame1,&obstacle1);
+                        shoot(&minigame1,&obstacle2);
+                        shoot(&minigame1,&obstacle3);
+                        shoot(&minigame1,&obstacle4);
+                    }
                 oldJoystick = currentJoyStick;
             }
         minigameSrolling(&minigame1);
+        drawShoot(&minigame1);
         drawSpaceship(&minigame1);
         collision(&minigame1,&obstacle1);
         collision(&minigame1,&obstacle2);
