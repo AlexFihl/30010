@@ -144,10 +144,13 @@ static void collision(struct minigame_t *s,struct obstacle_t *t)
 
 static void startScreen()
 {
+    uint16_t i;
+    uint16_t j;
     bufferReset();
     for (i=0;i<3;i++)
-        for (j=0;j<128;j++)
-            lcdBuffer[i+(j*128)]=customfullscreen[j][i];
+        for (j=0;j<127;j++)
+            lcdBuffer[j+(i*128)]=customfullscreen[i][j];
+
     lcd_push_buffer(lcdBuffer);
 
 }

@@ -3,6 +3,7 @@
 #include "lcd.h"
 #include "io.h"
 #include "time.h"
+#include "minigame_fullscreen.h"
 
 #ifndef MINIGAME_H
 #define MINIGAME_H
