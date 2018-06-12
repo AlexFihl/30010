@@ -19,7 +19,8 @@ struct minigame_t
     uint8_t life;
     uint8_t shootIsAlive;
     uint8_t shootLine;
-
+    uint8_t shotsLeft;
+    uint8_t chanceOfSpawn;
 };
 
 struct obstacle_t

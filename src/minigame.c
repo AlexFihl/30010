@@ -7,6 +7,8 @@ void intminigame(struct minigame_t *s) //08/06
     s->timeSinceStart=0;
     s->life=3;
     s->shootIsAlive=0;
+    s->shotsLeft=3;
+    s->chanceOfSpawn=97;
 }
 
 void drawSpaceship (struct minigame_t *s) //08/06
@@ -66,8 +68,8 @@ static void rndStartObstacle(struct obstacle_t *s,struct minigame_t *t, uint32_t
     if (s->isAlive==0)
     {
         uint16_t r;
-        r = rand();
-        if (r>60000)
+        r = rand()%100;
+        if (r>t->chanceOfSpawn)
             startObstacle(s,t,timeSinceStart);
     }
 }
@@ -129,14 +131,38 @@ static void collision(struct minigame_t *s,struct obstacle_t *t)
     {
         s->life--;
         t->isAlive=0;
-
     }
     else if (s->timeSinceStart > t->timeStart+143)
         t->isAlive=0;
+    if (s->life==3)
+        setLed(0,0,1);
+    else if (s->life==2)
+        setLed(0,1,0);
+    else if (s->life==1)
+        setLed(1,0,0);
+}
+
+static void startScreen()
+{
+    bufferReset();
+    for (i=0;i<3;i++)
+        for (j=0;j<128;j++)
+            lcdBuffer[i+(j*128)]=customfullscreen[j][i];
+    lcd_push_buffer(lcdBuffer);
+
 }
 
 uint32_t playMinigame1() //08/06
 {
+    uint8_t currentJoyStick = readJoyStick();
+    uint8_t oldJoystick = readJoyStick();
+
+    startScreen();
+    while ((currentJoyStick & 0x10) != 0x10)//click center to continue
+    {
+
+        currentJoyStick = readJoyStick();
+    }
     bufferReset();
     struct minigame_t minigame1;
     struct obstacle_t obstacle1;
@@ -145,8 +171,6 @@ uint32_t playMinigame1() //08/06
     struct obstacle_t obstacle4;
     intminigame(&minigame1);
     drawSpaceship(&minigame1);
-    uint8_t currentJoyStick = readJoyStick();
-    uint8_t oldJoystick = readJoyStick();
     initObstacle(&obstacle1,&minigame1,0);
     initObstacle(&obstacle2,&minigame1,1);
     initObstacle(&obstacle3,&minigame1,2);
@@ -160,12 +184,13 @@ uint32_t playMinigame1() //08/06
                     moveShip(&minigame1, 1);
                 else if ((currentJoyStick & 0x01) == 0x01) //When clicking the down button
                     moveShip(&minigame1, -1);
-                else if ((currentJoyStick & 0x10) == 0x10) //When clicking the center button
+                else if (((currentJoyStick & 0x10) == 0x10)&&(minigame1.shotsLeft!=0)) //When clicking the center button
                     {
                         shoot(&minigame1,&obstacle1);
                         shoot(&minigame1,&obstacle2);
                         shoot(&minigame1,&obstacle3);
                         shoot(&minigame1,&obstacle4);
+                        minigame1.shotsLeft--;
                     }
                 oldJoystick = currentJoyStick;
             }
@@ -184,6 +209,16 @@ uint32_t playMinigame1() //08/06
             return minigame1.timeSinceStart;
         updateMinigame = 0;
         minigame1.timeSinceStart++;
+        if (minigame1.timeSinceStart==400)
+            minigameSpeed = 3;
+        else if (minigame1.timeSinceStart==600)
+            minigame1.chanceOfSpawn = 94;
+        else if (minigame1.timeSinceStart==800)
+            minigameSpeed = 2;
+        else if (minigame1.timeSinceStart==1000)
+            minigame1.chanceOfSpawn = 90;
+        else if (minigame1.timeSinceStart==1200)
+            minigameSpeed = 1;
         }
     }
 }
