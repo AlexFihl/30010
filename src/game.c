@@ -76,7 +76,10 @@ static int8_t getDeltaX(struct striker_t *s, struct wall_t *w)
 uint8_t aGame1(struct player_t *p, uint8_t gameCount) //09/06
 {
     //Setting the ball speed
-    setBallSpeedFactor(0x00003000); //0x00003000 = 0.750
+    if(gameCount > 5)
+        setBallSpeedFactor(0x00003000); //0x00003000 = 0.750
+    else
+        setBallSpeedFactor(0x00003000); //0x00002000 = 0.500
     //Making the wall
     struct wall_t wall;
     struct vector_t v1, v2, v3, v4;
