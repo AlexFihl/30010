@@ -101,6 +101,7 @@
 		<Unit filename="inc\io.h" />
 		<Unit filename="inc\lcd.h" />
 		<Unit filename="inc\minigame.h" />
+		<Unit filename="inc\minigame_fullscreen.h" />
 		<Unit filename="inc\player.h" />
 		<Unit filename="inc\stm32f30x.h" />
 		<Unit filename="inc\stm32f30x_conf.h" />
@@ -233,6 +234,10 @@
 		<Unit filename="src\minigame.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src\minigame_fullscreen.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src\minigame_fullscreen.h" />
 		<Unit filename="src\player.c">
 			<Option compilerVar="CC" />
 		</Unit>
