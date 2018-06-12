@@ -15,6 +15,7 @@ struct minigame_t
     uint8_t shipLine;
     uint8_t oldShipLine;
     uint32_t timeSinceStart;
+    uint8_t obstacleBuffer[64];
 
 };
 
@@ -22,7 +23,7 @@ struct obstacle_t
 {
     uint8_t obstacleLine;
     uint32_t timeStart;
-    uint8_t obstacleBuffer[64];
+    uint8_t isAlive;
 };
 
 void drawSpaceship (struct minigame_t *s);

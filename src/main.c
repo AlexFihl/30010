@@ -221,8 +221,8 @@ int main(void)
     setUpTimer2();
     startTimer2();
     setupLCD();
-    alex();
-    //mads();
+    //alex();
+    mads();
 
     setLed(0,0,1);
     while(1)
