@@ -45,6 +45,11 @@ static void printHighScore()
             else
                 printf("%c", *(uint16_t *)(startAddress + j*2 + i*24));
         }
+        gotoxy(114, 23+i*2);
+        uint32_t point;
+        point = *(uint16_t *)(startAddress + 20 + i*24) << 16;
+        point |= *(uint16_t *)(startAddress + 22 + i*24);
+        printf("%04lu", point);
     }
 }
 
@@ -207,8 +212,8 @@ void alex()
             printf("%c", name[j][i]);
             FLASH_ProgramHalfWord(startAddress + i*2 + j * 24, name[j][i]);
         }
-        FLASH_ProgramHalfWord(startAddress + 20 + 2 + j*24, point[j] >> 16); //For getting the top 4 byte of point
-        FLASH_ProgramHalfWord(startAddress + 20 + 4 + j*24, point[j]);
+        FLASH_ProgramHalfWord(startAddress + 20 + j*24, point[j] >> 16); //For getting the top 4 byte of point
+        FLASH_ProgramHalfWord(startAddress + 20 + 2 + j*24, point[j]);
     }
     FLASH_Lock();
 }
