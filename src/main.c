@@ -197,6 +197,7 @@ void simon()
 
 void alex()
 {
+    /*
     uint8_t i, j;
     //char * name[5] = {"Alex\0", "Simon\0", "Mads\0", "Alex\0", "Mads\0"};
     char name[5][10] = {"Alex\0", "Simon\0", "Mads\0", "Alex\0", "Mads\0"};
@@ -216,6 +217,13 @@ void alex()
         FLASH_ProgramHalfWord(startAddress + 20 + 2 + j*24, point[j]);
     }
     FLASH_Lock();
+    */
+    setUpSpeaker();
+    playSoundFlag = 1;
+    while(playSoundFlag > 0)
+    {
+
+    }
 }
 
 void mads()
@@ -239,6 +247,7 @@ int main(void)
     startTimer2();
     setupLCD();
     //The actual game
+    //menu();
     alex();
     menu();
     //mads();

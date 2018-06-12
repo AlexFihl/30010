@@ -10,6 +10,7 @@ extern uint8_t updateGame;
 extern uint8_t updateMinigame;
 extern uint8_t gameSpeed;
 extern uint8_t minigameSpeed;
+extern uint8_t playSoundFlag;
 #define updateSpeed 0x000a
 
 
