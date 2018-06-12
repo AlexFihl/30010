@@ -208,7 +208,12 @@ void simon()
 
 void alex()
 {
+    setUpSpeaker();
+    playSoundFlag = 1;
+    while(playSoundFlag > 0)
+    {
 
+    }
 }
 
 void mads()
@@ -231,7 +236,7 @@ int main(void)
     startTimer2();
     setupLCD();
     //The actual game
-    menu();
+    //menu();
     alex();
     //mads();
 
