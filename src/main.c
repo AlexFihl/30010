@@ -17,9 +17,23 @@
 #include "game.h"
 #include "fix14.h"
 
+#define maksMainMenu 3
+
+static void printFullMainMenu()
+{
+    gotoxy(106,23);
+    printf("Play Game");
+    gotoxy(106, 25);
+    printf("Settings");
+    gotoxy(105, 27);
+    printf("High scores");
+    gotoxy(108, 29);
+    printf("Help");
+}
+
 static void menu()
 {
-    uint8_t menuPoint = 0, oldMenuPoint = 1, returnFromSubMenu = 0;
+    uint8_t menuPoint = 0, oldMenuPoint = 1, returnFromSubMenu = 1;
     clrsrc();
     struct wall_t w;
     struct vector_t v1, v2;
@@ -37,13 +51,6 @@ static void menu()
     char * name = "Player 1\0";
     setPlayerName(&player, name);
 
-
-    gotoxy(106,23);
-    printf("Play Game");
-    gotoxy(106, 25);
-    printf("Settings");
-    gotoxy(105, 27);
-    printf("High scores");
     while(1)
     {
         currentJoyStick = readJoyStick();
@@ -54,28 +61,18 @@ static void menu()
             else if ((currentJoyStick & 0x02) == 0x02) //When clicking the down button
                 menuPoint++;
             if(menuPoint < 0) menuPoint = 0;
-            else if(menuPoint > 2) menuPoint = 2;
+            else if(menuPoint > maksMainMenu) menuPoint = maksMainMenu;
         }
         if(returnFromSubMenu == 1)
         {
             clrsrc();
             window(&w, "Menu", 0);
+            printFullMainMenu();
             returnFromSubMenu = 0;
-            gotoxy(106,23);
-            printf("Play Game");
-            gotoxy(106, 25);
-            printf("Settings");
-            gotoxy(105, 27);
-            printf("High scores");
         }
         if(menuPoint != oldMenuPoint)
         {
-            gotoxy(106,23);
-            printf("Play Game");
-            gotoxy(106, 25);
-            printf("Settings");
-            gotoxy(105, 27);
-            printf("High scores");
+            printFullMainMenu();
             inverse(1);
         }
 
@@ -121,6 +118,14 @@ static void menu()
             if(menuPoint != oldMenuPoint)
             {
                 printf("High scores");
+                inverse(0);
+            }
+            break;
+        case 3:
+            gotoxy(108, 29);
+            if(menuPoint != oldMenuPoint)
+            {
+                printf("Help");
                 inverse(0);
             }
             break;
