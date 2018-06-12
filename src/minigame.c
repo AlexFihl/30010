@@ -5,6 +5,7 @@ void intminigame(struct minigame_t *s) //08/06
     s->shipLine=1;
     s->oldShipLine=0;
     s->timeSinceStart=0;
+    s->life=3;
 }
 
 void drawSpaceship (struct minigame_t *s) //08/06
@@ -79,13 +80,17 @@ void initObstacle (struct obstacle_t *s,struct minigame_t *t,uint8_t obstaclelin
 
 static void collision(struct minigame_t *s,struct obstacle_t *t)
 {
-    if ((s->timeSinceStart >= t->timeStart+113)&&(s->timeSinceStart <= t->timeStart+143)&&(s->shipLine==t->obstacleLine))
-        setLed(1,0,0);
+    if ((s->timeSinceStart >= t->timeStart+113)&&(s->timeSinceStart <= t->timeStart+143)&&(s->shipLine==t->obstacleLine)&&(t->isAlive!=0))
+    {
+        s->life--;
+        t->isAlive=0;
+
+    }
     else if (s->timeSinceStart > t->timeStart+143)
         t->isAlive=0;
 }
 
-void playMinigame1() //08/06
+uint32_t playMinigame1() //08/06
 {
     bufferReset();
     struct minigame_t minigame1;
@@ -101,7 +106,7 @@ void playMinigame1() //08/06
     initObstacle(&obstacle2,&minigame1,1);
     initObstacle(&obstacle3,&minigame1,2);
     initObstacle(&obstacle4,&minigame1,3);
-    minigameSpeed = 1;
+    minigameSpeed = 4;
     while (1){
         if (updateMinigame > 0){
             currentJoyStick = readJoyStick();
@@ -122,6 +127,8 @@ void playMinigame1() //08/06
         rndStartObstacle(&obstacle2,&minigame1,minigame1.timeSinceStart);
         rndStartObstacle(&obstacle3,&minigame1,minigame1.timeSinceStart);
         rndStartObstacle(&obstacle4,&minigame1,minigame1.timeSinceStart);
+        if (minigame1.life==0)
+            return minigame1.timeSinceStart;
         updateMinigame = 0;
         minigame1.timeSinceStart++;
         }
