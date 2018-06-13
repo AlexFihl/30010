@@ -215,7 +215,6 @@ static void menu()
             }
 
             break;
-
         case 4:
             gotoxy(104, 31);
             if(menuPoint != oldMenuPoint)
@@ -236,7 +235,6 @@ static void menu()
                 returnFromSubMenu = 1;
             }
             break;
-
         default:
             menuPoint = 0;
             inverse(0);
