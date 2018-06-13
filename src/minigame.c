@@ -165,10 +165,10 @@ uint32_t playMinigame1() //08/06
     uint8_t oldJoystick = readJoyStick();
 
     startScreen();
-    while ((currentJoyStick & 0x10) != 0x10)//click center to continue
+    while((readJoyStick() & 0x10) == 0x10) {}
+    while ((readJoyStick() & 0x10) != 0x10)//click center to continue
     {
-
-        currentJoyStick = readJoyStick();
+        //currentJoyStick = readJoyStick();
     }
     bufferReset();
     struct minigame_t minigame1;

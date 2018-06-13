@@ -216,8 +216,3 @@ char * getInput()
     line[x-1] = '\0';
     return line;
 }
-
-void setUpSpeaker()
-{
-    pinSetup(10, 'B', 0x00000002, 0x00000000);
-}
