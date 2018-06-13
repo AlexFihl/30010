@@ -454,7 +454,7 @@ void alex()
         FLASH_ProgramHalfWord(startAddress + 20 + j*24, point[j] >> 16); //For getting the top 4 byte of point
         FLASH_ProgramHalfWord(startAddress + 20 + 2 + j*24, point[j]);
     }
-    FLASH_Lock();*/
+    FLASH_Lock();
 
     struct player_t p;
     intPlayer(&p);
@@ -463,6 +463,7 @@ void alex()
     setPlayerName(&p, name3);
     saveHighScore(&p);
     printHighScore();
+    */
 }
 
 void mads()
