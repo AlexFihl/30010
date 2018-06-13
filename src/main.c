@@ -53,6 +53,24 @@ static void printHighScore()
     }
 }
 
+static void printHelp()
+{
+    gotoxy(83, 23);
+    printf("For controlling the striker in the game you can use the ");
+    gotoxy(83,24);
+    printf("joystick to move left and right. For quiting the game ");
+    gotoxy(83,25);
+    printf("turn the right knop up. Under settings can you choose ");
+    gotoxy(83, 26);
+    printf("the difficulty you want to start from. You can choose ");
+    gotoxy(83, 27);
+    printf("the starting size of the striker or the starting speed ");
+    gotoxy(83, 28);
+    printf("of the ball. You can also choose if you want less good ");
+    gotoxy(83, 29);
+    printf("power ups.");
+}
+
 static void printFullMainMenu()
 {
     gotoxy(106, 23);
@@ -159,13 +177,13 @@ static void menu()
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
                 clrsrc();
-                window(&w, "High Scores: ", 0);
+                window(&w, "High Scores", 0);
                 printHighScore();
                 while((readJoyStick() & 0x10) == 0x10)
                 while(1)
                 {
                     currentJoyStick = readJoyStick();
-                    if((readJoyStick()& 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                    if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
                         break;
                     oldJoystick = currentJoyStick;
                 }
@@ -180,6 +198,22 @@ static void menu()
                 printf("Help");
                 inverse(0);
             }
+            if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+            {
+                clrsrc();
+                window(&w, "Help", 0);
+                printHelp();
+                while((readJoyStick() & 0x10) == 0x10)
+                while(1)
+                {
+                    currentJoyStick = readJoyStick();
+                    if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                        break;
+                    oldJoystick = currentJoyStick;
+                }
+                returnFromSubMenu = 1;
+            }
+
             break;
         case 4:
             gotoxy(104, 31);
@@ -192,7 +226,12 @@ static void menu()
             {
                 clrsrc();
                 oldJoystick = currentJoyStick;
-                playMinigame1();
+                uint32_t score;
+                score = playMinigame1();
+                window(&w, "Score", 0);
+                gotoxy(102, 28);
+                printf("Finale score:  %04lu", score);
+                while((currentJoyStick & 0x10) == 0x00)
                 returnFromSubMenu = 1;
             }
             break;
