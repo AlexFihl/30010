@@ -25,6 +25,7 @@ void ledSetup ();
 //A function for get a input from the computer, until a enter have been send
 char * getInput();
 
+void setUpSpeaker();
 
 
 #endif //io_custom_h
