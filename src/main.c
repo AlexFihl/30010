@@ -53,6 +53,20 @@ static void printHighScore()
     }
 }
 
+static void saveHighScore(struct player_t *p)
+{
+    char names[5][10];
+    uint32_t point[5];
+    uint32_t i, j;
+    for(i=0; i<5; i++)
+    {
+        for(j=0; j<10; j++)
+            names[i][j] = *(uint16_t *)(startAddress + j*2 + i*24);
+        point[i] = *(uint16_t *)(startAddress + 20 + i*24) << 16;
+        point[i] |= *(uint16_t *)(startAddress + 22 + i*24);
+    }
+}
+
 static void printHelp()
 {
     gotoxy(83, 23);
@@ -142,7 +156,7 @@ static void menu()
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
                 setPlayerLife(&player, 3);
-                //fullGame(&player);
+                fullGame(&player);
                 returnFromSubMenu = 1;
             }
             break;
