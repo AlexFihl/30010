@@ -16,7 +16,7 @@
 #define AGAME_H
 
 
-void fullGame(struct player_t *p, uint16_t startSpeed);
-uint8_t aGame1(struct player_t *p, uint8_t gameCount);
+void fullGame(struct player_t *p, uint16_t startBallSpeed);
+uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed);
 
 #endif //AGAME_H
