@@ -55,12 +55,11 @@ void TIM1_BRK_TIM15_IRQHandler(void)
         playSoundFlag = 0;
         soundCount = 0;
     }*/
-    TIM2->SR &= ~0x0001;
 
 
+    TIM15->SR &= ~0x0001;
 }
 
-    updateLCD = 0;
 void resetTimer(struct timer_t *t)
 {
     t->hours = 0;
