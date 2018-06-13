@@ -275,7 +275,7 @@ static void printFullMainMenu()
 static void menu()
 {
     uint8_t menuPoint = 0, oldMenuPoint = 1, returnFromSubMenu = 1;
-    uint16_t * startBallSpeed = 0;
+    uint16_t startBallSpeed = 0;
     clrsrc();
     struct wall_t w;
     struct vector_t v1, v2;
@@ -330,7 +330,7 @@ static void menu()
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
                 setPlayerLife(&player, 3);
-                fullGame(&player, *startBallSpeed);
+                fullGame(&player, startBallSpeed);
                 //Set player name should be implemtentet
                 saveHighScore(&player);
                 resetPlayer(&player);
@@ -346,7 +346,7 @@ static void menu()
             }
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
-                subSettingsMenu(&player, startBallSpeed, &w);
+                subSettingsMenu(&player, &startBallSpeed, &w);
                 returnFromSubMenu = 1;
             }
             break;
