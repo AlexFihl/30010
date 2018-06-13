@@ -159,16 +159,33 @@ static void startScreen()
 
 }
 
+static void endScreen(struct minigame_t *s)
+{
+    uint16_t i;
+    uint16_t j;
+    bufferReset();
+    for (i=0;i<3;i++)
+        for (j=0;j<127;j++)
+            lcdBuffer[j+(i*128)]=customfullscreen[i+3][j];
+
+    char str1[14];
+    sprintf(str1, "Score: %04lu", s->timeSinceStart); //16 long
+    lcd_write_string(str1, 35, 3);
+    lcd_push_buffer(lcdBuffer);
+
+
+}
+
 uint32_t playMinigame1() //08/06
 {
     uint8_t currentJoyStick = readJoyStick();
     uint8_t oldJoystick = readJoyStick();
 
     startScreen();
-    while((readJoyStick() & 0x10) == 0x10) {}
-    while ((readJoyStick() & 0x10) != 0x10)//click center to continue
+    while (((currentJoyStick & 0x10) != 0x10)||(oldJoystick==currentJoyStick))//click center to continue
     {
-        //currentJoyStick = readJoyStick();
+        oldJoystick = currentJoyStick;
+        currentJoyStick = readJoyStick();
     }
     bufferReset();
     struct minigame_t minigame1;
@@ -182,7 +199,8 @@ uint32_t playMinigame1() //08/06
     initObstacle(&obstacle2,&minigame1,1);
     initObstacle(&obstacle3,&minigame1,2);
     initObstacle(&obstacle4,&minigame1,3);
-    minigameSpeed = 4;
+    minigameSpeed = 8;
+    oldJoystick = currentJoyStick;
     while (1){
         if (updateMinigame > 0){
             currentJoyStick = readJoyStick();
@@ -213,18 +231,29 @@ uint32_t playMinigame1() //08/06
         rndStartObstacle(&obstacle3,&minigame1,minigame1.timeSinceStart);
         rndStartObstacle(&obstacle4,&minigame1,minigame1.timeSinceStart);
         if (minigame1.life==0)
+        {
+            endScreen(&minigame1);
             return minigame1.timeSinceStart;
+        }
         updateMinigame = 0;
         minigame1.timeSinceStart++;
         if (minigame1.timeSinceStart==400)
-            minigameSpeed = 3;
+            minigameSpeed = 7;
         else if (minigame1.timeSinceStart==600)
             minigame1.chanceOfSpawn = 94;
         else if (minigame1.timeSinceStart==800)
-            minigameSpeed = 2;
+            minigameSpeed = 6;
         else if (minigame1.timeSinceStart==1000)
             minigame1.chanceOfSpawn = 90;
         else if (minigame1.timeSinceStart==1200)
+            minigameSpeed = 5;
+        else if (minigame1.timeSinceStart==1500)
+            minigameSpeed = 4;
+        else if (minigame1.timeSinceStart==1900)
+            minigameSpeed = 3;
+        else if (minigame1.timeSinceStart==2400)
+            minigameSpeed = 2;
+        else if (minigame1.timeSinceStart==3000)
             minigameSpeed = 1;
         }
     }
