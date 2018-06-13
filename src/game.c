@@ -43,9 +43,9 @@ static void printLCDGame(uint16_t numberOfBlocksLeft, struct player_t *p)
     lcd_update();
 }
 
-void fullGame(struct player_t *p)
+void fullGame(struct player_t *p, uint16_t startBallSpeed)
 {
-    setGameSpeed(8);
+    setGameSpeed(10);
     uint8_t gameEnd = 1, gameCount = 0;
     while (gameEnd != 2 && gameEnd > 0 && gameCount < 10)
     {
