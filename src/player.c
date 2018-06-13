@@ -8,7 +8,7 @@ void intPlayer(struct player_t *p) //08/06
     p->name[0] = '\0';
 }
 
-void setPlayerName(struct player_t *p, char *name)
+void setPlayerName(struct player_t *p, char * name)
 {
     uint8_t i;
     for (i = 0; i < strlen(name); i++)
