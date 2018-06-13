@@ -17,7 +17,7 @@
 #include "game.h"
 #include "fix14.h"
 
-#define maksMainMenu 3
+#define maksMainMenu 4
 
 //For flash memory
 #define startAddress 0x0800F800
@@ -63,6 +63,8 @@ static void printFullMainMenu()
     printf("High scores");
     gotoxy(108, 29);
     printf("Help");
+    gotoxy(104, 31);
+    printf("Play minigame");
 }
 
 static void menu()
@@ -179,6 +181,21 @@ static void menu()
                 inverse(0);
             }
             break;
+        case 4:
+            gotoxy(104, 31);
+            if(menuPoint != oldMenuPoint)
+            {
+                printf("Play minigame");
+                inverse(0);
+            }
+            if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+            {
+                clrsrc();
+                oldJoystick = currentJoyStick;
+                playMinigame1();
+                returnFromSubMenu = 1;
+            }
+            break;
         default:
             menuPoint = 0;
             inverse(0);
@@ -239,7 +256,7 @@ int main(void)
     startTimer2();
     setupLCD();
     //The actual game
-    alex();
+    //alex();
     menu();
     //mads();
 
