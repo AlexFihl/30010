@@ -17,7 +17,7 @@
 #include "game.h"
 #include "fix14.h"
 
-#define maksMainMenu 3
+#define maksMainMenu 4
 
 //For flash memory
 #define startAddress 0x0800F800
@@ -63,6 +63,8 @@ static void printFullMainMenu()
     printf("High scores");
     gotoxy(108, 29);
     printf("Help");
+    gotoxy(104, 31);
+    printf("Play minigame");
 }
 
 static void menu()
@@ -159,7 +161,7 @@ static void menu()
                 clrsrc();
                 window(&w, "High Scores: ", 0);
                 printHighScore();
-                oldJoystick = currentJoyStick;
+                while((readJoyStick() & 0x10) == 0x10)
                 while(1)
                 {
                     currentJoyStick = readJoyStick();
@@ -177,6 +179,21 @@ static void menu()
             {
                 printf("Help");
                 inverse(0);
+            }
+            break;
+        case 4:
+            gotoxy(104, 31);
+            if(menuPoint != oldMenuPoint)
+            {
+                printf("Play minigame");
+                inverse(0);
+            }
+            if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+            {
+                clrsrc();
+                oldJoystick = currentJoyStick;
+                playMinigame1();
+                returnFromSubMenu = 1;
             }
             break;
         default:
@@ -197,7 +214,6 @@ void simon()
 
 void alex()
 {
-    /*
     uint8_t i, j;
     //char * name[5] = {"Alex\0", "Simon\0", "Mads\0", "Alex\0", "Mads\0"};
     char name[5][10] = {"Alex\0", "Simon\0", "Mads\0", "Alex\0", "Mads\0"};
@@ -217,13 +233,6 @@ void alex()
         FLASH_ProgramHalfWord(startAddress + 20 + 2 + j*24, point[j]);
     }
     FLASH_Lock();
-    */
-    setUpSpeaker();
-    playSoundFlag = 1;
-    while(playSoundFlag > 0)
-    {
-
-    }
 }
 
 void mads()
@@ -247,8 +256,7 @@ int main(void)
     startTimer2();
     setupLCD();
     //The actual game
-    //menu();
-    alex();
+    //alex();
     menu();
     //mads();
 

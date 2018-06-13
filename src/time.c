@@ -43,14 +43,16 @@ void TIM2_IRQHandler(void)
         updateMinigame = 1;
         minigameSpeedCounter = 0;
     }
-    TIM2->SR &= ~0x0001;
-    if(playSoundFlag = 1)
+    /*if(playSoundFlag == 1)
         soundCount++;
     if (soundCount > 100)
     {
         playSoundFlag = 0;
         soundCount = 0;
-    }
+    }*/
+    TIM2->SR &= ~0x0001;
+
+
 }
 
 
