@@ -5,10 +5,10 @@
 #define TIME_H
 
 //A flag for updating the LCD
+extern struct timer_t mainTimer;
 extern uint8_t updateLCD;
 extern uint8_t updateGame;
 extern uint8_t updateMinigame;
-extern uint8_t gameSpeed;
 extern uint8_t minigameSpeed;
 extern uint8_t playSoundFlag;
 #define updateSpeed 0x000a
@@ -20,6 +20,7 @@ struct timer_t
     uint16_t minuts;
     uint16_t seconds;
     uint16_t hseconds;
+    uint8_t twothHS;
 };
 
 void TIM2_IRQHandler(void);

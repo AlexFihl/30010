@@ -1,6 +1,6 @@
 #include "time.h"
 
-struct timer_t mainTimer = {0,0,0,0};
+struct timer_t mainTimer = {0,0,0,0,0};
 
 uint8_t minigameSpeed;
 uint8_t gameSpeedCounter;
@@ -13,7 +13,12 @@ uint16_t soundCount;
 
 void TIM2_IRQHandler(void)
 {
-    mainTimer.hseconds++;
+    mainTimer.twothHS++;
+    if(mainTimer.twothHS == 2)
+    {
+        mainTimer.hseconds++;
+        mainTimer.twothHS = 0;
+    }
     if (mainTimer.hseconds == 100)
     {
         mainTimer.hseconds = 0;
@@ -60,7 +65,7 @@ void setUpTimer2()
 {
     RCC->APB1ENR |= RCC_APB1Periph_TIM2;
     TIM2->CR1 = 0x0000;
-    TIM2->ARR = 0x0009C3FF; // Reload Value = 639999. At 100 Hz
+    TIM2->ARR = 0x0004E1FF; // At 100 Hz Reload Value = 639999 = 0x0009C3FF. At 2000 Hz Reload Value = 319999 = 0x0004E1FF
     TIM2->PSC = 0x0000; //Prescale = 0
     TIM2->DIER = 0x0001; //
     NVIC_SetPriority(TIM2_IRQn, 0);
@@ -81,6 +86,7 @@ void resetTimer(struct timer_t *t)
     t->minuts = 0;
     t->seconds = 0;
     t->hseconds = 0;
+    t->twothHS = 0;
 }
 
 void drawAWatch(struct timer_t t) //Prints the time for hr:mm:ss.hs
