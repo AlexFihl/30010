@@ -275,7 +275,7 @@ static void printFullMainMenu()
 static void menu()
 {
     uint8_t menuPoint = 0, oldMenuPoint = 1, returnFromSubMenu = 1;
-    uint16_t * startBallSpeed = 0;
+    uint16_t startBallSpeed = 0;
     clrsrc();
     struct wall_t w;
     struct vector_t v1, v2;
@@ -330,7 +330,7 @@ static void menu()
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
                 setPlayerLife(&player, 3);
-                fullGame(&player, *startBallSpeed);
+                fullGame(&player, startBallSpeed);
                 //Set player name should be implemtentet
                 saveHighScore(&player);
                 resetPlayer(&player);
@@ -346,7 +346,7 @@ static void menu()
             }
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
-                subSettingsMenu(&player, startBallSpeed, &w);
+                subSettingsMenu(&player, &startBallSpeed, &w);
                 returnFromSubMenu = 1;
             }
             break;
@@ -478,14 +478,19 @@ int main(void)
     startUpABC();
     //PuTTy need to be in 220 times 65.
     init_usb_uart(115200); // Initialize USB serial at 9600 baud
+    //resetingPutty
     resetbgcolor();
     clrsrc();
     showCursor();
     joyStickSetUp();
     ledSetup();
-    setUpTimer2();
-    startTimer2();
     setupLCD();
+    //Starting the timer for all things
+    setUpTimer15();
+
+    //Starting the timer for the buzzer
+    setUpTimer2();
+    setUpSpeaker();
     //The actual game
     //alex();
     menu();

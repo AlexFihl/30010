@@ -50,7 +50,7 @@ void fullGame(struct player_t *p, uint16_t startBallSpeed)
     while (gameEnd != 2 && gameEnd > 0 && gameCount < 10)
     {
         clrsrc();
-        gameEnd = aGame1(p, gameCount);
+        gameEnd = aGame1(p, gameCount, startBallSpeed);
         printLCDGame(0, p);
         gameCount++;
     }
@@ -73,13 +73,13 @@ static int8_t getDeltaX(struct striker_t *s, struct wall_t *w)
     return deltaX;
 }
 
-uint8_t aGame1(struct player_t *p, uint8_t gameCount) //09/06
+uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) //09/06
 {
     //Setting the ball speed
     if(gameCount > 5)
-        setBallSpeedFactor(0x00003000); //0x00003000 = 0.750
+        setBallSpeedFactor(0x00003000 + startBallSpeed); //0x00003000 = 0.750
     else
-        setBallSpeedFactor(0x00003000); //0x00002000 = 0.500
+        setBallSpeedFactor(0x00003000 + startBallSpeed); //0x00002000 = 0.500
     //Making the wall
     struct wall_t wall;
     struct vector_t v1, v2, v3, v4;
@@ -119,6 +119,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount) //09/06
     {
         if (updateGame > 0)
         {
+            setFreq(0);
             if (readADC2() >= 3000)
                 return 2;
             if (readADC1() >= 3000)

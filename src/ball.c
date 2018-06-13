@@ -50,12 +50,14 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
     //Checking that it hits the wall
     if (newX < ((wallx1 + 1) << FIX14_SHIFT) || newX >= (wallx2 << FIX14_SHIFT))
     {
+        setFreq(3000);
         b->angle =  -b->angle;
         newX = b->position.x + getXVel(b);
         b->hitCount++;
     }
     if (newY < ((wally1 + 1) << FIX14_SHIFT))
     {
+        setFreq(3000);
         b->angle =  256 - b->angle;
         newY = b->position.y + getYVel(b);
         b->hitCount++;
@@ -75,6 +77,7 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
         {
             if (newX >= block.v1.x && newX <= (block.v2.x + (1 << 14)) && newY >= block.v1.y && newY <= (block.v2.y + (1 << 14)))
             {
+                setFreq(1000);
                 if(block.v1.x >= b->oldPos.x || (block.v2.x + (1 << 14)) <= b->oldPos.x)
                 {
                     b->angle =  - b->angle;
@@ -108,6 +111,7 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
     int32_t lenghtHalf = FIX14_DIV((s->length >> FIX14_SHIFT), 2);
     if ((newX >= s->center.x - lenghtHalf) && (newX <= s->center.x + lenghtHalf) && (newY >= s->center.y - 0x00003000)) //0x00003000 = 0.750
     {
+        setFreq(10000);
         int32_t legnhtTent = FIX14_DIV((s->length >> FIX14_SHIFT), 10);
         if(newX > s->center.x - legnhtTent && newX < s->center.x + legnhtTent) //Checking the middle
             b->angle =  256 - b->angle;

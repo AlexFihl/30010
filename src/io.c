@@ -216,3 +216,19 @@ char * getInput()
     line[x-1] = '\0';
     return line;
 }
+
+void setUpSpeaker()
+{
+    RCC->AHBENR |= RCC_AHBENR_GPIOBEN;
+    GPIOB->MODER &= ~(0x00000003 << (10 * 2));
+    GPIOB->MODER |= (0x00000002 << (10 * 2));
+    GPIO_PinAFConfig(GPIOB, GPIO_PinSource10, GPIO_AF_1);
+}
+
+void setFreq(uint16_t freq)
+{
+    uint32_t reload = 64e6 / freq / (0 + 1) - 1;
+    TIM2->ARR = reload; // Set auto reload value
+    TIM2->CCR3 = reload/2; // Set compare register
+    TIM2->EGR |= 0x01;
+}
