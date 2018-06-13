@@ -151,7 +151,11 @@ static void startScreen()
         for (j=0;j<127;j++)
             lcdBuffer[j+(i*128)]=customfullscreen[i][j];
 
+    char str1[22];
+    sprintf(str1, "Press center to start"); //16 long
+    lcd_write_string(str1, 2, 3);
     lcd_push_buffer(lcdBuffer);
+
 
 }
 
