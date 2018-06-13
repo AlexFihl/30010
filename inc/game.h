@@ -15,6 +15,10 @@
 #ifndef AGAME_H
 #define AGAME_H
 
+struct powerUp_t{
+    struct vector_t v;
+    uint32_t downSpeed;
+};
 
 void fullGame(struct player_t *p, uint16_t startBallSpeed);
 uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed);

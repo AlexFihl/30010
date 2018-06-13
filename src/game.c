@@ -5,6 +5,13 @@ const uint8_t heart[] =   //09/06
     0x1C, 0x3E, 0x7E, 0xFC, 0xFC, 0x7E, 0x3E, 0x1C
 };
 
+static void initPowerUp(struct powerUp_t *p, struct vector_t *v)
+{
+    p->v.x = v->x;
+    p->v.y = v->y;
+    p->downSpeed = 1<<FIX14_SHIFT;
+}
+
 static void deathScreen(struct player_t *p)
 {
     uint8_t i;
@@ -83,6 +90,8 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
     //Making the wall
     struct wall_t wall;
     struct vector_t v1, v2, v3, v4;
+    struct powerUp_t power[5];
+    uint8_t powerUpsInUse = 0;
     uint16_t i, x, y; //used for blocks
     intVector(&v1, 3, 1);
     intVector(&v2, 218, 63);
@@ -156,6 +165,25 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
             //Update the ball
             updatePosition(&b, &wall, &blocks, numberOfBlocks, p, &striker1);
             drawBall(&b);
+
+            //Spawning a power up
+            for (i = 0; i < numberOfBlocks; i++)
+            {
+                if(blocks[i].state == 0 && blocks[i].oldState == 1 && powerUpsInUse < 5)
+                {
+                    uint32_t x1,y1,xTemp,yTemp;
+                    xTemp = blocks[i].v2.x - blocks[i].v1.x;
+                    x1 = (blocks[i].v1.x + FIX14_DIV(xTemp, 2)) >> FIX14_SHIFT;
+                    yTemp = blocks[i].v2.y - blocks[i].v1.y;
+                    y1 = (blocks[i].v1.y + FIX14_DIV(yTemp, 2)) >> FIX14_SHIFT;
+                    struct vector_t vP;
+                    intVector(&vP, x1, y1);
+                    struct powerUp_t powerTemp;
+                    initPowerUp(&powerTemp, &vP);
+                    power[powerUpsInUse] = powerTemp;
+                }
+            }
+            //Printing a power up
 
             //Check have many blocks there are
             numberOfBlocksLeft = 0;

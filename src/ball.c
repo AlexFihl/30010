@@ -125,7 +125,6 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
         newY = b->position.y + getYVel(b);
         b->hitCount++;
     }
-
     b->position.x = newX;
     b->position.y = newY;
 }
