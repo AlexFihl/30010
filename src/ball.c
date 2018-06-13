@@ -75,6 +75,7 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
         {
             if (newX >= block.v1.x && newX <= (block.v2.x + (1 << 14)) && newY >= block.v1.y && newY <= (block.v2.y + (1 << 14)))
             {
+                setFreq(1000);
                 if(block.v1.x >= b->oldPos.x || (block.v2.x + (1 << 14)) <= b->oldPos.x)
                 {
                     b->angle =  - b->angle;

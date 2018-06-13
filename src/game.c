@@ -119,6 +119,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
     {
         if (updateGame > 0)
         {
+            setFreq(0);
             if (readADC2() >= 3000)
                 return 2;
             if (readADC1() >= 3000)

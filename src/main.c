@@ -490,12 +490,10 @@ int main(void)
 
     //Starting the timer for the buzzer
     setUpTimer2();
-    //startTimer2();
-    setFreq(10000);
-
+    setUpSpeaker();
     //The actual game
     //alex();
-    //menu();
+    menu();
     //mads();
 
     setLed(0,0,1);
