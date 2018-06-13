@@ -161,7 +161,7 @@ static void menu()
                 clrsrc();
                 window(&w, "High Scores: ", 0);
                 printHighScore();
-                oldJoystick = currentJoyStick;
+                while((readJoyStick() & 0x10) == 0x10)
                 while(1)
                 {
                     currentJoyStick = readJoyStick();
