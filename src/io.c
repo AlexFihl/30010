@@ -219,17 +219,16 @@ char * getInput()
 
 void setUpSpeaker()
 {
-    pinSetup(10, 'B', 0x00000002, 0x00000000);
+    RCC->AHBENR |= RCC_AHBENR_GPIOBEN;
     GPIOB->MODER &= ~(0x00000003 << (10 * 2));
     GPIOB->MODER |= (0x00000002 << (10 * 2));
-    GPIOB->PUPDR &= ~(0x00000003 << (10 * 2));
-    GPIOB->PUPDR |= (0x00000000 << (10 * 2));
-    GPIOC->OSPEEDR &= ~(0x00000003 << (10 * 2));
-    GPIOC->OSPEEDR |=  (0x00000002 << (10 * 2));
-    GPIOC->OTYPER &= ~(0x0003 << (10 * 2));
-    GPIOC->OTYPER |=  (0x0000 << (10 * 2));
-    TIM2->CCMR2= 0x00000060;
-    TIM2->CCR3 = 64000;
-    TIM2->EGR = 0x0009;
-    TIM2->CCER = 0x00000100;
+    GPIO_PinAFConfig(GPIOB, GPIO_PinSource10, GPIO_AF_1);
+}
+
+void setFreq(uint16_t freq)
+{
+    uint32_t reload = 64e6 / freq / (1000 + 1) - 1;
+    TIM2->ARR = reload; // Set auto reload value
+    TIM2->CCR3 = reload/2; // Set compare register
+    TIM2->EGR |= 0x01;
 }

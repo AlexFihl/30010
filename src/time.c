@@ -11,7 +11,7 @@ uint8_t updateGame;
 uint8_t playSoundFlag;
 uint16_t soundCount;
 
-void TIM2_IRQHandler(void)
+void TIM1_BRK_TIM15_IRQHandler(void)
 {
     mainTimer.twothHS++;
     if(mainTimer.twothHS == 2)
@@ -60,26 +60,7 @@ void TIM2_IRQHandler(void)
 
 }
 
-
-void setUpTimer2()
-{
-    RCC->APB1ENR |= RCC_APB1Periph_TIM2;
-    TIM2->CR1 = 0x0000;
-    TIM2->ARR = 0x0004E1FF; // At 100 Hz Reload Value = 639999 = 0x0009C3FF. At 2000 Hz Reload Value = 319999 = 0x0004E1FF
-    TIM2->PSC = 0x0000; //Prescale = 0
-    TIM2->DIER = 0x0001; //
-    NVIC_SetPriority(TIM2_IRQn, 0);
-    NVIC_EnableIRQ(TIM2_IRQn);
-
-    //Setting the updateLCD to 0
     updateLCD = 0;
-    updateGame = 0;
-    updateMinigame = 0;
-    gameSpeedCounter = 0;
-    minigameSpeedCounter = 0;
-    playSoundFlag = 0;
-}
-
 void resetTimer(struct timer_t *t)
 {
     t->hours = 0;
@@ -94,7 +75,48 @@ void drawAWatch(struct timer_t t) //Prints the time for hr:mm:ss.hs
     printf("%02d:%02d:%02d.%02d",t.hours,t.minuts,t.seconds,t.hseconds);
 }
 
-//Starts and stop the timer2
+void setUpTimer15()
+{
+    RCC->APB2ENR |= RCC_APB2Periph_TIM15;
+
+    TIM15->CR1 = 0x0000;
+    TIM15->ARR = 31999; //
+    TIM15->PSC = 9; //Prescale = 9
+    TIM15->DIER |= 0x0001; //
+
+    NVIC_SetPriority(TIM1_BRK_TIM15_IRQn, 0);
+    NVIC_EnableIRQ(TIM1_BRK_TIM15_IRQn);
+
+    TIM15->CR1 |=  0x0001;
+
+    //Setting all the flags to 0.
+    updateLCD = 0;
+    updateGame = 0;
+    updateMinigame = 0;
+    gameSpeedCounter = 0;
+    minigameSpeedCounter = 0;
+    playSoundFlag = 0;
+}
+
+void setUpTimer2()
+{
+    RCC->APB1ENR |= 0x00000001; // Enable clock line to timer 2;
+    TIM2->CR1 = 0x0000; // Disable timer
+    TIM2->ARR = 1000; // Set auto reload value
+    TIM2->PSC = 1000; // Set pre-scaler value
+    TIM2->CR1 |= 0x0001; // Enable timer
+
+    TIM2->CCER &= ~TIM_CCER_CC3P; // Clear CCER register
+    TIM2->CCER |= 0x00000001 << 8; // Enable OC3 output
+    TIM2->CCMR2 &= ~TIM_CCMR2_OC3M; // Clear CCMR2 register
+    TIM2->CCMR2 &= ~TIM_CCMR2_CC3S;
+    TIM2->CCMR2 |= TIM_OCMode_PWM1; // Set output mode to PWM1
+    TIM2->CCMR2 &= ~TIM_CCMR2_OC3PE;
+    TIM2->CCMR2 |= TIM_OCPreload_Enable;
+    TIM2->CCR3 = 500; // Set duty cycle to 50 %
+
+}
+
 void startTimer2()
 {
     TIM2->CR1 |= 0x0001;

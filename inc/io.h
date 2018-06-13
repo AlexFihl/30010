@@ -26,6 +26,7 @@ void ledSetup ();
 char * getInput();
 
 void setUpSpeaker();
+void setFreq(uint16_t freq);
 
 
 #endif //io_custom_h

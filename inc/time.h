@@ -13,7 +13,6 @@ extern uint8_t minigameSpeed;
 extern uint8_t playSoundFlag;
 #define updateSpeed 0x000a
 
-
 struct timer_t
 {
     uint16_t hours;
@@ -23,10 +22,11 @@ struct timer_t
     uint8_t twothHS;
 };
 
-void TIM2_IRQHandler(void);
-void setUpTimer2();
+void TIM1_BRK_TIM15_IRQHandler(void);
+void setUpTimer15();
 void resetTimer(struct timer_t *t);
 void drawAWatch(struct timer_t t);
+void setUpTimer2();
 void startTimer2();
 void stopTimer2();
 void setGameSpeed(int8_t gameSpeedIn);

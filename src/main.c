@@ -478,17 +478,24 @@ int main(void)
     startUpABC();
     //PuTTy need to be in 220 times 65.
     init_usb_uart(115200); // Initialize USB serial at 9600 baud
+    //resetingPutty
     resetbgcolor();
     clrsrc();
     showCursor();
     joyStickSetUp();
     ledSetup();
-    setUpTimer2();
-    startTimer2();
     setupLCD();
+    //Starting the timer for all things
+    setUpTimer15();
+
+    //Starting the timer for the buzzer
+    setUpTimer2();
+    //startTimer2();
+    setFreq(10000);
+
     //The actual game
     //alex();
-    menu();
+    //menu();
     //mads();
 
     setLed(0,0,1);
