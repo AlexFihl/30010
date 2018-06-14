@@ -168,9 +168,9 @@ static void endScreen(struct minigame_t *s)
         for (j=0; j<127; j++)
             lcdBuffer[j+(i*128)]=customfullscreen[i+3][j];
 
-    char str1[14];
-    sprintf(str1, "Score: %04lu", s->timeSinceStart); //16 long
-    lcd_write_string(str1, 35, 3);
+    char str1[7];
+    sprintf(str1, "%04lu", s->timeSinceStart); //16 long
+    lcd_write_string(str1, 55, 3);
     lcd_push_buffer(lcdBuffer);
 
 
