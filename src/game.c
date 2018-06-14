@@ -152,7 +152,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
             //Spawning a power up
             for (i = 0; i < numberOfBlocks; i++)
             {
-                if((blocks[i]).state == 0 && (blocks[i]).oldState >= 1 && powerUpsInUse < 5 && rand()%100 < 10)
+                if((blocks[i]).state == 0 && (blocks[i]).oldState >= 1 && powerUpsInUse < 5 /*&& rand()%100 < 10*/)
                 {
                     uint32_t x1,y1,xTemp,yTemp;
                     xTemp = (blocks[i].v2.x - blocks[i].v1.x) >> FIX14_SHIFT;
@@ -162,7 +162,8 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
                     struct vector_t vP;
                     intVector(&vP, x1, y1);
                     struct powerUp_t powerTemp;
-                    initPowerUp(&powerTemp, &vP, rand()%5);
+                    //initPowerUp(&powerTemp, &vP, rand()%5);
+                    initPowerUp(&powerTemp, &vP, 0);
                     power[powerUpsInUse] = powerTemp;
                     powerUpsInUse++;
                 }
@@ -176,7 +177,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
             for(i = 0; i < powerUpsInUse; i++)
             {
                 updatePowerUp(&power[i], &striker1, &wall);
-                applyPowerUp(&power[i], &striker1);
+                applyPowerUp(&power[i], &striker1, &wall);
                 drawPowerUp(&power[i], blocks, yEnd, numberOfBlocks);
             }
             //removing a catched powerUp

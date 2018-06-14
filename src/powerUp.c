@@ -51,14 +51,14 @@ void drawPowerUp(struct powerUp_t *p, struct block_t * b, uint16_t lowerBond, ui
     }
 }
 
-void applyPowerUp(struct powerUp_t *p, struct striker_t *s)
+void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w)
 {
     if(p->catched == 1)
     {
         switch (p->type)
         {
         case 0:
-            changeStrikerLength(s, 2);
+            changeStrikerLength(s, 4, w);
             break;
         }
 
