@@ -17,6 +17,11 @@ void setBallSpeedFactor(int32_t speedFactor) //09/06
     ballSpeed = speedFactor;
 }
 
+void addToBallSpeedFactor(int32_t deltaSpeed)
+{
+    ballSpeed += deltaSpeed;
+}
+
 void moveBall(struct ball_t *b, int32_t deltaX, int32_t deltaY) //09/06
 {
     b->position.x += deltaX;

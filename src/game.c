@@ -49,7 +49,7 @@ static void printLCDGame(uint16_t numberOfBlocksLeft, struct player_t *p)
 
 void fullGame(struct player_t *p, uint16_t startBallSpeed)
 {
-    setGameSpeed(10);
+    setGameSpeed(8);
     uint8_t gameEnd = 1, gameCount = 0;
     while (gameEnd != 2 && gameEnd > 0 && gameCount < 10)
     {
@@ -72,7 +72,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
     if(gameCount > 5)
         setBallSpeedFactor(0x00003000 + startBallSpeed); //0x00003000 = 0.750
     else
-        setBallSpeedFactor(0x00003000 + startBallSpeed); //0x00002000 = 0.500
+        setBallSpeedFactor(0x00002000 + startBallSpeed); //0x00002000 = 0.500
     //Making the wall
     struct wall_t wall;
     struct vector_t v1, v2, v3, v4;
