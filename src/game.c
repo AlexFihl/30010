@@ -13,7 +13,8 @@ static void initPowerUp(struct powerUp_t *p, struct vector_t *v)
     p->old.y = v->y;
     p->downSpeed = 1 << FIX14_SHIFT;
     p->catched = 0;
-    p->sign = 255;
+    p->dead = 0;
+    p->sign = 43;
 }
 
 static void drawPowerUp(struct powerUp_t *p, struct block_t * b, uint16_t lowerBond, uint32_t numberOfBlocks)
@@ -24,7 +25,8 @@ static void drawPowerUp(struct powerUp_t *p, struct block_t * b, uint16_t lowerB
         if(p->old.y > lowerBond)
             printf("%c", 32);
         gotoxy(p->v.x >> FIX14_SHIFT, p->v.y >> FIX14_SHIFT);
-        printf("%c", p->sign);
+        if(p->catched == 0 && p->dead == 0)
+            printf("%c", p->sign);
     }
     else
     {
@@ -54,13 +56,16 @@ static void applyPowerUp(struct powerUp_t *p, struct striker_t *s)
     }
 }
 
-static void updatePowerUp(struct powerUp_t *p, struct striker_t *s)
+static void updatePowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w)
 {
+    p->old.y = p->v.y;
     uint32_t newY;
     newY = p->v.y + p->downSpeed;
     int32_t hl = FIX14_DIV((s->length >> FIX14_SHIFT), 2);
-    if(p->v.x > (s->center.x - hl) && p->v.x < (s->center.x + hl) && s->center.y == newY)
+    if(p->v.x > (s->center.x - hl) && p->v.x < (s->center.x + hl) && (s->center.y >> FIX14_SHIFT) == (newY >> FIX14_SHIFT))
         p->catched = 1;
+    else if(p->v.y >= w->v2.y)
+        p->dead = 1;
     else
         p->v.y = newY;
 }
@@ -147,7 +152,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
     struct vector_t v1, v2, v3, v4;
     struct powerUp_t power[5];
     uint8_t powerUpsInUse = 0;
-    uint16_t i, x, y; //used for blocks
+    uint16_t i, j, x, y; //used for blocks
     intVector(&v1, 3, 1);
     intVector(&v2, 218, 63);
     intWall(&wall, &v1, &v2);
@@ -218,20 +223,15 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
             updatePosition(&b, &wall, &blocks, numberOfBlocks, p, &striker1);
             drawBall(&b);
 
-            //Drawing the blocks
-            for (i = 0; i < x*y; i++)
-                drawBlock(&blocks[i]);
-
-
             //Spawning a power up
             for (i = 0; i < numberOfBlocks; i++)
             {
-                if(blocks[i].state == 0 && blocks[i].oldState == 1 && powerUpsInUse < 5)
+                if((blocks[i]).state == 0 && (blocks[i]).oldState >= 1 && powerUpsInUse < 5 /*&& rand()%100 < 10*/)
                 {
                     uint32_t x1,y1,xTemp,yTemp;
-                    xTemp = blocks[i].v2.x - blocks[i].v1.x;
+                    xTemp = (blocks[i].v2.x - blocks[i].v1.x) >> FIX14_SHIFT;
                     x1 = (blocks[i].v1.x + FIX14_DIV(xTemp, 2)) >> FIX14_SHIFT;
-                    yTemp = blocks[i].v2.y - blocks[i].v1.y;
+                    yTemp = (blocks[i].v2.y - blocks[i].v1.y) >> FIX14_SHIFT;
                     y1 = (blocks[i].v1.y + FIX14_DIV(yTemp, 2)) >> FIX14_SHIFT;
                     struct vector_t vP;
                     intVector(&vP, x1, y1);
@@ -242,26 +242,29 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
                 }
             }
 
+            //Drawing the blocks
+            for (i = 0; i < x*y; i++)
+                drawBlock(&blocks[i]);
 
             //Printing a power up
             for(i = 0; i < powerUpsInUse; i++)
             {
-                updatePowerUp(&power[i], &striker1);
+                updatePowerUp(&power[i], &striker1, &wall);
                 applyPowerUp(&power[i], &striker1);
                 drawPowerUp(&power[i], blocks, yEnd, numberOfBlocks);
             }
             //removing a catched powerUp
-            /*for(i=0; i < powerUpsInUse; i++)
+            for(i=0; i < powerUpsInUse; i++)
             {
-                if(power[i].catched == 1)
+                if(power[i].catched == 1 || power[i].dead == 1)
                 {
-                    for(j=i;j<powerUpsInUse)
+                    for(j=i; j<powerUpsInUse; j++)
                         power[j] = power[j+1];
                     power[powerUpsInUse-1] = power[powerUpsInUse];
                     powerUpsInUse--;
                 }
 
-            }*/
+            }
             //Check have many blocks there are
             numberOfBlocksLeft = 0;
             for (i = 0; i < numberOfBlocks; i++)

@@ -20,6 +20,7 @@ struct powerUp_t{
     struct vector_t old;
     uint32_t downSpeed;
     uint8_t catched;
+    uint8_t dead;
     uint16_t sign;
 };
 
