@@ -140,6 +140,7 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
             }
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
+                oldJoystick = currentJoyStick;
                 clrsrc();
                 window(w, "Game speed", 0);
                 int8_t oldG = 1;
@@ -151,22 +152,22 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                         switch(*deltaGamingSpeed)
                         {
                         case -3:
-                            printf("Gaming speed: Fastest");
+                            printf("Gaming speed: Fastest ");
                             break;
                         case -2:
-                            printf("Gaming offset: Faster");
+                            printf("Gaming offset: Faster ");
                             break;
                         case -1:
-                            printf("Gaming offset: Fast");
+                            printf("Gaming offset: Fast   ");
                             break;
                         case 0:
-                            printf("Gaming offset: Normal");
+                            printf("Gaming offset: Normal ");
                             break;
                         case 1:
-                            printf("Gaming offset: Slow");
+                            printf("Gaming offset: Slow   ");
                             break;
                         case 2:
-                            printf("Gaming offset: Slower");
+                            printf("Gaming offset: Slower ");
                             break;
                         case 3:
                             printf("Gaming offset: Slowest");
@@ -199,8 +200,55 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
             }
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
+                oldJoystick = currentJoyStick;
                 clrsrc();
                 window(w, "Ball speed", 0);
+                int32_t oldB = 1;
+                while(1)
+                {
+                    if(oldB != *startBallSpeed)
+                    {
+                        gotoxy(101, 23);
+                        switch(*startBallSpeed)
+                        {
+                        case -3:
+                            printf("Ball speed: Fastest   ");
+                            break;
+                        case -2:
+                            printf("Ball offset: Faster   ");
+                            break;
+                        case -1:
+                            printf("Ball offset: Fast     ");
+                            break;
+                        case 0:
+                            printf("Ball offset: Normal   ");
+                            break;
+                        case 1:
+                            printf("Gaming offset: Slow   ");
+                            break;
+                        case 2:
+                            printf("Gaming offset: Slower ");
+                            break;
+                        case 3:
+                            printf("Gaming offset: Slowest");
+                            break;
+                        }
+                        oldB = *startBallSpeed;
+                    }
+                    currentJoyStick = readJoyStick();
+                    if      ((currentJoyStick & 0x01) == 0x01 && (oldJoystick & 0x01) == 0x00) //When clicking the up button
+                        (*startBallSpeed)++;
+                    else if ((currentJoyStick & 0x02) == 0x02 && (oldJoystick & 0x02) == 0x00) //When clicking the down button
+                        (*startBallSpeed)--;
+                    if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                        break;
+                    if((*startBallSpeed) > 3)
+                        (*startBallSpeed) = 3;
+                    else if((*startBallSpeed) < -3)
+                        (*startBallSpeed) = -3;
+                    oldJoystick = currentJoyStick;
+                }
+                startBallSpeed = (startBallSpeed * 8) << 12;
                 returnFromSubMenu = 1;
             }
             break;
