@@ -359,17 +359,17 @@ static void menu()
             }
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
+                oldJoystick = currentJoyStick;
                 clrsrc();
                 window(&w, "High Scores", 0);
                 printHighScore();
-                while((readJoyStick() & 0x10) == 0x10)
-                    while(1)
-                    {
-                        currentJoyStick = readJoyStick();
-                        if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
-                            break;
-                        oldJoystick = currentJoyStick;
-                    }
+                while(1)
+                {
+                    currentJoyStick = readJoyStick();
+                    if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                        break;
+                    oldJoystick = currentJoyStick;
+                }
                 oldJoystick = currentJoyStick;
                 returnFromSubMenu = 1;
             }
@@ -383,17 +383,17 @@ static void menu()
             }
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
+                oldJoystick = currentJoyStick;
                 clrsrc();
                 window(&w, "Help", 0);
                 printHelp();
-                while((readJoyStick() & 0x10) == 0x10)
-                    while(1)
-                    {
-                        currentJoyStick = readJoyStick();
-                        if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
-                            break;
-                        oldJoystick = currentJoyStick;
-                    }
+                while(1)
+                {
+                    currentJoyStick = readJoyStick();
+                    if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                        break;
+                    oldJoystick = currentJoyStick;
+                }
                 returnFromSubMenu = 1;
             }
 
