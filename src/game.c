@@ -9,13 +9,25 @@ static void initPowerUp(struct powerUp_t *p, struct vector_t *v)
 {
     p->v.x = v->x;
     p->v.y = v->y;
+    p->old.x = v->x;
+    p->old.y = v->y;
     p->downSpeed = 1 << FIX14_SHIFT;
     p->catched = 0;
+    p->sign = 255;
 }
 
-static void drawPowerUp(struct powerUp_t *p)
+static void drawPowerUp(struct powerUp_t *p, struct block_t b)
 {
-
+    if(p->old.x > b.v1.x && p->old.x < b.v2.x && p->old.y > b.v1.y && p->old.y < b.v2.y)
+    {
+        gotoxy(p->old.x >> FIX14_SHIFT, p->old.y >> FIX14_SHIFT);
+        printf("%c", 32);
+    }
+    if(p->v.x > b.v1.x && p->v.x < b.v2.x && p->v.y > b.v1.y && p->v.y < b.v2.y)
+    {
+        gotoxy(p->v.x >> FIX14_SHIFT, p->v.y >> FIX14_SHIFT);
+        printf("%c", p->sign);
+    }
 }
 
 static void updatePowerUp(struct powerUp_t *p, struct striker_t *s)
@@ -23,7 +35,7 @@ static void updatePowerUp(struct powerUp_t *p, struct striker_t *s)
     uint32_t newY;
     newY = p->v.y + p->downSpeed;
     int32_t hl = FIX14_DIV((s->length >> FIX14_SHIFT), 2);
-    if(p->v.x > (s->center.x - hl) && p->v.x < (s->center.x + hl) && s->center.y = newY)
+    if(p->v.x > (s->center.x - hl) && p->v.x < (s->center.x + hl) && s->center.y == newY)
         p->catched = 1;
     else
         p->v.y = newY;
@@ -111,7 +123,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
     struct vector_t v1, v2, v3, v4;
     struct powerUp_t power[5];
     uint8_t powerUpsInUse = 0;
-    uint16_t i, x, y; //used for blocks
+    uint16_t i, j, x, y; //used for blocks
     intVector(&v1, 3, 1);
     intVector(&v2, 218, 63);
     intWall(&wall, &v1, &v2);
@@ -173,9 +185,6 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
                 }
                 oldLife = p->life;
             }
-            //Drawing the blocks
-            for (i = 0; i < x*y; i++)
-                drawBlock(&blocks[i]);
 
             //Moving the striker
             deltaX = getDeltaX(&striker1, &wall);
@@ -184,6 +193,11 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
             //Update the ball
             updatePosition(&b, &wall, &blocks, numberOfBlocks, p, &striker1);
             drawBall(&b);
+
+            //Drawing the blocks
+            for (i = 0; i < x*y; i++)
+                drawBlock(&blocks[i]);
+
 
             //Spawning a power up
             for (i = 0; i < numberOfBlocks; i++)
@@ -203,11 +217,15 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
                     powerUpsInUse++;
                 }
             }
+
+
             //Printing a power up
             for(i = 0; i < powerUpsInUse; i++)
             {
                 updatePowerUp(&power[i], &striker1);
-                drawPowerUp(&power[i]);
+                for(j=0; j < numberOfBlocks; j++)
+                    if(blocks[i].state == 0)
+                        drawPowerUp(&power[i], blocks[i]);
             }
             //Check have many blocks there are
             numberOfBlocksLeft = 0;
