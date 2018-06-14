@@ -86,9 +86,9 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
 
     //Setting up the blocks
     struct block_t* blocks = malloc(100 * sizeof *blocks);
-    intVector(&v3, 10, 10);
+    intVector(&v3, 10, 7);
     //There will be rows of 4 in hight per level.
-    uint8_t yEnd = 4 * (gameCount + 1) + 10;
+    uint8_t yEnd = 4 * (gameCount + 1) + 7;
     intVector(&v4, 210, yEnd);
     x = 18;
     //1 row per level
