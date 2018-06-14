@@ -38,5 +38,7 @@ Note:
 #define _CHARSET_H_
 
 extern const char character_data[95][5];
+extern const char customcharacter_data[7][16];
+extern const char customfullscreen[6][128];
 
 #endif /*! _ACHARSET_H_ */
