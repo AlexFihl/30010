@@ -1,5 +1,8 @@
 #include "powerUp.h"
 
+const uint16_t signA[13] = {
+    43, 45, 49, 158, 249, 175, 174, 33, 159, 127, 167, 207
+};
 
 void initPowerUp(struct powerUp_t *p, struct vector_t *v, uint8_t powerUpType)
 {
@@ -11,16 +14,13 @@ void initPowerUp(struct powerUp_t *p, struct vector_t *v, uint8_t powerUpType)
     p->catched = 0;
     p->dead = 0;
     p->type = powerUpType;
-    switch (powerUpType)
-    {
-    case 0:
-        p->sign = 43;
-        break;
-    }
+    p->sign = signA[powerUpType];
 }
 
 void drawPowerUp(struct powerUp_t *p, struct block_t * b, uint16_t lowerBond, uint32_t numberOfBlocks)
 {
+    if(p->type == 2)
+        fgcolor(2);
     if(p->v.y > lowerBond)
     {
         gotoxy(p->old.x >> FIX14_SHIFT, p->old.y >> FIX14_SHIFT);
@@ -49,16 +49,46 @@ void drawPowerUp(struct powerUp_t *p, struct block_t * b, uint16_t lowerBond, ui
 
         }
     }
+    resetbgcolor();
 }
 
-void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w)
+void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w, struct ball_t *b, struct player_t *pl, int8_t * ballOnStriker)
 {
     if(p->catched == 1)
     {
         switch (p->type)
         {
-        case 0:
+        case 0x0:
             changeStrikerLength(s, 4, w);
+            break;
+        case 0x1:
+            changeStrikerLength(s, -4, w);
+            break;
+        case 0x2:
+            gainLife(pl);
+            break;
+        case 0x3:
+            lossLife(pl);
+            break;
+        case 0x4:
+            break;
+        case 0x5:
+            addToBallSpeedFactor(0x00000800); //=0.125
+            break;
+        case 0x6:
+            addToBallSpeedFactor(-0x00000800);//=-0.125
+            break;
+        case 0x7:
+            break;
+        case 0x8:
+            break;
+        case 0x9:
+            break;
+        case 0xA:
+            (*ballOnStriker) = 1;
+            break;
+        case 0xB:
+            teleportBall(b);
             break;
         }
 

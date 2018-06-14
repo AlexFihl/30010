@@ -49,7 +49,7 @@ static void printLCDGame(uint16_t numberOfBlocksLeft, struct player_t *p)
 
 void fullGame(struct player_t *p, uint16_t startBallSpeed)
 {
-    setGameSpeed(10);
+    setGameSpeed(8);
     uint8_t gameEnd = 1, gameCount = 0;
     while (gameEnd != 2 && gameEnd > 0 && gameCount < 10)
     {
@@ -72,7 +72,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
     if(gameCount > 5)
         setBallSpeedFactor(0x00003000 + startBallSpeed); //0x00003000 = 0.750
     else
-        setBallSpeedFactor(0x00003000 + startBallSpeed); //0x00002000 = 0.500
+        setBallSpeedFactor(0x00002000 + startBallSpeed); //0x00002000 = 0.500
     //Making the wall
     struct wall_t wall;
     struct vector_t v1, v2, v3, v4;
@@ -86,9 +86,9 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
 
     //Setting up the blocks
     struct block_t* blocks = malloc(100 * sizeof *blocks);
-    intVector(&v3, 10, 10);
+    intVector(&v3, 10, 7);
     //There will be rows of 4 in hight per level.
-    uint8_t yEnd = 4 * (gameCount + 1) + 10;
+    uint8_t yEnd = 4 * (gameCount + 1) + 7;
     intVector(&v4, 210, yEnd);
     x = 18;
     //1 row per level
@@ -109,7 +109,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
     drawBall(&b);
     uint8_t oldLife = p->life + 1;
     uint16_t numberOfBlocksLeft;
-    int8_t deltaX;
+    int8_t deltaX, ballOnStriker = 0;
     while(1)
     {
         if (updateGame > 0)
@@ -121,8 +121,11 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
                 return 1;
             if (p->life == 0)
                 return 0;
-            else if(p->life != oldLife)
+            else if (p->life > oldLife)
+                oldLife = p->life;
+            else if(p->life != oldLife && ballOnStriker == 1)
             {
+                ballOnStriker = 0;
                 printLCDGame(numberOfBlocksLeft, p);
                 resetBall(&b);
                 resetStriker(&striker1);
@@ -152,7 +155,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
             //Spawning a power up
             for (i = 0; i < numberOfBlocks; i++)
             {
-                if((blocks[i]).state == 0 && (blocks[i]).oldState >= 1 && powerUpsInUse < 5 /*&& rand()%100 < 10*/)
+                if((blocks[i]).state == 0 && (blocks[i]).oldState >= 1 && powerUpsInUse < 5 && rand()%100 < 10) //Uncomment this 10% chance for an power up
                 {
                     uint32_t x1,y1,xTemp,yTemp;
                     xTemp = (blocks[i].v2.x - blocks[i].v1.x) >> FIX14_SHIFT;
@@ -162,8 +165,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
                     struct vector_t vP;
                     intVector(&vP, x1, y1);
                     struct powerUp_t powerTemp;
-                    //initPowerUp(&powerTemp, &vP, rand()%5);
-                    initPowerUp(&powerTemp, &vP, 0);
+                    initPowerUp(&powerTemp, &vP, rand()%12); //Real thing
                     power[powerUpsInUse] = powerTemp;
                     powerUpsInUse++;
                 }
@@ -177,7 +179,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
             for(i = 0; i < powerUpsInUse; i++)
             {
                 updatePowerUp(&power[i], &striker1, &wall);
-                applyPowerUp(&power[i], &striker1, &wall);
+                applyPowerUp(&power[i], &striker1, &wall, &b, p, &ballOnStriker);
                 drawPowerUp(&power[i], blocks, yEnd, numberOfBlocks);
             }
             //removing a catched powerUp
