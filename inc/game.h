@@ -11,18 +11,10 @@
 #include "io.h"
 #include "lcd.h"
 #include "time.h"
+#include "powerUp.h"
 
 #ifndef AGAME_H
 #define AGAME_H
-
-struct powerUp_t{
-    struct vector_t v;
-    struct vector_t old;
-    uint32_t downSpeed;
-    uint8_t catched;
-    uint8_t dead;
-    uint16_t sign;
-};
 
 void fullGame(struct player_t *p, uint16_t startBallSpeed);
 uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed);
