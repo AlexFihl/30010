@@ -111,14 +111,29 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
     int32_t lenghtHalf = FIX14_DIV((s->length >> FIX14_SHIFT), 2);
     if ((newX >= s->center.x - lenghtHalf) && (newX <= s->center.x + lenghtHalf) && (newY >= s->center.y - 0x00003000)) //0x00003000 = 0.750
     {
-        setFreq(10000);
+        //setFreq(10000);
         int32_t legnhtTent = FIX14_DIV((s->length >> FIX14_SHIFT), 10);
-        if(newX > s->center.x - legnhtTent && newX < s->center.x + legnhtTent) //Checking the middle
-            b->angle =  256 - b->angle;
-        else if((newX >= s->center.x - FIX14_MULT(legnhtTent, 3 << FIX14_SHIFT)) && (newX <= s->center.x + FIX14_MULT(legnhtTent, 3 << FIX14_SHIFT))) //Checking the out mid section
-            b->angle = 256 - b->angle + ((newX > (s->center.x)) ? 18 : -18); //12.656*
-        else if((newX >= s->center.x - FIX14_MULT(legnhtTent, 5 << FIX14_SHIFT)) - (1 << FIX14_SHIFT) && (newX <= s->center.x + FIX14_MULT(legnhtTent, 5 << FIX14_SHIFT)) + (1 << FIX14_SHIFT)) //Checking the outter section
-            b->angle = 256 - b->angle + ((newX > (s->center.x)) ? 50 : -50); //35.156*
+        if(newX > s->center.x - (s->length >> 1) && newX < s->center.x + (s->length >> 1)) //Checking the middle
+        {
+            int32_t y=s->length;
+            int32_t x=(((newX - s->center.x) *100 )/(y >> 1));
+            b->angle =  256 - b->angle + (((newX - s->center.x) *100 )/(y >> 1));
+        }
+//        if(newX > s->center.x - legnhtTent && newX < s->center.x + legnhtTent) //Checking the middle
+//            b->angle =  256 - b->angle;
+//        else if((newX >= s->center.x - FIX14_MULT(legnhtTent, 3 << FIX14_SHIFT)) && (newX <= s->center.x + FIX14_MULT(legnhtTent, 3 << FIX14_SHIFT))) //Checking the out mid section
+//            b->angle = 256 - b->angle + ((newX > (s->center.x)) ? 18 : -18); //12.656*
+//        else if((newX >= s->center.x - FIX14_MULT(legnhtTent, 5 << FIX14_SHIFT)) - (1 << FIX14_SHIFT) && (newX <= s->center.x + FIX14_MULT(legnhtTent, 5 << FIX14_SHIFT)) + (1 << FIX14_SHIFT)) //Checking the outter section
+//            b->angle = 256 - b->angle + ((newX > (s->center.x)) ? 50 : -50); //35.156*
+        while (1)
+        {
+            if (b->angle >= 256)
+                b->angle -= 512;
+            if (b->angle <= -256)
+                b->angle += 512;
+            if (b->angle <= 256 && b->angle >= -256)
+                break;
+        }
         if (b->angle <= -128) b->angle = -120;
         else if (b->angle >= 128) b->angle = 120;
         newX = b->position.x + getXVel(b);
