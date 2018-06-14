@@ -415,6 +415,9 @@ static void menu()
                 gotoxy(102, 28);
                 printf("Finale score:  %04lu", score);
                 while((currentJoyStick & 0x10) == 0x00)
+                {
+
+                }
                     returnFromSubMenu = 1;
             }
             break;
