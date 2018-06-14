@@ -13,7 +13,7 @@ void initPowerUp(struct powerUp_t *p, struct vector_t *v, uint8_t powerUpType)
     p->type = powerUpType;
     switch (powerUpType)
     {
-    case 1:
+    case 0:
         p->sign = 43;
         break;
     }
