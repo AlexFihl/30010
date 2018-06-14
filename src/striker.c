@@ -52,12 +52,10 @@ int8_t updateStrikerPlacment(struct striker_t *s) //09/06
     uint8_t currentJoyStick = readJoyStick();
     if      ((currentJoyStick & 0x04) == 0x04) //When clicking the left button
     {
-        //updateStriker(s, -2);
         return -2;
     }
     else if ((currentJoyStick & 0x08) == 0x08) //When clicking the right button
     {
-         //updateStriker(s, 2);
          return 2;
     }
     return 0;

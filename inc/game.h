@@ -18,6 +18,7 @@
 struct powerUp_t{
     struct vector_t v;
     uint32_t downSpeed;
+    uint8_t catched;
 };
 
 void fullGame(struct player_t *p, uint16_t startBallSpeed);

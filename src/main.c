@@ -498,7 +498,7 @@ void mads()
 
 int main(void)
 {
-    FLASH_ProgramHalfWord(startAddress + 142, 0x0000);
+    //FLASH_ProgramHalfWord(startAddress + 142, 0x0001);
     if(*(uint16_t *)(startAddress + 144) == 0x0000)
         resetHighScore();
     startUpABC();

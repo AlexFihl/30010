@@ -9,7 +9,24 @@ static void initPowerUp(struct powerUp_t *p, struct vector_t *v)
 {
     p->v.x = v->x;
     p->v.y = v->y;
-    p->downSpeed = 1<<FIX14_SHIFT;
+    p->downSpeed = 1 << FIX14_SHIFT;
+    p->catched = 0;
+}
+
+static void drawPowerUp(struct powerUp_t *p)
+{
+
+}
+
+static void updatePowerUp(struct powerUp_t *p, struct striker_t *s)
+{
+    uint32_t newY;
+    newY = p->v.y + p->downSpeed;
+    int32_t hl = FIX14_DIV((s->length >> FIX14_SHIFT), 2);
+    if(p->v.x > (s->center.x - hl) && p->v.x < (s->center.x + hl) && s->center.y = newY)
+        p->catched = 1;
+    else
+        p->v.y = newY;
 }
 
 static void deathScreen(struct player_t *p)
@@ -50,6 +67,8 @@ static void printLCDGame(uint16_t numberOfBlocksLeft, struct player_t *p)
     lcd_update();
 }
 
+
+
 void fullGame(struct player_t *p, uint16_t startBallSpeed)
 {
     setGameSpeed(10);
@@ -72,7 +91,7 @@ void fullGame(struct player_t *p, uint16_t startBallSpeed)
 static int8_t getDeltaX(struct striker_t *s, struct wall_t *w)
 {
     int8_t deltaX = updateStrikerPlacment(s);
-    int32_t hl = FIX14_DIV((s->length >> 14), 2);
+    int32_t hl = FIX14_DIV((s->length >> FIX14_SHIFT), 2);
     if(deltaX + s->center.x + hl >= w->v2.x)
         deltaX = 0;
     if(s->center.x + deltaX - hl < (w->v1.x + 0x00004000))
@@ -181,10 +200,15 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
                     struct powerUp_t powerTemp;
                     initPowerUp(&powerTemp, &vP);
                     power[powerUpsInUse] = powerTemp;
+                    powerUpsInUse++;
                 }
             }
             //Printing a power up
-
+            for(i = 0; i < powerUpsInUse; i++)
+            {
+                updatePowerUp(&power[i], &striker1);
+                drawPowerUp(&power[i]);
+            }
             //Check have many blocks there are
             numberOfBlocksLeft = 0;
             for (i = 0; i < numberOfBlocks; i++)
