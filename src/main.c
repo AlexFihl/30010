@@ -270,8 +270,7 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
         }
         oldMenuPoint = menuPoint;
         oldJoystick = currentJoyStick;
-        if(backS == 1)
-            break;
+        if(backS == 1) break;
     }
 }
 
