@@ -20,6 +20,8 @@ void setBallSpeedFactor(int32_t speedFactor) //09/06
 void addToBallSpeedFactor(int32_t deltaSpeed)
 {
     ballSpeed += deltaSpeed;
+    if(ballSpeed <= 0x00000000)
+        ballSpeed = 0x00000800;
 }
 
 void moveBall(struct ball_t *b, int32_t deltaX, int32_t deltaY) //09/06

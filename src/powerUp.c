@@ -76,7 +76,7 @@ void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w, st
             addToBallSpeedFactor(0x00000800); //=0.125
             break;
         case 6:
-            addToBallSpeedFactor(0x80000800);//=-0.125
+            addToBallSpeedFactor(-0x00000800);//=-0.125
             break;
         case 7:
             break;
