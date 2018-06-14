@@ -94,14 +94,12 @@
 		<Unit filename="inc\ball.h" />
 		<Unit filename="inc\blocks.h" />
 		<Unit filename="inc\charset.h" />
-		<Unit filename="inc\customcharset.h" />
 		<Unit filename="inc\fix14.h" />
 		<Unit filename="inc\game.h" />
 		<Unit filename="inc\gameWall.h" />
 		<Unit filename="inc\io.h" />
 		<Unit filename="inc\lcd.h" />
 		<Unit filename="inc\minigame.h" />
-		<Unit filename="inc\minigame_fullscreen.h" />
 		<Unit filename="inc\player.h" />
 		<Unit filename="inc\stm32f30x.h" />
 		<Unit filename="inc\stm32f30x_conf.h" />
@@ -213,9 +211,6 @@
 		<Unit filename="src\charset.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src\customcharset.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="src\game.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -234,10 +229,6 @@
 		<Unit filename="src\minigame.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src\minigame_fullscreen.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src\minigame_fullscreen.h" />
 		<Unit filename="src\player.c">
 			<Option compilerVar="CC" />
 		</Unit>
