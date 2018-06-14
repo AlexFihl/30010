@@ -154,7 +154,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
             //Spawning a power up
             for (i = 0; i < numberOfBlocks; i++)
             {
-                if((blocks[i]).state == 0 && (blocks[i]).oldState >= 1 && powerUpsInUse < 5 /*&& rand()%100 < 10*/) //Uncomment this 10% chance for an power up
+                if((blocks[i]).state == 0 && (blocks[i]).oldState >= 1 && powerUpsInUse < 5 && rand()%100 < 10) //Uncomment this 10% chance for an power up
                 {
                     uint32_t x1,y1,xTemp,yTemp;
                     xTemp = (blocks[i].v2.x - blocks[i].v1.x) >> FIX14_SHIFT;
@@ -164,8 +164,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
                     struct vector_t vP;
                     intVector(&vP, x1, y1);
                     struct powerUp_t powerTemp;
-                    //initPowerUp(&powerTemp, &vP, rand()%5); //Real thing
-                    initPowerUp(&powerTemp, &vP, 0xB); //For testing
+                    initPowerUp(&powerTemp, &vP, rand()%12); //Real thing
                     power[powerUpsInUse] = powerTemp;
                     powerUpsInUse++;
                 }
