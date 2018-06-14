@@ -121,6 +121,8 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
                 return 1;
             if (p->life == 0)
                 return 0;
+            else if (p->life > oldLife)
+                oldLife = p->life;
             else if(p->life != oldLife)
             {
                 printLCDGame(numberOfBlocksLeft, p);
@@ -152,7 +154,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
             //Spawning a power up
             for (i = 0; i < numberOfBlocks; i++)
             {
-                if((blocks[i]).state == 0 && (blocks[i]).oldState >= 1 && powerUpsInUse < 5 /*&& rand()%100 < 10*/)
+                if((blocks[i]).state == 0 && (blocks[i]).oldState >= 1 && powerUpsInUse < 5 /*&& rand()%100 < 10*/) //Uncomment this 10% chance for an power up
                 {
                     uint32_t x1,y1,xTemp,yTemp;
                     xTemp = (blocks[i].v2.x - blocks[i].v1.x) >> FIX14_SHIFT;
@@ -162,8 +164,8 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
                     struct vector_t vP;
                     intVector(&vP, x1, y1);
                     struct powerUp_t powerTemp;
-                    //initPowerUp(&powerTemp, &vP, rand()%5);
-                    initPowerUp(&powerTemp, &vP, 0);
+                    //initPowerUp(&powerTemp, &vP, rand()%5); //Real thing
+                    initPowerUp(&powerTemp, &vP, 0); //For testing
                     power[powerUpsInUse] = powerTemp;
                     powerUpsInUse++;
                 }
@@ -177,7 +179,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
             for(i = 0; i < powerUpsInUse; i++)
             {
                 updatePowerUp(&power[i], &striker1, &wall);
-                applyPowerUp(&power[i], &striker1, &wall);
+                applyPowerUp(&power[i], &striker1, &wall, &b, p);
                 drawPowerUp(&power[i], blocks, yEnd, numberOfBlocks);
             }
             //removing a catched powerUp

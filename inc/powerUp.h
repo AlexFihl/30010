@@ -4,6 +4,8 @@
 #include "ansi.h"
 #include "striker.h"
 #include "stm32f30x_conf.h"
+#include "player.h"
+#include "ball.h"
 #include <stdio.h>
 
 
@@ -22,7 +24,7 @@ struct powerUp_t{
 
 void initPowerUp(struct powerUp_t *p, struct vector_t *v, uint8_t powerUpType);
 void drawPowerUp(struct powerUp_t *p, struct block_t * b, uint16_t lowerBond, uint32_t numberOfBlocks);
-void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w);
+void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w, struct ball_t *b, struct player_t *pl);
 void updatePowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w);
 
 

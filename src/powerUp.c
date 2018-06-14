@@ -1,5 +1,8 @@
 #include "powerUp.h"
 
+const uint16_t signA[13] = {
+    43, 45, 49, 158, 249, 175, 174, 33, 159, 127, 167, 207
+};
 
 void initPowerUp(struct powerUp_t *p, struct vector_t *v, uint8_t powerUpType)
 {
@@ -11,16 +14,13 @@ void initPowerUp(struct powerUp_t *p, struct vector_t *v, uint8_t powerUpType)
     p->catched = 0;
     p->dead = 0;
     p->type = powerUpType;
-    switch (powerUpType)
-    {
-    case 0:
-        p->sign = 43;
-        break;
-    }
+    p->sign = signA[powerUpType];
 }
 
 void drawPowerUp(struct powerUp_t *p, struct block_t * b, uint16_t lowerBond, uint32_t numberOfBlocks)
 {
+    if(p->type == 2)
+        fgcolor(2);
     if(p->v.y > lowerBond)
     {
         gotoxy(p->old.x >> FIX14_SHIFT, p->old.y >> FIX14_SHIFT);
@@ -49,9 +49,10 @@ void drawPowerUp(struct powerUp_t *p, struct block_t * b, uint16_t lowerBond, ui
 
         }
     }
+    resetbgcolor();
 }
 
-void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w)
+void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w, struct ball_t *b, struct player_t *pl)
 {
     if(p->catched == 1)
     {
@@ -59,6 +60,15 @@ void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w)
         {
         case 0:
             changeStrikerLength(s, 4, w);
+            break;
+        case 1:
+            changeStrikerLength(s, -4, w);
+            break;
+        case 2:
+            gainLife(pl);
+            break;
+        case 3:
+            lossLife(pl);
             break;
         }
 
