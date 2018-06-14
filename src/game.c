@@ -23,10 +23,17 @@ static void drawPowerUp(struct powerUp_t *p, struct block_t b)
         gotoxy(p->old.x >> FIX14_SHIFT, p->old.y >> FIX14_SHIFT);
         printf("%c", 32);
     }
-    if(p->v.x > b.v1.x && p->v.x < b.v2.x && p->v.y > b.v1.y && p->v.y < b.v2.y)
+    if(p->v.x > b.v1.x && p->v.x < b.v2.x && p->v.y > b.v1.y && p->v.y < b.v2.y && p->catched == 0)
     {
         gotoxy(p->v.x >> FIX14_SHIFT, p->v.y >> FIX14_SHIFT);
         printf("%c", p->sign);
+    }
+}
+static void applyPowerUp(struct powerUp_t *p, struct striker_t *s)
+{
+    if(p->catched == 1)
+    {
+        changeStrikerLength(s, 2);
     }
 }
 
@@ -194,7 +201,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
             updatePosition(&b, &wall, &blocks, numberOfBlocks, p, &striker1);
             drawBall(&b);
 
-            //Drawing the blocks
+             //Drawing the blocks
             for (i = 0; i < x*y; i++)
                 drawBlock(&blocks[i]);
 
@@ -223,6 +230,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
             for(i = 0; i < powerUpsInUse; i++)
             {
                 updatePowerUp(&power[i], &striker1);
+                applyPowerUp(&power[i], &striker1);
                 for(j=0; j < numberOfBlocks; j++)
                     if(blocks[i].state == 0)
                         drawPowerUp(&power[i], blocks[i]);

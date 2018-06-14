@@ -418,7 +418,7 @@ static void menu()
                 {
 
                 }
-                    returnFromSubMenu = 1;
+                returnFromSubMenu = 1;
             }
             break;
         default:
