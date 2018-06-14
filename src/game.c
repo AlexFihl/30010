@@ -235,6 +235,18 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
                     if(blocks[i].state == 0)
                         drawPowerUp(&power[i], blocks[i]);
             }
+            //removing a catched powerUp
+            /*for(i=0; i < powerUpsInUse; i++)
+            {
+                if(power[i].catched == 1)
+                {
+                    for(j=i;j<powerUpsInUse)
+                        power[j] = power[j+1];
+                    power[powerUpsInUse-1] = power[powerUpsInUse];
+                    powerUpsInUse--;
+                }
+
+            }*/
             //Check have many blocks there are
             numberOfBlocksLeft = 0;
             for (i = 0; i < numberOfBlocks; i++)
