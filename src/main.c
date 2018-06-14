@@ -413,10 +413,7 @@ static void menu()
                 window(&w, "Score", 0);
                 gotoxy(102, 28);
                 printf("Finale score:  %04lu", score);
-                while((currentJoyStick & 0x10) == 0x00)
-                {
-
-                }
+                while((readJoyStick() & 0x10) == 0x00){}
                 returnFromSubMenu = 1;
             }
             break;
