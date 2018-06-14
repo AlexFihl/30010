@@ -358,17 +358,17 @@ static void menu()
             }
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
+                oldJoystick = currentJoyStick;
                 clrsrc();
                 window(&w, "High Scores", 0);
                 printHighScore();
-                while((readJoyStick() & 0x10) == 0x10)
-                    while(1)
-                    {
-                        currentJoyStick = readJoyStick();
-                        if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
-                            break;
-                        oldJoystick = currentJoyStick;
-                    }
+                while(1)
+                {
+                    currentJoyStick = readJoyStick();
+                    if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                        break;
+                    oldJoystick = currentJoyStick;
+                }
                 oldJoystick = currentJoyStick;
                 returnFromSubMenu = 1;
             }
@@ -382,17 +382,17 @@ static void menu()
             }
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
+                oldJoystick = currentJoyStick;
                 clrsrc();
                 window(&w, "Help", 0);
                 printHelp();
-                while((readJoyStick() & 0x10) == 0x10)
-                    while(1)
-                    {
-                        currentJoyStick = readJoyStick();
-                        if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
-                            break;
-                        oldJoystick = currentJoyStick;
-                    }
+                while(1)
+                {
+                    currentJoyStick = readJoyStick();
+                    if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                        break;
+                    oldJoystick = currentJoyStick;
+                }
                 returnFromSubMenu = 1;
             }
 
@@ -413,8 +413,8 @@ static void menu()
                 window(&w, "Score", 0);
                 gotoxy(102, 28);
                 printf("Finale score:  %04lu", score);
-                while((currentJoyStick & 0x10) == 0x00)
-                    returnFromSubMenu = 1;
+                while((readJoyStick() & 0x10) == 0x00){}
+                returnFromSubMenu = 1;
             }
             break;
         default:
@@ -497,7 +497,7 @@ void mads()
 
 int main(void)
 {
-    FLASH_ProgramHalfWord(startAddress + 142, 0x0000);
+    //FLASH_ProgramHalfWord(startAddress + 142, 0x0001);
     if(*(uint16_t *)(startAddress + 144) == 0x0000)
         resetHighScore();
     startUpABC();

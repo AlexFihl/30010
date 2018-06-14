@@ -5,6 +5,8 @@ const uint8_t heart[] =   //09/06
     0x1C, 0x3E, 0x7E, 0xFC, 0xFC, 0x7E, 0x3E, 0x1C
 };
 
+
+
 static void deathScreen(struct player_t *p)
 {
     uint8_t i;
@@ -43,6 +45,8 @@ static void printLCDGame(uint16_t numberOfBlocksLeft, struct player_t *p)
     lcd_update();
 }
 
+
+
 void fullGame(struct player_t *p, uint16_t startBallSpeed)
 {
     setGameSpeed(10);
@@ -62,17 +66,6 @@ void fullGame(struct player_t *p, uint16_t startBallSpeed)
     }
 }
 
-static int8_t getDeltaX(struct striker_t *s, struct wall_t *w)
-{
-    int8_t deltaX = updateStrikerPlacment(s);
-    int32_t hl = FIX14_DIV((s->length >> 14), 2);
-    if(deltaX + s->center.x + hl >= w->v2.x)
-        deltaX = 0;
-    if(s->center.x + deltaX - hl < (w->v1.x + 0x00004000))
-        deltaX = 0;
-    return deltaX;
-}
-
 uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) //09/06
 {
     //Setting the ball speed
@@ -83,7 +76,9 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
     //Making the wall
     struct wall_t wall;
     struct vector_t v1, v2, v3, v4;
-    uint16_t i, x, y; //used for blocks
+    struct powerUp_t power[5];
+    uint8_t powerUpsInUse = 0;
+    uint16_t i, j, x, y; //used for blocks
     intVector(&v1, 3, 1);
     intVector(&v2, 218, 63);
     intWall(&wall, &v1, &v2);
@@ -145,9 +140,6 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
                 }
                 oldLife = p->life;
             }
-            //Drawing the blocks
-            for (i = 0; i < x*y; i++)
-                drawBlock(&blocks[i]);
 
             //Moving the striker
             deltaX = getDeltaX(&striker1, &wall);
@@ -157,6 +149,49 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
             updatePosition(&b, &wall, &blocks, numberOfBlocks, p, &striker1);
             drawBall(&b);
 
+            //Spawning a power up
+            for (i = 0; i < numberOfBlocks; i++)
+            {
+                if((blocks[i]).state == 0 && (blocks[i]).oldState >= 1 && powerUpsInUse < 5 /*&& rand()%100 < 10*/)
+                {
+                    uint32_t x1,y1,xTemp,yTemp;
+                    xTemp = (blocks[i].v2.x - blocks[i].v1.x) >> FIX14_SHIFT;
+                    x1 = (blocks[i].v1.x + FIX14_DIV(xTemp, 2)) >> FIX14_SHIFT;
+                    yTemp = (blocks[i].v2.y - blocks[i].v1.y) >> FIX14_SHIFT;
+                    y1 = (blocks[i].v1.y + FIX14_DIV(yTemp, 2)) >> FIX14_SHIFT;
+                    struct vector_t vP;
+                    intVector(&vP, x1, y1);
+                    struct powerUp_t powerTemp;
+                    //initPowerUp(&powerTemp, &vP, rand()%5);
+                    initPowerUp(&powerTemp, &vP, 0);
+                    power[powerUpsInUse] = powerTemp;
+                    powerUpsInUse++;
+                }
+            }
+
+            //Drawing the blocks
+            for (i = 0; i < x*y; i++)
+                drawBlock(&blocks[i]);
+
+            //Printing a power up
+            for(i = 0; i < powerUpsInUse; i++)
+            {
+                updatePowerUp(&power[i], &striker1, &wall);
+                applyPowerUp(&power[i], &striker1, &wall);
+                drawPowerUp(&power[i], blocks, yEnd, numberOfBlocks);
+            }
+            //removing a catched powerUp
+            for(i=0; i < powerUpsInUse; i++)
+            {
+                if(power[i].catched == 1 || power[i].dead == 1)
+                {
+                    for(j=i; j<powerUpsInUse; j++)
+                        power[j] = power[j+1];
+                    power[powerUpsInUse-1] = power[powerUpsInUse];
+                    powerUpsInUse--;
+                }
+
+            }
             //Check have many blocks there are
             numberOfBlocksLeft = 0;
             for (i = 0; i < numberOfBlocks; i++)

@@ -15,9 +15,9 @@ void drawSpaceship (struct minigame_t *s) //08/06
 {
     uint8_t i;
 
-    for(i=0;i<16;i++)
+    for(i=0; i<16; i++)
         lcdBuffer[i+(s->oldShipLine*128)]=0x00;
-    for(i=0;i<16;i++)
+    for(i=0; i<16; i++)
         lcdBuffer[i+(s->shipLine*128)]=customcharacter_data[0][i];
     lcd_push_buffer(lcdBuffer);
 
@@ -27,7 +27,7 @@ void drawSpaceship (struct minigame_t *s) //08/06
 void moveShip (struct minigame_t *s, int8_t deltaLine) //08/06
 {
     if (s->shipLine+deltaLine>=0 && s->shipLine+deltaLine<=3)
-    s->shipLine+=deltaLine;
+        s->shipLine+=deltaLine;
 }
 static void minigameSrolling (struct minigame_t *s)
 {
@@ -57,7 +57,7 @@ static void minigameSrolling (struct minigame_t *s)
 static void startObstacle (struct obstacle_t *s,struct minigame_t *t, uint32_t timeSinceStart)
 {
     uint8_t i;
-    for(i=0;i<16;i++)
+    for(i=0; i<16; i++)
         t->obstacleBuffer[i+(s->obstacleLine*16)]=customcharacter_data[1+s->obstacleLine][i];
     s->timeStart=timeSinceStart;
     s->isAlive=1;
@@ -89,29 +89,29 @@ static void drawShoot(struct minigame_t *s)
     uint8_t j;
     uint8_t i;
     if (s->shootIsAlive>1)
+    {
+        for (i = 0; i <16 ; i++)
+        {
+            lcdBuffer[i+16+128*s->shootLine] = customcharacter_data[5][i];
+        }
+        for (j=0; j<6; j++)
         {
             for (i = 0; i <16 ; i++)
             {
-                lcdBuffer[i+16+128*s->shootLine] = customcharacter_data[5][i];
-            }
-            for (j=0;j<6;j++)
-            {
-                for (i = 0; i <16 ; i++)
-                {
-                    lcdBuffer[i+32+(j*16)+128*s->shootLine] = customcharacter_data[6][i];
-                }
+                lcdBuffer[i+32+(j*16)+128*s->shootLine] = customcharacter_data[6][i];
             }
         }
+    }
     else if (s->shootIsAlive==1)
+    {
+        for (j=0; j<7; j++)
         {
-            for (j=0;j<7;j++)
+            for (i = 0; i <16 ; i++)
             {
-                for (i = 0; i <16 ; i++)
-                {
-                    lcdBuffer[i+16+(j*16)+128*s->shootLine] = 0x00;
-                }
+                lcdBuffer[i+16+(j*16)+128*s->shootLine] = 0x00;
             }
         }
+    }
 
     if (s->shootIsAlive>0)
         s->shootIsAlive--;
@@ -147,8 +147,8 @@ static void startScreen()
     uint16_t i;
     uint16_t j;
     bufferReset();
-    for (i=0;i<3;i++)
-        for (j=0;j<127;j++)
+    for (i=0; i<3; i++)
+        for (j=0; j<127; j++)
             lcdBuffer[j+(i*128)]=customfullscreen[i][j];
 
     char str1[22];
@@ -164,8 +164,8 @@ static void endScreen(struct minigame_t *s)
     uint16_t i;
     uint16_t j;
     bufferReset();
-    for (i=0;i<3;i++)
-        for (j=0;j<127;j++)
+    for (i=0; i<3; i++)
+        for (j=0; j<127; j++)
             lcdBuffer[j+(i*128)]=customfullscreen[i+3][j];
 
     char str1[7];
@@ -201,60 +201,63 @@ uint32_t playMinigame1() //08/06
     initObstacle(&obstacle4,&minigame1,3);
     minigameSpeed = 8;
     oldJoystick = currentJoyStick;
-    while (1){
-        if (updateMinigame > 0){
+    while (1)
+    {
+        if (updateMinigame > 0)
+        {
             currentJoyStick = readJoyStick();
-            if (currentJoyStick != oldJoystick){
+            if (currentJoyStick != oldJoystick)
+            {
                 if      ((currentJoyStick & 0x02) == 0x02) //When clicking the up button
                     moveShip(&minigame1, 1);
                 else if ((currentJoyStick & 0x01) == 0x01) //When clicking the down button
                     moveShip(&minigame1, -1);
                 else if (((currentJoyStick & 0x10) == 0x10)&&(minigame1.shotsLeft!=0)) //When clicking the center button
-                    {
-                        shoot(&minigame1,&obstacle1);
-                        shoot(&minigame1,&obstacle2);
-                        shoot(&minigame1,&obstacle3);
-                        shoot(&minigame1,&obstacle4);
-                        minigame1.shotsLeft--;
-                    }
+                {
+                    shoot(&minigame1,&obstacle1);
+                    shoot(&minigame1,&obstacle2);
+                    shoot(&minigame1,&obstacle3);
+                    shoot(&minigame1,&obstacle4);
+                    minigame1.shotsLeft--;
+                }
                 oldJoystick = currentJoyStick;
             }
-        minigameSrolling(&minigame1);
-        drawShoot(&minigame1);
-        drawSpaceship(&minigame1);
-        collision(&minigame1,&obstacle1);
-        collision(&minigame1,&obstacle2);
-        collision(&minigame1,&obstacle3);
-        collision(&minigame1,&obstacle4);
-        rndStartObstacle(&obstacle1,&minigame1,minigame1.timeSinceStart);
-        rndStartObstacle(&obstacle2,&minigame1,minigame1.timeSinceStart);
-        rndStartObstacle(&obstacle3,&minigame1,minigame1.timeSinceStart);
-        rndStartObstacle(&obstacle4,&minigame1,minigame1.timeSinceStart);
-        if (minigame1.life==0)
-        {
-            endScreen(&minigame1);
-            return minigame1.timeSinceStart;
-        }
-        updateMinigame = 0;
-        minigame1.timeSinceStart++;
-        if (minigame1.timeSinceStart==400)
-            minigameSpeed = 7;
-        else if (minigame1.timeSinceStart==600)
-            minigame1.chanceOfSpawn = 94;
-        else if (minigame1.timeSinceStart==800)
-            minigameSpeed = 6;
-        else if (minigame1.timeSinceStart==1000)
-            minigame1.chanceOfSpawn = 90;
-        else if (minigame1.timeSinceStart==1200)
-            minigameSpeed = 5;
-        else if (minigame1.timeSinceStart==1500)
-            minigameSpeed = 4;
-        else if (minigame1.timeSinceStart==1900)
-            minigameSpeed = 3;
-        else if (minigame1.timeSinceStart==2400)
-            minigameSpeed = 2;
-        else if (minigame1.timeSinceStart==3000)
-            minigameSpeed = 1;
+            minigameSrolling(&minigame1);
+            drawShoot(&minigame1);
+            drawSpaceship(&minigame1);
+            collision(&minigame1,&obstacle1);
+            collision(&minigame1,&obstacle2);
+            collision(&minigame1,&obstacle3);
+            collision(&minigame1,&obstacle4);
+            rndStartObstacle(&obstacle1,&minigame1,minigame1.timeSinceStart);
+            rndStartObstacle(&obstacle2,&minigame1,minigame1.timeSinceStart);
+            rndStartObstacle(&obstacle3,&minigame1,minigame1.timeSinceStart);
+            rndStartObstacle(&obstacle4,&minigame1,minigame1.timeSinceStart);
+            if (minigame1.life==0)
+            {
+                endScreen(&minigame1);
+                return minigame1.timeSinceStart;
+            }
+            updateMinigame = 0;
+            minigame1.timeSinceStart++;
+            if (minigame1.timeSinceStart==400)
+                minigameSpeed = 7;
+            else if (minigame1.timeSinceStart==600)
+                minigame1.chanceOfSpawn = 94;
+            else if (minigame1.timeSinceStart==800)
+                minigameSpeed = 6;
+            else if (minigame1.timeSinceStart==1000)
+                minigame1.chanceOfSpawn = 90;
+            else if (minigame1.timeSinceStart==1200)
+                minigameSpeed = 5;
+            else if (minigame1.timeSinceStart==1500)
+                minigameSpeed = 4;
+            else if (minigame1.timeSinceStart==1900)
+                minigameSpeed = 3;
+            else if (minigame1.timeSinceStart==2400)
+                minigameSpeed = 2;
+            else if (minigame1.timeSinceStart==3000)
+                minigameSpeed = 1;
         }
     }
 }
