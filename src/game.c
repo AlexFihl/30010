@@ -62,17 +62,6 @@ void fullGame(struct player_t *p, uint16_t startBallSpeed)
     }
 }
 
-static int8_t getDeltaX(struct striker_t *s, struct wall_t *w)
-{
-    int8_t deltaX = updateStrikerPlacment(s);
-    int32_t hl = FIX14_DIV((s->length >> 14), 2);
-    if(deltaX + s->center.x + hl >= w->v2.x)
-        deltaX = 0;
-    if(s->center.x + deltaX - hl < (w->v1.x + 0x00004000))
-        deltaX = 0;
-    return deltaX;
-}
-
 uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) //09/06
 {
     //Setting the ball speed

@@ -6,6 +6,7 @@
 #include <string.h>
 #include "fix14.h"
 #include "io.h"
+#include "gameWall.h"
 
 
 
@@ -26,4 +27,5 @@ void changeStrikerLength(struct striker_t *s, int32_t deltaLength);
 void drawStriker(struct striker_t *s);
 void resetStriker(struct striker_t *s);
 int8_t updateStrikerPlacment(struct striker_t *s);
+int8_t getDeltaX(struct striker_t *s, struct wall_t *w);
 #endif //STRIKER_H
