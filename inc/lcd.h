@@ -4,7 +4,6 @@
 #include "charset.h"
 #include "30010_io.h"
 #include "io.h"
-#include "customcharset.h"
 
 
 #ifndef LCD_H
