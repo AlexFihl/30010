@@ -30,9 +30,9 @@ void moveBall(struct ball_t *b, int32_t deltaX, int32_t deltaY) //09/06
     b->position.y += deltaY;
 }
 
-void moveBallToPosition(struct ball_t *b)
+void teleportBall(struct ball_t *b)
 {
-    b->position.y = 5;
+    b->position.y = 5 << FIX14_SHIFT;
 }
 
 static int32_t getXVel(struct ball_t *b) //09/06

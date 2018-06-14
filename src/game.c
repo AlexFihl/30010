@@ -165,7 +165,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
                     intVector(&vP, x1, y1);
                     struct powerUp_t powerTemp;
                     //initPowerUp(&powerTemp, &vP, rand()%5); //Real thing
-                    initPowerUp(&powerTemp, &vP, 6); //For testing
+                    initPowerUp(&powerTemp, &vP, 0xB); //For testing
                     power[powerUpsInUse] = powerTemp;
                     powerUpsInUse++;
                 }

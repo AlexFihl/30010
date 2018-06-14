@@ -58,36 +58,36 @@ void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w, st
     {
         switch (p->type)
         {
-        case 0:
+        case 0x0:
             changeStrikerLength(s, 4, w);
             break;
-        case 1:
+        case 0x1:
             changeStrikerLength(s, -4, w);
             break;
-        case 2:
+        case 0x2:
             gainLife(pl);
             break;
-        case 3:
+        case 0x3:
             lossLife(pl);
             break;
-        case 4:
+        case 0x4:
             break;
-        case 5:
+        case 0x5:
             addToBallSpeedFactor(0x00000800); //=0.125
             break;
-        case 6:
+        case 0x6:
             addToBallSpeedFactor(-0x00000800);//=-0.125
             break;
-        case 7:
+        case 0x7:
             break;
-        case 8:
+        case 0x8:
             break;
-        case 9:
+        case 0x9:
             break;
         case 0xA:
             break;
         case 0xB:
-            moveBallToPosition(b);
+            teleportBall(b);
             break;
         }
 
