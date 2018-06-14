@@ -22,6 +22,143 @@
 //For flash memory
 #define startAddress 0x0800F800
 
+static void subSettingsMenu(struct player_t *p, uint16_t * startBallSpeed, struct wall_t *w)
+{
+    uint8_t menuPoint = 0, oldMenuPoint = 1, returnFromSubMenu = 0, backS = 0;
+    clrsrc();
+    window(w, "Settings", 0);
+    uint8_t currentJoyStick, oldJoystick = readJoyStick();
+    while(1)
+    {
+        currentJoyStick = readJoyStick();
+        if (currentJoyStick != oldJoystick)
+        {
+            if      ((currentJoyStick & 0x01) == 0x01) //When clicking the up button
+                menuPoint--;
+            else if ((currentJoyStick & 0x02) == 0x02) //When clicking the down button
+                menuPoint++;
+            if(menuPoint < 0) menuPoint = 4;
+            else if(menuPoint > 4) menuPoint = 0;
+        }
+        if(returnFromSubMenu == 1)
+        {
+            clrsrc();
+            window(w, "Settings", 0);
+            gotoxy(104, 23);
+            printf("Player name");
+            gotoxy(104, 25);
+            printf("Striker lenght");
+            gotoxy(104, 27);
+            printf("Game speed");
+            gotoxy(104, 29);
+            printf("Ball speed");
+            gotoxy(104, 31);
+            printf("Back");
+            returnFromSubMenu = 0;
+        }
+        if(menuPoint != oldMenuPoint)
+        {
+            gotoxy(104, 23);
+            printf("Player name");
+            gotoxy(104, 25);
+            printf("Striker lenght");
+            gotoxy(104, 27);
+            printf("Game speed");
+            gotoxy(104, 29);
+            printf("Ball speed");
+            gotoxy(104, 31);
+            printf("Back");
+            inverse(1);
+        }
+        switch(menuPoint)
+        {
+        case 0:
+            if(menuPoint != oldMenuPoint)
+            {
+                gotoxy(104, 23);
+                printf("Player name");
+                inverse(0);
+            }
+            if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+            {
+                clrsrc();
+                window(w, "Name", 0);
+                char * name;
+                gotoxy(101, 23);
+                printf("Player name:");
+                gotoxy(101, 24);
+                printf("Max 10 charters!");
+                gotoxy(101, 25);
+                name = getInput();
+                setPlayerName(p, name);
+                returnFromSubMenu = 1;
+            }
+            break;
+        case 1:
+            if(menuPoint != oldMenuPoint)
+            {
+                gotoxy(104, 25);
+                printf("Striker lenght");
+                inverse(0);
+            }
+            if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+            {
+                clrsrc();
+                window(w, "Striker lenght", 0);
+                returnFromSubMenu = 1;
+            }
+            break;
+        case 2:
+            if(menuPoint != oldMenuPoint)
+            {
+                gotoxy(104, 27);
+                printf("Game speed");
+                inverse(0);
+            }
+            if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+            {
+                clrsrc();
+                window(w, "Game speed", 0);
+                returnFromSubMenu = 1;
+            }
+            break;
+        case 3:
+            if(menuPoint != oldMenuPoint)
+            {
+                gotoxy(104, 29);
+                printf("Ball speed");
+                inverse(0);
+            }
+            if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+            {
+                clrsrc();
+                window(w, "Ball speed", 0);
+                returnFromSubMenu = 1;
+            }
+            break;
+        case 4:
+            if(menuPoint != oldMenuPoint)
+            {
+                gotoxy(104, 31);
+                printf("Back");
+                inverse(0);
+            }
+            if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+            {
+                backS = 1;
+            }
+            break;
+        default:
+            menuPoint = 0;
+            break;
+        }
+        oldMenuPoint = menuPoint;
+        oldJoystick = currentJoyStick;
+        if(backS == 1)
+            break;
+    }
+}
+
 static void printHighScore()
 {
     gotoxy(101, 23);
@@ -35,10 +172,10 @@ static void printHighScore()
     gotoxy(101, 31);
     printf("5: ");
     uint8_t i,j;
-    for (i=0; i<5;i++)
+    for (i=0; i<5; i++)
     {
         gotoxy(104, 23+i*2);
-        for(j=0;j<10;j++)
+        for(j=0; j<10; j++)
         {
             if(*(uint16_t *)(startAddress + j*2 + i*24) == '\0')
                 break;
@@ -57,7 +194,7 @@ static void saveHighScore(struct player_t *p)
 {
     char names[5][10];
     uint32_t point[5];
-    uint32_t i, j;
+    uint32_t i, j, h;
     for(i=0; i<5; i++)
     {
         for(j=0; j<10; j++)
@@ -65,6 +202,42 @@ static void saveHighScore(struct player_t *p)
         point[i] = *(uint16_t *)(startAddress + 20 + i*24) << 16;
         point[i] |= *(uint16_t *)(startAddress + 22 + i*24);
     }
+
+    if(point[4] > p->score)
+        return;
+    if(point[0] > p->score)
+    {
+
+        for(i=4; i > 0; i--)
+            if(point[i] < p->score && point[i-1] > p->score)
+                break;
+    }
+    else
+        i = 0;
+    for(j=4; j > i; j--)
+    {
+        for(h=0; h<10; h++)
+            names[j][h] = names[j-1][h];
+        point[j] = point[j-1];
+    }
+    point[i] = p->score;
+    for(j=0; j<10; j++)
+        names[i][j] = (p->name)[j];
+
+    //Saving to the flash agian
+    FLASH_Unlock(); // Unlock FLASH for modification
+    FLASH_ClearFlag( FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPERR );
+    FLASH_ErasePage( startAddress ); // Erase entire page before writing
+    for(j=0; j<5; j++)
+    {
+        for(i=0; i<10; i++)
+        {
+            FLASH_ProgramHalfWord(startAddress + i*2 + j * 24, names[j][i]);
+        }
+        FLASH_ProgramHalfWord(startAddress + 20 + j*24, point[j] >> 16); //For getting the top 4 byte of point
+        FLASH_ProgramHalfWord(startAddress + 20 + 2 + j*24, point[j]);
+    }
+    FLASH_Lock();
 }
 
 static void printHelp()
@@ -102,6 +275,7 @@ static void printFullMainMenu()
 static void menu()
 {
     uint8_t menuPoint = 0, oldMenuPoint = 1, returnFromSubMenu = 1;
+    uint16_t startBallSpeed = 0;
     clrsrc();
     struct wall_t w;
     struct vector_t v1, v2;
@@ -116,7 +290,7 @@ static void menu()
     //Making a player
     struct player_t player;
     intPlayer(&player);
-    char * name = "Player 1\0";
+    char * name = "Player\0";
     setPlayerName(&player, name);
 
     while(1)
@@ -128,8 +302,8 @@ static void menu()
                 menuPoint--;
             else if ((currentJoyStick & 0x02) == 0x02) //When clicking the down button
                 menuPoint++;
-            if(menuPoint < 0) menuPoint = 0;
-            else if(menuPoint > maksMainMenu) menuPoint = maksMainMenu;
+            if(menuPoint < 0) menuPoint = maksMainMenu;
+            else if(menuPoint > maksMainMenu) menuPoint = 0;
         }
         if(returnFromSubMenu == 1)
         {
@@ -156,7 +330,10 @@ static void menu()
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
                 setPlayerLife(&player, 3);
-                fullGame(&player);
+                fullGame(&player, startBallSpeed);
+                //Set player name should be implemtentet
+                saveHighScore(&player);
+                resetPlayer(&player);
                 returnFromSubMenu = 1;
             }
             break;
@@ -169,15 +346,7 @@ static void menu()
             }
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
-                clrsrc();
-                window(&w, "Settings", 0);
-                gotoxy(101, 23);
-                printf("Player name:");
-                gotoxy(101, 24);
-                printf("Max 10 charters!");
-                gotoxy(101, 25);
-                name = getInput();
-                setPlayerName(&player, name);
+                subSettingsMenu(&player, &startBallSpeed, &w);
                 returnFromSubMenu = 1;
             }
             break;
@@ -194,13 +363,13 @@ static void menu()
                 window(&w, "High Scores", 0);
                 printHighScore();
                 while((readJoyStick() & 0x10) == 0x10)
-                while(1)
-                {
-                    currentJoyStick = readJoyStick();
-                    if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
-                        break;
-                    oldJoystick = currentJoyStick;
-                }
+                    while(1)
+                    {
+                        currentJoyStick = readJoyStick();
+                        if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                            break;
+                        oldJoystick = currentJoyStick;
+                    }
                 oldJoystick = currentJoyStick;
                 returnFromSubMenu = 1;
             }
@@ -218,13 +387,13 @@ static void menu()
                 window(&w, "Help", 0);
                 printHelp();
                 while((readJoyStick() & 0x10) == 0x10)
-                while(1)
-                {
-                    currentJoyStick = readJoyStick();
-                    if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
-                        break;
-                    oldJoystick = currentJoyStick;
-                }
+                    while(1)
+                    {
+                        currentJoyStick = readJoyStick();
+                        if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                            break;
+                        oldJoystick = currentJoyStick;
+                    }
                 returnFromSubMenu = 1;
             }
 
@@ -246,7 +415,7 @@ static void menu()
                 gotoxy(102, 28);
                 printf("Finale score:  %04lu", score);
                 while((currentJoyStick & 0x10) == 0x00)
-                returnFromSubMenu = 1;
+                    returnFromSubMenu = 1;
             }
             break;
         default:
@@ -267,8 +436,8 @@ void simon()
 
 void alex()
 {
+    /*
     uint8_t i, j;
-    //char * name[5] = {"Alex\0", "Simon\0", "Mads\0", "Alex\0", "Mads\0"};
     char name[5][10] = {"Alex\0", "Simon\0", "Mads\0", "Alex\0", "Mads\0"};
     uint32_t point[5] = {0x0000039B,0x00000342,0x00000222,0x00000123,0x0000000B};
     FLASH_Unlock(); // Unlock FLASH for modification
@@ -285,6 +454,38 @@ void alex()
         FLASH_ProgramHalfWord(startAddress + 20 + j*24, point[j] >> 16); //For getting the top 4 byte of point
         FLASH_ProgramHalfWord(startAddress + 20 + 2 + j*24, point[j]);
     }
+    FLASH_Lock();*/
+
+    struct player_t p;
+    intPlayer(&p);
+    p.score = 501;
+    char * name3 = "Alex\0";
+    setPlayerName(&p, name3);
+    saveHighScore(&p);
+    printHighScore();
+
+}
+
+static void resetHighScore()
+{
+    uint8_t i, j;
+    char name[5][10] = {"Best\0", "Better\0", "Good\0", "Bad\0", "Worst\0"};
+    uint32_t point[5] = {0x000003E8,0x000001F4,0x000000FA,0x00000064,0x00000020};
+    FLASH_Unlock(); // Unlock FLASH for modification
+    FLASH_ClearFlag( FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPERR );
+    FLASH_ErasePage( startAddress ); // Erase entire page before writing
+    for(j=0; j<5; j++)
+    {
+        gotoxy(1,1);
+        for(i=0; i<10; i++)
+        {
+            printf("%c", name[j][i]);
+            FLASH_ProgramHalfWord(startAddress + i*2 + j * 24, name[j][i]);
+        }
+        FLASH_ProgramHalfWord(startAddress + 20 + j*24, point[j] >> 16); //For getting the top 4 byte of point
+        FLASH_ProgramHalfWord(startAddress + 20 + 2 + j*24, point[j]);
+    }
+    FLASH_ProgramHalfWord(startAddress + 142, 0x0001);
     FLASH_Lock();
 }
 
@@ -297,17 +498,25 @@ void mads()
 
 int main(void)
 {
+    FLASH_ProgramHalfWord(startAddress + 142, 0x0000);
+    if(*(uint16_t *)(startAddress + 144) == 0x0000)
+        resetHighScore();
     startUpABC();
     //PuTTy need to be in 220 times 65.
     init_usb_uart(115200); // Initialize USB serial at 9600 baud
+    //resetingPutty
     resetbgcolor();
     clrsrc();
     showCursor();
     joyStickSetUp();
     ledSetup();
-    setUpTimer2();
-    startTimer2();
     setupLCD();
+    //Starting the timer for all things
+    setUpTimer15();
+
+    //Starting the timer for the buzzer
+    setUpTimer2();
+    setUpSpeaker();
     //The actual game
     //alex();
     menu();
