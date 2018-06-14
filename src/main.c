@@ -11,7 +11,6 @@
 #include <stdlib.h>
 #include "gameWall.h"
 #include "striker.h"
-#include "customcharset.h"
 #include "player.h"
 #include "minigame.h"
 #include "game.h"
