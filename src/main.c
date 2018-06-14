@@ -454,16 +454,39 @@ void alex()
         FLASH_ProgramHalfWord(startAddress + 20 + j*24, point[j] >> 16); //For getting the top 4 byte of point
         FLASH_ProgramHalfWord(startAddress + 20 + 2 + j*24, point[j]);
     }
-    FLASH_Lock();
+    FLASH_Lock();*/
 
     struct player_t p;
     intPlayer(&p);
-    p.score = 1000;
-    char * name3 = "Alex2\0";
+    p.score = 501;
+    char * name3 = "Alex\0";
     setPlayerName(&p, name3);
     saveHighScore(&p);
     printHighScore();
-    */
+
+}
+
+static void resetHighScore()
+{
+    uint8_t i, j;
+    char name[5][10] = {"Best\0", "Better\0", "Good\0", "Bad\0", "Worst\0"};
+    uint32_t point[5] = {0x000003E8,0x000001F4,0x000000FA,0x00000064,0x00000020};
+    FLASH_Unlock(); // Unlock FLASH for modification
+    FLASH_ClearFlag( FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPERR );
+    FLASH_ErasePage( startAddress ); // Erase entire page before writing
+    for(j=0; j<5; j++)
+    {
+        gotoxy(1,1);
+        for(i=0; i<10; i++)
+        {
+            printf("%c", name[j][i]);
+            FLASH_ProgramHalfWord(startAddress + i*2 + j * 24, name[j][i]);
+        }
+        FLASH_ProgramHalfWord(startAddress + 20 + j*24, point[j] >> 16); //For getting the top 4 byte of point
+        FLASH_ProgramHalfWord(startAddress + 20 + 2 + j*24, point[j]);
+    }
+    FLASH_ProgramHalfWord(startAddress + 142, 0x0001);
+    FLASH_Lock();
 }
 
 void mads()
@@ -475,6 +498,9 @@ void mads()
 
 int main(void)
 {
+    FLASH_ProgramHalfWord(startAddress + 142, 0x0000);
+    if(*(uint16_t *)(startAddress + 144) == 0x0000)
+        resetHighScore();
     startUpABC();
     //PuTTy need to be in 220 times 65.
     init_usb_uart(115200); // Initialize USB serial at 9600 baud
