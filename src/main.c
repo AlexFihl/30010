@@ -21,7 +21,7 @@
 //For flash memory
 #define startAddress 0x0800F800
 
-static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct wall_t *w, int8_t * deltaStrikerStart)
+static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct wall_t *w, int8_t * deltaStrikerStart, int8_t * deltaGamingSpeed)
 {
     uint8_t menuPoint = 0, oldMenuPoint = 1, returnFromSubMenu = 0, backS = 0;
     clrsrc();
@@ -105,14 +105,19 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                 oldJoystick = currentJoyStick;
                 clrsrc();
                 window(w, "Striker lenght", 0);
+                int8_t oldS = 1;
                 while(1)
                 {
-                    gotoxy(101, 23);
-                    printf("Striker lenght start: %02d", (*deltaStrikerStart) + 20);
+                    if(oldS != (*deltaStrikerStart))
+                    {
+                        gotoxy(101, 23);
+                        printf("Striker lenght start: %02d", (*deltaStrikerStart) + 20);
+                        oldS = (*deltaStrikerStart);
+                    }
                     currentJoyStick = readJoyStick();
-                    if      ((currentJoyStick & 0x04) == 0x04 && (oldJoystick & 0x10) == 0x00) //When clicking the up button
+                    if      ((currentJoyStick & 0x04) == 0x04 && (oldJoystick & 0x04) == 0x00) //When clicking the left button
                         (*deltaStrikerStart) -= 2;
-                    else if ((currentJoyStick & 0x08) == 0x08 && (oldJoystick & 0x10) == 0x00) //When clicking the down button
+                    else if ((currentJoyStick & 0x08) == 0x08 && (oldJoystick & 0x08) == 0x00) //When clicking the right button
                         (*deltaStrikerStart) += 2;
                     if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
                         break;
@@ -137,6 +142,51 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
             {
                 clrsrc();
                 window(w, "Game speed", 0);
+                int8_t oldG = 1;
+                while(1)
+                {
+                    if(oldG != *deltaGamingSpeed)
+                    {
+                        gotoxy(101, 23);
+                        switch(*deltaGamingSpeed)
+                        {
+                        case -3:
+                            printf("Gaming speed: Fastest");
+                            break;
+                        case -2:
+                            printf("Gaming offset: Faster");
+                            break;
+                        case -1:
+                            printf("Gaming offset: Fast");
+                            break;
+                        case 0:
+                            printf("Gaming offset: Normal");
+                            break;
+                        case 1:
+                            printf("Gaming offset: Slow");
+                            break;
+                        case 2:
+                            printf("Gaming offset: Slower");
+                            break;
+                        case 3:
+                            printf("Gaming offset: Slowest");
+                            break;
+                        }
+                        oldG = *deltaGamingSpeed;
+                    }
+                    currentJoyStick = readJoyStick();
+                    if      ((currentJoyStick & 0x01) == 0x01 && (oldJoystick & 0x01) == 0x00) //When clicking the up button
+                        (*deltaGamingSpeed)++;
+                    else if ((currentJoyStick & 0x02) == 0x02 && (oldJoystick & 0x02) == 0x00) //When clicking the down button
+                        (*deltaGamingSpeed)--;
+                    if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                        break;
+                    if((*deltaGamingSpeed) > 3)
+                        (*deltaGamingSpeed) = 3;
+                    else if((*deltaGamingSpeed) < -3)
+                        (*deltaGamingSpeed) = -3;
+                    oldJoystick = currentJoyStick;
+                }
                 returnFromSubMenu = 1;
             }
             break;
@@ -293,7 +343,7 @@ static void printFullMainMenu()
 static void menu()
 {
     uint8_t menuPoint = 0, oldMenuPoint = 1, returnFromSubMenu = 1;
-    int8_t deltaStrikerStart = 0;
+    int8_t deltaStrikerStart = 0, deltaGamingSpeed = 0;
     int32_t startBallSpeed = 0;
     clrsrc();
     struct wall_t w;
@@ -349,7 +399,7 @@ static void menu()
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
                 setPlayerLife(&player, 3);
-                fullGame(&player, startBallSpeed, deltaStrikerStart);
+                fullGame(&player, startBallSpeed, deltaStrikerStart, deltaGamingSpeed);
                 //Set player name should be implemtentet
                 saveHighScore(&player);
                 resetPlayer(&player);
@@ -365,7 +415,7 @@ static void menu()
             }
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
-                subSettingsMenu(&player, &startBallSpeed, &w, &deltaStrikerStart);
+                subSettingsMenu(&player, &startBallSpeed, &w, &deltaStrikerStart, &deltaGamingSpeed);
                 returnFromSubMenu = 1;
             }
             break;
