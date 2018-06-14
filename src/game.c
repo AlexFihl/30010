@@ -45,28 +45,7 @@ static void printLCDGame(uint16_t numberOfBlocksLeft, struct player_t *p)
     lcd_update();
 }
 
-
-
-void fullGame(struct player_t *p, uint16_t startBallSpeed)
-{
-    setGameSpeed(8);
-    uint8_t gameEnd = 1, gameCount = 0;
-    while (gameEnd != 2 && gameEnd > 0 && gameCount < 10)
-    {
-        clrsrc();
-        gameEnd = aGame1(p, gameCount, startBallSpeed);
-        printLCDGame(0, p);
-        gameCount++;
-    }
-    clrsrc();
-    gotoxy(1,1);
-    if (gameEnd == 0)
-    {
-        deathScreen(p);
-    }
-}
-
-uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) //09/06
+static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSpeed, int8_t deltaStrikerStart) //09/06
 {
     //Setting the ball speed
     if(gameCount > 5)
@@ -100,7 +79,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
 
     //Setting up the striker
     struct striker_t striker1;
-    intStriker(&striker1);
+    intStriker(&striker1, deltaStrikerStart);
     drawStriker(&striker1);
 
     //Setting up the wall
@@ -205,5 +184,24 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
 
             updateGame = 0;
         }
+    }
+}
+
+void fullGame(struct player_t *p, int32_t startBallSpeed, int8_t deltaStrikerStart)
+{
+    setGameSpeed(8);
+    uint8_t gameEnd = 1, gameCount = 0;
+    while (gameEnd != 2 && gameEnd > 0 && gameCount < 10)
+    {
+        clrsrc();
+        gameEnd = aGame1(p, gameCount, startBallSpeed, deltaStrikerStart);
+        printLCDGame(0, p);
+        gameCount++;
+    }
+    clrsrc();
+    gotoxy(1,1);
+    if (gameEnd == 0)
+    {
+        deathScreen(p);
     }
 }

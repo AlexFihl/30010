@@ -21,7 +21,7 @@
 //For flash memory
 #define startAddress 0x0800F800
 
-static void subSettingsMenu(struct player_t *p, uint16_t * startBallSpeed, struct wall_t *w)
+static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct wall_t *w, int8_t * deltaStrikerStart)
 {
     uint8_t menuPoint = 0, oldMenuPoint = 1, returnFromSubMenu = 0, backS = 0;
     clrsrc();
@@ -102,8 +102,27 @@ static void subSettingsMenu(struct player_t *p, uint16_t * startBallSpeed, struc
             }
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
+                oldJoystick = currentJoyStick;
                 clrsrc();
                 window(w, "Striker lenght", 0);
+                while(1)
+                {
+                    gotoxy(101, 23);
+                    printf("Striker lenght start: %02d", (*deltaStrikerStart) + 20);
+                    currentJoyStick = readJoyStick();
+                    if      ((currentJoyStick & 0x04) == 0x04 && (oldJoystick & 0x10) == 0x00) //When clicking the up button
+                        (*deltaStrikerStart) -= 2;
+                    else if ((currentJoyStick & 0x08) == 0x08 && (oldJoystick & 0x10) == 0x00) //When clicking the down button
+                        (*deltaStrikerStart) += 2;
+                    if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                        break;
+                    if((*deltaStrikerStart) > 10)
+                        (*deltaStrikerStart) = 10;
+                    else if((*deltaStrikerStart) < -10)
+                        (*deltaStrikerStart) = -10;
+                    oldJoystick = currentJoyStick;
+
+                }
                 returnFromSubMenu = 1;
             }
             break;
@@ -274,7 +293,8 @@ static void printFullMainMenu()
 static void menu()
 {
     uint8_t menuPoint = 0, oldMenuPoint = 1, returnFromSubMenu = 1;
-    uint16_t startBallSpeed = 0;
+    int8_t deltaStrikerStart = 0;
+    int32_t startBallSpeed = 0;
     clrsrc();
     struct wall_t w;
     struct vector_t v1, v2;
@@ -329,7 +349,7 @@ static void menu()
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
                 setPlayerLife(&player, 3);
-                fullGame(&player, startBallSpeed);
+                fullGame(&player, startBallSpeed, deltaStrikerStart);
                 //Set player name should be implemtentet
                 saveHighScore(&player);
                 resetPlayer(&player);
@@ -345,7 +365,7 @@ static void menu()
             }
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
-                subSettingsMenu(&player, &startBallSpeed, &w);
+                subSettingsMenu(&player, &startBallSpeed, &w, &deltaStrikerStart);
                 returnFromSubMenu = 1;
             }
             break;
