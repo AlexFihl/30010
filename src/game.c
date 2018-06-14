@@ -123,7 +123,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
                 return 0;
             else if (p->life > oldLife)
                 oldLife = p->life;
-            else if(p->life != oldLife && ballOnStriker == 1)
+            else if(p->life != oldLife || ballOnStriker == 1)
             {
                 ballOnStriker = 0;
                 printLCDGame(numberOfBlocksLeft, p);
