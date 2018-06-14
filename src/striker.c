@@ -60,3 +60,16 @@ int8_t updateStrikerPlacment(struct striker_t *s) //09/06
     }
     return 0;
 }
+
+int8_t getDeltaX(struct striker_t *s, struct wall_t *w)
+{
+    int8_t deltaX = updateStrikerPlacment(s);
+    int32_t hl = s->length >> 1;
+    if(deltaX + s->center.x + hl >= w->v2.x)
+        if(deltaX > 0)
+            deltaX = 0;
+    if(s->center.x + deltaX - hl < (w->v1.x + 0x00004000)) //0x00004000 = 1
+        if(deltaX < 0)
+            deltaX = 0;
+    return deltaX;
+}
