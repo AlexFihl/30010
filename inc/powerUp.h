@@ -24,7 +24,7 @@ struct powerUp_t{
 
 void initPowerUp(struct powerUp_t *p, struct vector_t *v, uint8_t powerUpType);
 void drawPowerUp(struct powerUp_t *p, struct block_t * b, uint16_t lowerBond, uint32_t numberOfBlocks);
-void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w, struct ball_t *b, struct player_t *pl);
+void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w, struct ball_t *b, struct player_t *pl, int8_t * ballOnStriker);
 void updatePowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w);
 
 

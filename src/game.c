@@ -109,7 +109,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
     drawBall(&b);
     uint8_t oldLife = p->life + 1;
     uint16_t numberOfBlocksLeft;
-    int8_t deltaX;
+    int8_t deltaX, ballOnStriker = 0;
     while(1)
     {
         if (updateGame > 0)
@@ -123,8 +123,9 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
                 return 0;
             else if (p->life > oldLife)
                 oldLife = p->life;
-            else if(p->life != oldLife)
+            else if(p->life != oldLife && ballOnStriker == 1)
             {
+                ballOnStriker = 0;
                 printLCDGame(numberOfBlocksLeft, p);
                 resetBall(&b);
                 resetStriker(&striker1);
@@ -178,7 +179,7 @@ uint8_t aGame1(struct player_t *p, uint8_t gameCount, uint16_t startBallSpeed) /
             for(i = 0; i < powerUpsInUse; i++)
             {
                 updatePowerUp(&power[i], &striker1, &wall);
-                applyPowerUp(&power[i], &striker1, &wall, &b, p);
+                applyPowerUp(&power[i], &striker1, &wall, &b, p, &ballOnStriker);
                 drawPowerUp(&power[i], blocks, yEnd, numberOfBlocks);
             }
             //removing a catched powerUp

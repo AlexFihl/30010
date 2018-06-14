@@ -52,7 +52,7 @@ void drawPowerUp(struct powerUp_t *p, struct block_t * b, uint16_t lowerBond, ui
     resetbgcolor();
 }
 
-void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w, struct ball_t *b, struct player_t *pl)
+void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w, struct ball_t *b, struct player_t *pl, int8_t * ballOnStriker)
 {
     if(p->catched == 1)
     {
@@ -85,6 +85,7 @@ void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w, st
         case 0x9:
             break;
         case 0xA:
+            (*ballOnStriker) = 1;
             break;
         case 0xB:
             teleportBall(b);
