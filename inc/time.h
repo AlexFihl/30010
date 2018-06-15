@@ -10,7 +10,7 @@ extern uint8_t updateLCD;
 extern uint8_t updateGame;
 extern uint8_t updateMinigame;
 extern uint8_t minigameSpeed;
-extern uint8_t playSoundFlag;
+extern uint8_t updateMenu;
 #define updateSpeed 0x000a
 
 struct timer_t

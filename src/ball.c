@@ -88,7 +88,7 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
         {
             if (newX >= block.v1.x && newX <= (block.v2.x + (1 << 14)) && newY >= block.v1.y && newY <= (block.v2.y + (1 << 14)))
             {
-                //setFreq(1000);
+                setFreq(1000);
                 if(block.v1.x >= b->oldPos.x || (block.v2.x + (1 << 14)) <= b->oldPos.x)
                 {
                     b->angle =  - b->angle;
@@ -105,7 +105,6 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
                 if (FIX14_DIV((*blocks)[i].hits, block.life) >= 0x00004000)
                 {
                      (((*blocks)[i]).state) = 0;
-                     p->score += (*blocks)[i].pointGiver;
                 }
                 else if (FIX14_DIV((*blocks)[i].hits, block.life) >= 0x00003000)
                      (((*blocks)[i]).state) = 1;
@@ -122,12 +121,9 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
     int32_t lenghtHalf = (s->length) >> 1;
     if ((newX >= s->center.x - lenghtHalf) && (newX <= s->center.x + lenghtHalf) && (newY >= s->center.y - 0x00003000)) //0x00003000 = 0.750
     {
-        //setFreq(10000);
-        if(newX > s->center.x - (s->length >> 1) && newX < s->center.x + (s->length >> 1)) //Checking the middle
-        {
-            int32_t y=s->length;
-            b->angle =  256 - b->angle + (((newX - s->center.x) *100 )/(y >> 1));
-        }
+        setFreq(10000);
+        int32_t y=s->length;
+        b->angle =  256 - b->angle + (((newX - s->center.x) * 60 )/(y >> 1));
         while (b->angle > 256 && b->angle < -256)
         {
             if (b->angle >= 256)

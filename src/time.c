@@ -8,8 +8,7 @@ uint8_t minigameSpeedCounter;
 uint8_t gameSpeed;
 uint8_t gameSpeedCounter;
 uint8_t updateGame;
-uint8_t playSoundFlag;
-uint16_t soundCount;
+uint8_t updateMenu;
 
 void TIM1_BRK_TIM15_IRQHandler(void)
 {
@@ -17,6 +16,7 @@ void TIM1_BRK_TIM15_IRQHandler(void)
     if(mainTimer.twothHS == 2)
     {
         mainTimer.hseconds++;
+        updateMenu = 1;
         mainTimer.twothHS = 0;
     }
     if (mainTimer.hseconds == 100)
@@ -48,14 +48,6 @@ void TIM1_BRK_TIM15_IRQHandler(void)
         updateMinigame = 1;
         minigameSpeedCounter = 0;
     }
-    /*if(playSoundFlag == 1)
-        soundCount++;
-    if (soundCount > 100)
-    {
-        playSoundFlag = 0;
-        soundCount = 0;
-    }*/
-
 
     TIM15->SR &= ~0x0001;
 }
@@ -94,7 +86,7 @@ void setUpTimer15()
     updateMinigame = 0;
     gameSpeedCounter = 0;
     minigameSpeedCounter = 0;
-    playSoundFlag = 0;
+    updateMenu = 1;
 }
 
 void setUpTimer2()
