@@ -25,7 +25,7 @@
 
 static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct wall_t *w, int8_t * deltaStrikerStart, int8_t * deltaGamingSpeed)
 {
-    uint8_t menuPoint = 0, oldMenuPoint = 1, returnFromSubMenu = 0, backS = 0;
+    int8_t menuPoint = 0, oldMenuPoint = 1, returnFromSubMenu = 0, backS = 0;
     clrsrc();
     window(w, "Settings", 0);
     uint8_t currentJoyStick, oldJoystick = readJoyStick();
@@ -437,7 +437,7 @@ static void printFullMainMenu()
 
 static void menu()
 {
-    uint8_t menuPoint = 0, oldMenuPoint = 1, returnFromSubMenu = 1;
+    int8_t menuPoint = 0, oldMenuPoint = 1, returnFromSubMenu = 1;
     int8_t deltaStrikerStart = 0, deltaGamingSpeed = 0;
     int32_t startBallSpeed = 0;
     clrsrc();
