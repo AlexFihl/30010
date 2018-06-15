@@ -45,10 +45,7 @@ void drawStriker(struct striker_t *s) //08/06
 
 void resetStriker(struct striker_t *s) //09/06
 {
-    struct vector_t v;
-    intVector(&v, 110, 61);
-    s->center.x = v.x;
-    s->center.y = v.y;
+    s->center.x = 110 << FIX14_SHIFT;
 }
 
 int8_t updateStrikerPlacment(struct striker_t *s) //09/06

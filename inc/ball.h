@@ -18,9 +18,10 @@ struct ball_t
     uint32_t velocity;
     int32_t angle;
     uint16_t hitCount;
+    uint8_t dead;
 };
 
-void intBall(struct ball_t *b, int32_t x, int32_t y, int32_t vx, int32_t vy);
+void intBall(struct ball_t *b, int32_t x, int32_t y);
 void setBallSpeedFactor(int32_t speedFactor);
 void addToBallSpeedFactor(int32_t deltaSpeed);
 void moveBall(struct ball_t *b, int32_t deltaX, int32_t deltaY);

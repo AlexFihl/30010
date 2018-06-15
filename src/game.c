@@ -72,9 +72,9 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
     struct wall_t wall;
     struct vector_t v1, v2, v3, v4;
     struct powerUp_t power[5];
-    uint8_t powerUpsInUse = 0;
+    uint8_t powerUpsInUse = 0, numberOfBalls = 0;
     //The power ups flags
-    int8_t skipLevel = 0, ballOnStriker = 0, strikerShoting = 0;
+    int8_t skipLevel = 0, ballOnStriker = 0, strikerShoting = 0, multiplyBalls = 0;
     uint16_t i, j, x, y; //used for blocks
     intVector(&v1, 3, 1);
     intVector(&v2, 218, 63);
@@ -102,8 +102,11 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
 
     //Setting up the wall
     struct ball_t b;
-    intBall(&b, 110, 60, -5, -5);
-    drawBall(&b);
+    struct ball_t *balls = malloc(10 * sizeof *balls);
+    intBall(&b, 110, 60);
+    balls[0] = b;
+    drawBall(&balls[0]);
+    numberOfBalls = 1;
     uint8_t oldLife = p->life + 1;
     uint16_t numberOfBlocksLeft;
     int8_t deltaX;
@@ -124,17 +127,19 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
             {
                 ballOnStriker = 0;
                 printLCDGame(numberOfBlocksLeft, p);
-                resetBall(&b);
+                intBall(&balls[0], 110, 60);
+                resetBall(&balls[0]);
                 resetStriker(&striker1);
                 while(((readJoyStick() & 0x10) != 0x10))
                 {
                     if (updateGame > 0)
                     {
+                        numberOfBalls = 1;
                         deltaX = getDeltaX(&striker1, &wall);
-                        moveBall(&b, deltaX << FIX14_SHIFT, 0);
+                        moveBall(&balls[0], deltaX << FIX14_SHIFT, 0);
                         updateStriker(&striker1, deltaX);
                         drawStriker(&striker1);
-                        drawBall(&b);
+                        drawBall(&balls[0]);
                         updateGame = 0;
                     }
                 }
@@ -145,14 +150,27 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
             deltaX = getDeltaX(&striker1, &wall);
             updateStriker(&striker1, deltaX);
             drawStriker(&striker1);
-            //Update the ball
-            updatePosition(&b, &wall, &blocks, numberOfBlocks, p, &striker1);
-            drawBall(&b);
-
+            //Update the balls
+            for(i = 0; i < numberOfBalls; i++)
+            {
+                updatePosition(&balls[i], &wall, &blocks, numberOfBlocks, p, &striker1);
+                drawBall(&balls[i]);
+            }
+            //Removing dead balls
+            for(i = 0; i < numberOfBalls; i++)
+                if(balls[i].dead == 1)
+                {
+                    for(j=i; j<numberOfBalls; j++)
+                        balls[j] = balls[j+1];
+                    balls[numberOfBalls-1] = balls[numberOfBalls];
+                    numberOfBalls--;
+                    if(numberOfBalls == 0)
+                        lossLife(p);
+                }
             //Spawning a power up
             for (i = 0; i < numberOfBlocks; i++)
             {
-                if((blocks[i]).state == 0 && (blocks[i]).oldState >= 1 && powerUpsInUse < 5 && rand()%100 < 10) //Uncomment this 10% chance for an power up
+                if((blocks[i]).state == 0 && (blocks[i]).oldState >= 1 && powerUpsInUse < 5 && rand()%100 < 100) //Uncomment this 10% chance for an power up
                 {
                     uint32_t x1,y1,xTemp,yTemp;
                     xTemp = (blocks[i].v2.x - blocks[i].v1.x) >> FIX14_SHIFT;
@@ -162,8 +180,8 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                     struct vector_t vP;
                     intVector(&vP, x1, y1);
                     struct powerUp_t powerTemp;
-                    initPowerUp(&powerTemp, &vP, rand()%12); //Real thing
-                    //initPowerUp(&powerTemp, &vP, 9); //Testing
+                    //initPowerUp(&powerTemp, &vP, rand()%12); //Real thing
+                    initPowerUp(&powerTemp, &vP, 4); //Testing
                     power[powerUpsInUse] = powerTemp;
                     powerUpsInUse++;
                 }
@@ -182,10 +200,20 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                 skipLevel = 0;
             }
 
-            if(strikerShoting = 1)
+            if(strikerShoting == 1)
             {
 
                 strikerShoting = 0;
+            }
+
+
+            if(multiplyBalls == 1 && numberOfBalls < 10)
+            {
+                struct ball_t bTemp;
+                intBall(&bTemp, 110, 60);
+                balls[numberOfBalls] = bTemp;
+                multiplyBalls = 0;
+                numberOfBalls++;
             }
 
             //Drawing the blocks
@@ -196,7 +224,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
             for(i = 0; i < powerUpsInUse; i++)
             {
                 updatePowerUp(&power[i], &striker1, &wall);
-                applyPowerUp(&power[i], &striker1, &wall, &b, p, &ballOnStriker, &skipLevel, &strikerShoting);
+                applyPowerUp(&power[i], &striker1, &wall, &b, p, &ballOnStriker, &skipLevel, &strikerShoting, &multiplyBalls);
                 drawPowerUp(&power[i], blocks, yEnd, numberOfBlocks);
             }
             //removing a catched powerUp
