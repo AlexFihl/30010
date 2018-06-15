@@ -111,7 +111,7 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                     if(oldS != (*deltaStrikerStart))
                     {
                         gotoxy(101, 23);
-                        printf("Striker lenght start: %02d", (*deltaStrikerStart) + 20);
+                        printf("Striker start lenght: %02d", (*deltaStrikerStart) + 20);
                         oldS = (*deltaStrikerStart);
                     }
                     currentJoyStick = readJoyStick();
@@ -552,26 +552,6 @@ void simon()
 
 void alex()
 {
-    /*
-    uint8_t i, j;
-    char name[5][10] = {"Alex\0", "Simon\0", "Mads\0", "Alex\0", "Mads\0"};
-    uint32_t point[5] = {0x0000039B,0x00000342,0x00000222,0x00000123,0x0000000B};
-    FLASH_Unlock(); // Unlock FLASH for modification
-    FLASH_ClearFlag( FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPERR );
-    FLASH_ErasePage( startAddress ); // Erase entire page before writing
-    for(j=0; j<5; j++)
-    {
-        gotoxy(1,1);
-        for(i=0; i<10; i++)
-        {
-            printf("%c", name[j][i]);
-            FLASH_ProgramHalfWord(startAddress + i*2 + j * 24, name[j][i]);
-        }
-        FLASH_ProgramHalfWord(startAddress + 20 + j*24, point[j] >> 16); //For getting the top 4 byte of point
-        FLASH_ProgramHalfWord(startAddress + 20 + 2 + j*24, point[j]);
-    }
-    FLASH_Lock();*/
-
     struct player_t p;
     intPlayer(&p);
     p.score = 501;
@@ -579,7 +559,6 @@ void alex()
     setPlayerName(&p, name3);
     saveHighScore(&p);
     printHighScore();
-
 }
 
 static void resetHighScore()
