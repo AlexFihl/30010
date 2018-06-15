@@ -122,11 +122,8 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
     if ((newX >= s->center.x - lenghtHalf) && (newX <= s->center.x + lenghtHalf) && (newY >= s->center.y - 0x00003000)) //0x00003000 = 0.750
     {
         //setFreq(10000);
-        if(newX > s->center.x - (s->length >> 1) && newX < s->center.x + (s->length >> 1)) //Checking the middle
-        {
-            int32_t y=s->length;
-            b->angle =  256 - b->angle + (((newX - s->center.x) *100 )/(y >> 1));
-        }
+        int32_t y=s->length;
+        b->angle =  256 - b->angle + (((newX - s->center.x) * 60 )/(y >> 1));
         while (b->angle > 256 && b->angle < -256)
         {
             if (b->angle >= 256)
