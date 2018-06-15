@@ -1,6 +1,6 @@
 #include "powerUp.h"
 
-const uint16_t signA[13] = {
+const uint16_t signA[12] = {
     43, 45, 49, 158, 249, 175, 174, 33, 159, 190, 167, 207
 };
 

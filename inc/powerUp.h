@@ -12,6 +12,8 @@
 #ifndef POWERUP_H
 #define POWERUP_H
 
+extern const uint16_t signA[12];
+
 struct powerUp_t{
     struct vector_t v;
     struct vector_t old;

@@ -15,11 +15,13 @@
 #include "minigame.h"
 #include "game.h"
 #include "fix14.h"
+#include "powerUp.h"
 
 #define maksMainMenu 4
 
 //For flash memory
 #define startAddress 0x0800F800
+
 
 static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct wall_t *w, int8_t * deltaStrikerStart, int8_t * deltaGamingSpeed)
 {
@@ -355,22 +357,68 @@ static void saveHighScore(struct player_t *p)
     FLASH_Lock();
 }
 
+static void printPowerupHelp()
+{
+    gotoxy(83, 22);
+    printf("%c = longer striker", signA[0]);
+    gotoxy(83, 23);
+    printf("%c = shorter striker", signA[1]);
+    gotoxy(83, 24);
+    printf("%c = one extra life", signA[2]);
+    gotoxy(83, 25);
+    printf("%c = instant death", signA[3]);
+    gotoxy(83, 26);
+    printf("%c = double balls", signA[4]);
+    gotoxy(83, 27);
+    printf("%c = faster ball", signA[5]);
+    gotoxy(83, 28);
+    printf("%c = slower ball", signA[6]);
+    gotoxy(83, 29);
+    printf("%c = instant win", signA[7]);
+    gotoxy(83, 30);
+    printf("%c = key to unlock mingame (3 is required)", signA[8]);
+    gotoxy(83, 31);
+    printf("%c = striker shoots", signA[9]);
+    gotoxy(83, 32);
+    printf("%c = catch ball on striker (multiple balls will disappear)", signA[10]);
+    gotoxy(83, 33);
+    printf("%c = teleport behind blocks", signA[11]);
+}
+
 static void printHelp()
 {
+    gotoxy(83, 22);
+    printf("MAIN GAME");
     gotoxy(83, 23);
-    printf("For controlling the striker in the game you can use the ");
-    gotoxy(83,24);
-    printf("joystick to move left and right. For quiting the game ");
-    gotoxy(83,25);
-    printf("turn the right knop up. Under settings can you choose ");
+    printf("The objective is to break all the blocks without letting");
+    gotoxy(83, 24);
+    printf("the ball escape through the bottom, and catch power-ups");
+    gotoxy(83, 25);
+    printf("to help you. The striker is controlled by the joystick to");
     gotoxy(83, 26);
-    printf("the difficulty you want to start from. You can choose ");
+    printf("move left and right. To quit the game turn the right knob");
     gotoxy(83, 27);
-    printf("the starting size of the striker or the starting speed ");
+    printf("up. Under settings can you choose the difficulty you want");
     gotoxy(83, 28);
-    printf("of the ball. You can also choose if you want less good ");
+    printf("to start from, this also changes the amount of points");
     gotoxy(83, 29);
-    printf("power ups.");
+    printf("you get form each block. You can choose:");
+    gotoxy(83, 30);
+    printf("striker size, game speed and ball speed");
+    gotoxy(83, 32);
+    printf("MINIGAME");
+    gotoxy(83, 33);
+    printf("The spaceship is controlled by the joystick, to move up");
+    gotoxy(83, 34);
+    printf("and down, to avoid the obstacles. The middle button on");
+    gotoxy(83, 35);
+    printf("the joystick is used to shoot the LAZER, but beware you");
+    gotoxy(83, 36);
+    printf("only have enough energy to shoot 3 times! The shield is");
+    gotoxy(83, 37);
+    printf("indicated by the led, blue = strong shield, green =");
+    gotoxy(83, 38);
+    printf("damaged shield and red = no shield left.");
 }
 
 static void printFullMainMenu()
