@@ -1,7 +1,7 @@
 #include "powerUp.h"
 
 const uint16_t signA[13] = {
-    43, 45, 49, 158, 249, 175, 174, 33, 159, 127, 167, 207
+    43, 45, 49, 158, 249, 175, 174, 33, 159, 190, 167, 207
 };
 
 void initPowerUp(struct powerUp_t *p, struct vector_t *v, uint8_t powerUpType)
