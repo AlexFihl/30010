@@ -74,7 +74,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
     struct powerUp_t power[5];
     uint8_t powerUpsInUse = 0;
     //The power ups flags
-    int8_t skipLevel = 0, ballOnStriker = 0;
+    int8_t skipLevel = 0, ballOnStriker = 0, strikerShoting = 0;
     uint16_t i, j, x, y; //used for blocks
     intVector(&v1, 3, 1);
     intVector(&v2, 218, 63);
@@ -190,7 +190,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
             for(i = 0; i < powerUpsInUse; i++)
             {
                 updatePowerUp(&power[i], &striker1, &wall);
-                applyPowerUp(&power[i], &striker1, &wall, &b, p, &ballOnStriker, &skipLevel);
+                applyPowerUp(&power[i], &striker1, &wall, &b, p, &ballOnStriker, &skipLevel, &strikerShoting);
                 drawPowerUp(&power[i], blocks, yEnd, numberOfBlocks);
             }
             //removing a catched powerUp
