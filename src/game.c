@@ -11,8 +11,8 @@ static void endGameScreen(struct player_t *p)
     struct wall_t w;
     struct vector_t v1;
     struct vector_t v2;
-    intVector(&v1, 100, 30);
-    intVector(&v2, 120, 35);
+    intVector(&v1, 90, 30);
+    intVector(&v2, 130, 35);
     intWall(&w, &v1, &v2);
     window(&w, "You cleared the game", 0);
     gotoxy(101,31);
@@ -21,6 +21,7 @@ static void endGameScreen(struct player_t *p)
         printf("%c", p->name[i]);
     gotoxy(101,32);
     printf("Final Score: %06lu", p->score);
+    while(((readJoyStick() & 0x10) == 0x10)) {}
     while(((readJoyStick() & 0x10) != 0x10)) {}
     clrsrc();
 }
@@ -41,6 +42,7 @@ static void deathScreen(struct player_t *p)
         printf("%c", p->name[i]);
     gotoxy(101,32);
     printf("Final Score: %06lu", p->score);
+    while(((readJoyStick() & 0x10) == 0x10)) {}
     while(((readJoyStick() & 0x10) != 0x10)) {}
     clrsrc();
 }
@@ -94,6 +96,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
     uint16_t numberOfBlocks = intMultipleBlocks(&blocks, v3, v4, x, y, lifeOnBlocks);
     for (i = 0; i < numberOfBlocks; i++)
         drawBlock(&blocks[i]);
+    uint16_t numberOfBlocksLeft = numberOfBlocks;
 
     //Setting up the striker
     struct striker_t striker1;
@@ -108,7 +111,6 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
     drawBall(&balls[0]);
     numberOfBalls = 1;
     uint8_t oldLife = p->life + 1;
-    uint16_t numberOfBlocksLeft;
     int8_t deltaX;
     while(1)
     {
@@ -116,11 +118,15 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
         {
             setFreq(0);
             if (readADC2() >= 3000)
+            {
+                free(blocks);
                 return 2;
-            if (readADC1() >= 3000)
-                return 1;
-            if (p->life == 0)
+            }
+            if (p->life == 0) //Checking if the player is dead
+            {
+                free(blocks);
                 return 0;
+            }
             else if (p->life > oldLife)
                 oldLife = p->life;
             else if(p->life != oldLife || ballOnStriker == 1)
@@ -144,6 +150,11 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                     }
                 }
                 oldLife = p->life;
+            }
+            if (readADC1() >= 3000) //Skip a level
+            {
+                free(blocks);
+                return 1;
             }
 
             //Moving the striker
@@ -245,7 +256,10 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                 if(blocks[i].state > 0)
                     numberOfBlocksLeft++;
             if (numberOfBlocksLeft == 0)
+            {
+                free(blocks);
                 return 1;
+            }
             printLCDGame(numberOfBlocksLeft, p);
             //Chehcing the power up flag for the minigame
             if(p->catchKeys == 3)
@@ -272,7 +286,6 @@ void fullGame(struct player_t *p, int32_t startBallSpeed, int8_t deltaStrikerSta
         gameCount++;
     }
     clrsrc();
-    gotoxy(1,1);
     if (gameEnd == 0)
         deathScreen(p);
     endGameScreen(p);
