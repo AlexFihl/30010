@@ -2,14 +2,13 @@
 
 int32_t ballSpeed;
 
-void intBall(struct ball_t *b, int32_t x, int32_t y, int32_t vx, int32_t vy)
+void intBall(struct ball_t *b, int32_t x, int32_t y)
 {
     intVector(&(b->position), x, y);
-    //b->oldPos.x = b->position.x;
-    //b->oldPos.y = b->position.y;
     b->velocity = 2 << FIX14_SHIFT;
-    b->angle = 0; //-45 deg
+    b->angle = 0; //0 deg
     b->hitCount = 0;
+    b->dead = 0;
 }
 
 void setBallSpeedFactor(int32_t speedFactor) //09/06
@@ -76,7 +75,7 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
     }
     else if (newY >= (wally2 << FIX14_SHIFT))
     {
-        lossLife(p);
+        b->dead = 1;
         return;
     }
 
@@ -148,9 +147,10 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
 
 void resetBall(struct ball_t *b) //09/06
 {
-    intVector(&(b->position), 110, 60);
-    b->velocity = 2 << FIX14_SHIFT;
+//    b->position.x = 110 << FIX14_SHIFT;
+//    b->position.y = 61 << FIX14_SHIFT;
     b->angle = 0; //Sholud be 0* when the striker can change the angle
+    b->dead = 0;
 }
 
 void drawBall(struct ball_t *b)
@@ -160,7 +160,8 @@ void drawBall(struct ball_t *b)
         gotoxy((b->oldPos.x) >> FIX14_SHIFT, (b->oldPos.y) >> FIX14_SHIFT);
         printf("%c", 32);
         gotoxy((b->position.x) >> FIX14_SHIFT, (b->position.y) >> FIX14_SHIFT);
-        printf("%c", 111);
+        if(b->dead == 0)
+            printf("%c", 111);
         b->oldPos.x = b->position.x;
         b->oldPos.y = b->position.y;
     }

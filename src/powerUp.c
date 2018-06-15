@@ -1,7 +1,7 @@
 #include "powerUp.h"
 
 const uint16_t signA[12] = {
-    43, 45, 49, 158, 249, 175, 174, 33, 159, 127, 167, 207
+    43, 45, 49, 158, 249, 175, 174, 33, 159, 190, 167, 207
 };
 
 void initPowerUp(struct powerUp_t *p, struct vector_t *v, uint8_t powerUpType)
@@ -52,7 +52,7 @@ void drawPowerUp(struct powerUp_t *p, struct block_t * b, uint16_t lowerBond, ui
     resetbgcolor();
 }
 
-void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w, struct ball_t *b, struct player_t *pl, int8_t * ballOnStriker)
+void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w, struct ball_t *b, struct player_t *pl, int8_t * ballOnStriker, int8_t *skipLevel, int8_t *strikerShoting, int8_t *multiplyBalls)
 {
     if(p->catched == 1)
     {
@@ -71,6 +71,7 @@ void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w, st
             lossLife(pl);
             break;
         case 0x4:
+            *multiplyBalls = 1;
             break;
         case 0x5:
             addToBallSpeedFactor(0x00000800); //=0.125
@@ -79,11 +80,13 @@ void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w, st
             addToBallSpeedFactor(-0x00000800);//=-0.125
             break;
         case 0x7:
+            *skipLevel = 1;
             break;
         case 0x8:
             pl->catchKeys++;
             break;
         case 0x9:
+            *strikerShoting = 1;
             break;
         case 0xA:
             (*ballOnStriker) = 1;

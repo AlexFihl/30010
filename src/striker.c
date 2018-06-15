@@ -11,7 +11,6 @@ void intStriker(struct striker_t *s, int8_t deltaStrikerStart) //08/06
     s->oldCenter.x = v.x-1;
     s->length = (20 + deltaStrikerStart) << FIX14_SHIFT;
     s->oldLength = (19 + deltaStrikerStart) << FIX14_SHIFT;
-    uint32_t x = s->length >> 14;
 }
 
 void updateStriker(struct striker_t *s, int32_t deltaCenter) //08/06
@@ -46,10 +45,7 @@ void drawStriker(struct striker_t *s) //08/06
 
 void resetStriker(struct striker_t *s) //09/06
 {
-    struct vector_t v;
-    intVector(&v, 110, 61);
-    s->center.x = v.x;
-    s->center.y = v.y;
+    s->center.x = 110 << FIX14_SHIFT;
 }
 
 int8_t updateStrikerPlacment(struct striker_t *s) //09/06
