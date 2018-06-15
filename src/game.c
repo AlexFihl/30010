@@ -182,6 +182,12 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                 skipLevel = 0;
             }
 
+            if(strikerShoting = 1)
+            {
+
+                strikerShoting = 0;
+            }
+
             //Drawing the blocks
             for (i = 0; i < x*y; i++)
                 drawBlock(&blocks[i]);
