@@ -250,7 +250,7 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                         (*startBallSpeed) = -3;
                     oldJoystick = currentJoyStick;
                 }
-                (*startBallSpeed) = (*startBallSpeed * 8) << 10;
+                (*startBallSpeed) = *startBallSpeed << 9;
                 returnFromSubMenu = 1;
             }
             break;
