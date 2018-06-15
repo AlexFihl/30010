@@ -105,7 +105,6 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
                 if (FIX14_DIV((*blocks)[i].hits, block.life) >= 0x00004000)
                 {
                      (((*blocks)[i]).state) = 0;
-                     p->score += (*blocks)[i].pointGiver;
                 }
                 else if (FIX14_DIV((*blocks)[i].hits, block.life) >= 0x00003000)
                      (((*blocks)[i]).state) = 1;

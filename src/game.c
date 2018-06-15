@@ -161,6 +161,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
             deltaX = getDeltaX(&striker1, &wall);
             updateStriker(&striker1, deltaX);
             drawStriker(&striker1);
+
             //Update the balls
             for(i = 0; i < numberOfBalls; i++)
             {
@@ -227,9 +228,15 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                 numberOfBalls++;
             }
 
+            //Giving the player points per
+            for (i = 0; i < numberOfBlocks; i++)
+                if(blocks[i].oldState != 0 && blocks[i].state == 0)
+                    (p->score)++;
+
             //Drawing the blocks
             for (i = 0; i < x*y; i++)
                 drawBlock(&blocks[i]);
+
 
             //Printing a power up
             for(i = 0; i < powerUpsInUse; i++)
@@ -255,6 +262,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
             for (i = 0; i < numberOfBlocks; i++)
                 if(blocks[i].state > 0)
                     numberOfBlocksLeft++;
+
             if (numberOfBlocksLeft == 0)
             {
                 free(blocks);
