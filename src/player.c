@@ -6,6 +6,7 @@ void intPlayer(struct player_t *p) //08/06
     p->life = 3;
     p->name = malloc(11 * sizeof(char));
     p->name[0] = '\0';
+    p->catchKeys = 0;
 }
 
 void setPlayerName(struct player_t *p, char * name)

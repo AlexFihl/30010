@@ -81,6 +81,7 @@ void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w, st
         case 0x7:
             break;
         case 0x8:
+            pl->catchKeys++;
             break;
         case 0x9:
             break;

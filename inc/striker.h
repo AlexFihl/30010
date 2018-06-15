@@ -21,7 +21,7 @@ struct striker_t {
 
 };
 
-void intStriker(struct striker_t *s);
+void intStriker(struct striker_t *s, int8_t deltaStrikerStart);
 void updateStriker(struct striker_t *s, int32_t deltaCenter);
 void changeStrikerLength(struct striker_t *s, int32_t deltaLength, struct wall_t *w);
 void drawStriker(struct striker_t *s);
