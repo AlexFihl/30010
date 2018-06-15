@@ -12,6 +12,7 @@
 #include "lcd.h"
 #include "time.h"
 #include "powerUp.h"
+#include "minigame.h"
 
 #ifndef AGAME_H
 #define AGAME_H
