@@ -11,6 +11,7 @@ void intStriker(struct striker_t *s, int8_t deltaStrikerStart) //08/06
     s->oldCenter.x = v.x-1;
     s->length = (20 + deltaStrikerStart) << FIX14_SHIFT;
     s->oldLength = (19 + deltaStrikerStart) << FIX14_SHIFT;
+    uint32_t x = s->length >> 14;
 }
 
 void updateStriker(struct striker_t *s, int32_t deltaCenter) //08/06

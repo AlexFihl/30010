@@ -120,7 +120,7 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
         }
     }
     //Checking the striker
-    int32_t lenghtHalf = (s->length >> FIX14_SHIFT) >> 2;
+    int32_t lenghtHalf = (s->length) >> 1;
     if ((newX >= s->center.x - lenghtHalf) && (newX <= s->center.x + lenghtHalf) && (newY >= s->center.y - 0x00003000)) //0x00003000 = 0.750
     {
         //setFreq(10000);
