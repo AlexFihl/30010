@@ -155,22 +155,22 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                             printf("Gaming speed: Fastest ");
                             break;
                         case -2:
-                            printf("Gaming offset: Faster ");
+                            printf("Gaming speed: Faster ");
                             break;
                         case -1:
-                            printf("Gaming offset: Fast   ");
+                            printf("Gaming speed: Fast   ");
                             break;
                         case 0:
-                            printf("Gaming offset: Normal ");
+                            printf("Gaming speed: Normal ");
                             break;
                         case 1:
-                            printf("Gaming offset: Slow   ");
+                            printf("Gaming speed: Slow   ");
                             break;
                         case 2:
-                            printf("Gaming offset: Slower ");
+                            printf("Gaming speed: Slower ");
                             break;
                         case 3:
-                            printf("Gaming offset: Slowest");
+                            printf("Gaming speed: Slowest");
                             break;
                         }
                         oldG = *deltaGamingSpeed;
@@ -215,22 +215,22 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                             printf("Ball speed: Fastest   ");
                             break;
                         case -2:
-                            printf("Ball offset: Faster   ");
+                            printf("Ball speed: Faster   ");
                             break;
                         case -1:
-                            printf("Ball offset: Fast     ");
+                            printf("Ball speed: Fast     ");
                             break;
                         case 0:
-                            printf("Ball offset: Normal   ");
+                            printf("Ball speed: Normal   ");
                             break;
                         case 1:
-                            printf("Gaming offset: Slow   ");
+                            printf("Ball speed: Slow   ");
                             break;
                         case 2:
-                            printf("Gaming offset: Slower ");
+                            printf("Ball speed: Slower ");
                             break;
                         case 3:
-                            printf("Gaming offset: Slowest");
+                            printf("Ball speed: Slowest");
                             break;
                         }
                         oldB = *startBallSpeed;
@@ -248,7 +248,7 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                         (*startBallSpeed) = -3;
                     oldJoystick = currentJoyStick;
                 }
-                startBallSpeed = (startBallSpeed * 8) << 12;
+                startBallSpeed = (*startBallSpeed * 8) << 12;
                 returnFromSubMenu = 1;
             }
             break;
