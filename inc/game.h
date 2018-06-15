@@ -17,6 +17,7 @@
 #ifndef AGAME_H
 #define AGAME_H
 
+
 void fullGame(struct player_t *p, int32_t startBallSpeed, int8_t deltaStrikerStart, int8_t deltaGamingSpeed);
 
 #endif //AGAME_H

@@ -65,6 +65,8 @@ static void printLCDGame(uint16_t numberOfBlocksLeft, struct player_t *p)
     lcd_update();
 }
 
+
+
 static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSpeed, int8_t deltaStrikerStart, int8_t deltaGamingSpeed) //09/06
 {
     //Setting the ball speed
@@ -97,6 +99,10 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
     for (i = 0; i < numberOfBlocks; i++)
         drawBlock(&blocks[i]);
     uint16_t numberOfBlocksLeft = numberOfBlocks;
+
+    //setting up the strikershooting powerup
+    struct strikerShooting_t strikerShooting1;
+    initStrikerShooting(&strikerShooting1);
 
     //Setting up the striker
     struct striker_t striker1;
@@ -181,7 +187,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
             //Spawning a power up
             for (i = 0; i < numberOfBlocks; i++)
             {
-                if((blocks[i]).state == 0 && (blocks[i]).oldState >= 1 && powerUpsInUse < 5 && rand()%100 < 10) //Uncomment this 10% chance for an power up
+                if((blocks[i]).state == 0 && (blocks[i]).oldState >= 1 && powerUpsInUse < 5 && rand()%100 < 100) //Uncomment this 10% chance for an power up
                 {
                     uint32_t x1,y1,xTemp,yTemp;
                     xTemp = (blocks[i].v2.x - blocks[i].v1.x) >> FIX14_SHIFT;
@@ -191,8 +197,8 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                     struct vector_t vP;
                     intVector(&vP, x1, y1);
                     struct powerUp_t powerTemp;
-                    initPowerUp(&powerTemp, &vP, rand()%12); //Real thing
-                    //initPowerUp(&powerTemp, &vP, 4); //Testing
+                    //initPowerUp(&powerTemp, &vP, rand()%12); //Real thing
+                    initPowerUp(&powerTemp, &vP, 9); //Testing
                     power[powerUpsInUse] = powerTemp;
                     powerUpsInUse++;
                 }
@@ -211,10 +217,25 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                 skipLevel = 0;
             }
 
-            if(strikerShoting == 1)
+            if(strikerShoting > 0)
             {
+                if (strikerShooting1.shootSpeed = 0)
+                {
+                    setFreq(500);
+                    shotCaller(&strikerShooting1, &striker1, strikerShoting);
+                    strikerShoting--;
+                    strikerShooting1.shootSpeed=10;
 
-                strikerShoting = 0;
+                }
+
+                strikerShooting1.shootSpeed--;
+
+            }
+            int i;
+            for(i=0;i<=9;i++)
+            {
+                updateShot(&wall, &blocks, numberOfBlocks, p, &striker1, &strikerShooting1, i);
+                drawShot(&strikerShooting1, i);
             }
 
 
