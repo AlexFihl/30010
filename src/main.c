@@ -23,7 +23,7 @@
 #define startAddress 0x0800F800
 
 
-static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct wall_t *w, int8_t * deltaStrikerStart, int8_t * deltaGamingSpeed)
+static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct wall_t *w, int8_t * deltaStrikerStart, int8_t * deltaGamingSpeed, int8_t *scoreMultiplier)
 {
     int8_t menuPoint = 0, oldMenuPoint = 1, returnFromSubMenu = 0, backS = 0;
     clrsrc();
@@ -250,7 +250,7 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                         (*startBallSpeed) = -3;
                     oldJoystick = currentJoyStick;
                 }
-                (*startBallSpeed) = (*startBallSpeed * 8) << 12;
+                (*startBallSpeed) = (*startBallSpeed * 8) << 10;
                 returnFromSubMenu = 1;
             }
             break;
@@ -438,6 +438,7 @@ static void printFullMainMenu()
 static void menu()
 {
     int8_t menuPoint = 0, oldMenuPoint = 1, returnFromSubMenu = 1;
+    int8_t scoreMultiplier = 1;
     int8_t deltaStrikerStart = 0, deltaGamingSpeed = 0;
     int32_t startBallSpeed = 0;
     clrsrc();
@@ -494,7 +495,7 @@ static void menu()
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
                 setPlayerLife(&player, 3);
-                fullGame(&player, startBallSpeed, deltaStrikerStart, deltaGamingSpeed);
+                fullGame(&player, startBallSpeed, deltaStrikerStart, deltaGamingSpeed, &scoreMultiplier);
                 //Set player name should be implemtentet
                 saveHighScore(&player);
                 resetPlayer(&player);
@@ -510,7 +511,7 @@ static void menu()
             }
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
-                subSettingsMenu(&player, &startBallSpeed, &w, &deltaStrikerStart, &deltaGamingSpeed);
+                subSettingsMenu(&player, &startBallSpeed, &w, &deltaStrikerStart, &deltaGamingSpeed, &scoreMultiplier);
                 returnFromSubMenu = 1;
             }
             break;
