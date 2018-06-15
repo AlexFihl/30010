@@ -10,6 +10,7 @@ struct player_t{
     uint32_t score;
     char * name;
     uint8_t life;
+    uint8_t catchKeys;
 };
 
 void intPlayer(struct player_t *p);

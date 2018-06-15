@@ -143,6 +143,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                     intVector(&vP, x1, y1);
                     struct powerUp_t powerTemp;
                     initPowerUp(&powerTemp, &vP, rand()%12); //Real thing
+                    //initPowerUp(&powerTemp, &vP, 8); //Testing
                     power[powerUpsInUse] = powerTemp;
                     powerUpsInUse++;
                 }
@@ -179,7 +180,13 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
             if (numberOfBlocksLeft == 0)
                 return 1;
             printLCDGame(numberOfBlocksLeft, p);
-
+            if(p->catchKeys == 3)
+            {
+                uint32_t scoreFromMinigame = playMinigame1();
+                p->score += scoreFromMinigame / 100;
+                while((readJoyStick() & 0x10) == 0x10) {};
+                p->catchKeys = 0;
+            }
             updateGame = 0;
         }
     }
