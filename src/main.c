@@ -335,15 +335,12 @@ static void saveHighScore(struct player_t *p)
         point[i] |= *(uint16_t *)(startAddress + 22 + i*24);
     }
 
-    if(point[4] > p->score)
+    if(point[4] >= p->score)
         return;
     if(point[0] > p->score)
-    {
-
         for(i=4; i > 0; i--)
-            if(point[i] < p->score && point[i-1] > p->score)
+            if(point[i] < p->score && point[i-1] >= p->score)
                 break;
-    }
     else
         i = 0;
     for(j=4; j > i; j--)
@@ -379,7 +376,10 @@ static void printPowerupHelp()
     gotoxy(83, 23);
     printf("%c = shorter striker", signA[1]);
     gotoxy(83, 24);
-    printf("%c = one extra life", signA[2]);
+    fgcolor(2);
+    printf("%c", signA[2]);
+    resetbgcolor();
+    printf(" = one extra life");
     gotoxy(83, 25);
     printf("%c = instant death", signA[3]);
     gotoxy(83, 26);
@@ -582,7 +582,22 @@ static void menu()
                         updateMenu = 0;
                     }
                 }
-                             returnFromSubMenu = 1;
+                oldJoystick = currentJoyStick;
+                clrsrc();
+                window(&w, "Power Ups", 0);
+                printPowerupHelp();
+                while(1)
+                {
+                    if(updateMenu == 1)
+                    {
+                        currentJoyStick = readJoyStick();
+                        if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                            break;
+                        oldJoystick = currentJoyStick;
+                        updateMenu = 0;
+                    }
+                }
+                returnFromSubMenu = 1;
             }
 
             break;
@@ -624,13 +639,7 @@ void simon()
 
 void alex()
 {
-    struct player_t p;
-    intPlayer(&p);
-    p.score = 501;
-    char * name3 = "Alex\0";
-    setPlayerName(&p, name3);
-    saveHighScore(&p);
-    printHighScore();
+
 }
 
 static void resetHighScore()
@@ -665,9 +674,6 @@ void mads()
 
 int main(void)
 {
-    //FLASH_ProgramHalfWord(startAddress + 142, 0x0001);
-    if(*(uint16_t *)(startAddress + 144) == 0x0000)
-        resetHighScore();
     startUpABC();
     //PuTTy need to be in 220 times 65.
     init_usb_uart(115200); // Initialize USB serial at 9600 baud
@@ -676,20 +682,25 @@ int main(void)
     clrsrc();
     showCursor();
     joyStickSetUp();
+    if((readJoyStick() & 0x02) == 0x02) //When pressed down
+        resetHighScore(); //For getting a clean high score
     ledSetup();
-    setupLCD();
     //Starting the timer for all things
     setUpTimer15();
 
     //Starting the timer for the buzzer
     setUpTimer2();
     setUpSpeaker();
+
+    //Setting up the lcd
+    setupLCD();
+    bufferReset();
+    lcd_update();
     //The actual game
     //alex();
     menu();
     //mads();
 
-    setLed(0,0,1);
     while(1)
     {
 
