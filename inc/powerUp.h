@@ -31,13 +31,14 @@ struct strikerShooting_t
     struct vector_t oldPosition[10];
     uint32_t speed;
     uint8_t shootSpeed;
+    uint8_t amountOfBalls;
 };
 
 void initPowerUp(struct powerUp_t *p, struct vector_t *v, uint8_t powerUpType);
 void drawPowerUp(struct powerUp_t *p, struct block_t * b, uint16_t lowerBond, uint32_t numberOfBlocks);
 void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w, struct ball_t *b, struct player_t *pl, int8_t * ballOnStriker, int8_t *skipLevel, int8_t *strikerShoting, int8_t *multiplyBalls);
 void updatePowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w);
-void initStrikerShooting (struct strikerShooting_t *s);
+void initStrikerShooting (struct strikerShooting_t *s, struct striker_t *st);
 void shotCaller(struct strikerShooting_t *s, struct striker_t *st, uint8_t shotNumber);
 void drawShot(struct strikerShooting_t *u, uint8_t shotNumber);
 void updateShot(struct wall_t *w, struct block_t ** blocks, uint16_t numberOfBlocks, struct player_t *p, struct striker_t *s, struct strikerShooting_t *u, uint8_t shotNumber);
