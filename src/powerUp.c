@@ -147,17 +147,8 @@ void updateShot(struct wall_t *w, struct block_t ** blocks, uint16_t numberOfBlo
             if (newY >= block.v1.y && newY <= (block.v2.y + (1 << 14)) && u->position[shotNumber].x >= block.v1.x && u->position[shotNumber].x <= (block.v2.x + (1 << 14)))
             {
                 setFreq(1300);
-                if(block.v1.y >= u->oldPosition[shotNumber].y || (block.v2.y  + (1 << 14)) <= u->oldPosition[shotNumber].y)
-                {
-                    u->isAlive[shotNumber]=0;
-                    (((*blocks)[i]).hits) = block.life;
-                }
-                (((*blocks)[i]).hits)++;
-                if (FIX14_DIV((*blocks)[i].hits, block.life) >= 0x00004000)
-                {
-                    (((*blocks)[i]).state) = 0;
-                }
-
+                u->isAlive[shotNumber]=0;
+                (((*blocks)[i]).hits) = block.life;
             }
         }
     }
