@@ -1,6 +1,7 @@
 #include "powerUp.h"
 
-const uint16_t signA[12] = {
+const uint16_t signA[12] =
+{
     43, 45, 49, 158, 249, 175, 174, 33, 159, 190, 167, 207
 };
 
@@ -96,6 +97,92 @@ void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w, st
             break;
         }
 
+    }
+}
+
+void initStrikerShooting (struct strikerShooting_t *s, struct striker_t *st)
+{
+    int8_t i;
+    for(i=0; i<10; i++)
+    {
+        s->isAlive[i] = 0;
+        s->position[i].y = st->center.y - 0x00004000; //=1
+        s->oldPosition[i].y = st->center.y - 0x00008000;
+    }
+    s->amountOfBalls = 0;
+    s->speed = 1 << FIX14_SHIFT;
+    s->shootSpeed = 10;
+}
+
+void shotCaller(struct strikerShooting_t *s, struct striker_t *st, uint8_t shotNumber)
+{
+    s->position[shotNumber].x = st->center.x;
+    s->oldPosition[shotNumber].x = st->center.x;
+    s->position[shotNumber].x = st->center.x;
+    s->isAlive[shotNumber] = 1;
+}
+
+void updateShot(struct wall_t *w, struct block_t ** blocks, uint16_t numberOfBlocks, struct player_t *p, struct striker_t *s, struct strikerShooting_t *u, uint8_t shotNumber)
+{
+    uint32_t wally1;
+    uint8_t i;
+    wally1 = (w->v1.y) >> FIX14_SHIFT;
+    int32_t newY = u->position[shotNumber].y - u->speed;
+
+    //Checking that it hits the top
+
+    if (newY <= ((wally1 + 1) << FIX14_SHIFT))
+    {
+        setFreq(3300);
+        u->isAlive[shotNumber]=0;
+    }
+
+    //Checking if it hits a block
+    for(i = 0; i < numberOfBlocks; i++)
+    {
+        struct block_t block;
+        block = (*blocks)[i];
+        if(block.state > 0)
+        {
+            if (newY >= block.v1.y && newY <= (block.v2.y + (1 << 14)) && u->position[shotNumber].x >= block.v1.x && u->position[shotNumber].x <= (block.v2.x + (1 << 14)))
+            {
+                setFreq(1300);
+                if(block.v1.y >= u->oldPosition[shotNumber].y || (block.v2.y  + (1 << 14)) <= u->oldPosition[shotNumber].y)
+                {
+                    u->isAlive[shotNumber]=0;
+                    (((*blocks)[i]).hits) = block.life;
+                }
+                (((*blocks)[i]).hits)++;
+                if (FIX14_DIV((*blocks)[i].hits, block.life) >= 0x00004000)
+                {
+                    (((*blocks)[i]).state) = 0;
+                }
+
+            }
+        }
+    }
+
+
+    u->position[shotNumber].y = newY;
+}
+
+void drawShot(struct strikerShooting_t *u, uint8_t shotNumber)
+{
+    if((u->isAlive[shotNumber] == 0) /*&& ((u->oldPosition[shotNumber].y >> FIX14_SHIFT) != (u->position[shotNumber].y >> FIX14_SHIFT))*/)
+    {
+        gotoxy((u->oldPosition[shotNumber].x) >> FIX14_SHIFT, (u->oldPosition[shotNumber].y) >> FIX14_SHIFT);
+        printf("%c", 32);
+        gotoxy((u->position[shotNumber].x) >> FIX14_SHIFT, (u->position[shotNumber].y) >> FIX14_SHIFT);
+        printf("%c", 32);
+    }
+    else if ((u->oldPosition[shotNumber].y >> FIX14_SHIFT) != (u->position[shotNumber].y >> FIX14_SHIFT))
+    {
+        gotoxy((u->oldPosition[shotNumber].x) >> FIX14_SHIFT, (u->oldPosition[shotNumber].y) >> FIX14_SHIFT);
+        printf("%c", 32);
+        gotoxy((u->position[shotNumber].x) >> FIX14_SHIFT, (u->position[shotNumber].y) >> FIX14_SHIFT);
+        printf("%c", 111);
+        u->oldPosition[shotNumber].x = u->position[shotNumber].x;
+        u->oldPosition[shotNumber].y = u->position[shotNumber].y;
     }
 }
 

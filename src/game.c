@@ -65,6 +65,7 @@ static void printLCDGame(uint16_t numberOfBlocksLeft, struct player_t *p)
     lcd_update();
 }
 
+
 static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSpeed, int8_t deltaStrikerStart, int8_t deltaGamingSpeed, int8_t *scoreMultiplier) //09/06
 {
     //Setting the ball speed
@@ -102,6 +103,11 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
     struct striker_t striker1;
     intStriker(&striker1, deltaStrikerStart);
     drawStriker(&striker1);
+
+    //setting up the strikershooting powerup
+    int8_t shootBalls = 0;
+    struct strikerShooting_t strikerShooting1;
+    initStrikerShooting(&strikerShooting1, &striker1);
 
     //Setting up the wall
     struct ball_t b;
@@ -193,7 +199,6 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                     intVector(&vP, x1, y1);
                     struct powerUp_t powerTemp;
                     initPowerUp(&powerTemp, &vP, rand()%12); //Real thing
-                    //initPowerUp(&powerTemp, &vP, 4); //Testing
                     power[powerUpsInUse] = powerTemp;
                     powerUpsInUse++;
                 }
@@ -214,10 +219,45 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
 
             if(strikerShoting == 1)
             {
-
-                strikerShoting = 0;
+                if (strikerShooting1.shootSpeed == 0 && shootBalls < 10)
+                {
+                    setFreq(500);
+                    shotCaller(&strikerShooting1, &striker1, shootBalls);
+                    strikerShooting1.shootSpeed=10;
+                    shootBalls++;
+                    strikerShooting1.amountOfBalls++;
+                }
+                strikerShooting1.shootSpeed--;
+                if(shootBalls == 10)
+                {
+                    strikerShoting = 0;
+                    shootBalls = 0;
+                }
             }
 
+            for(i=0; i<strikerShooting1.amountOfBalls; i++)
+            {
+                updateShot(&wall, &blocks, numberOfBlocks, p, &striker1, &strikerShooting1, i);
+                drawShot(&strikerShooting1, i);
+            }
+
+            for(i=0; i < strikerShooting1.amountOfBalls; i++)
+            {
+                if(strikerShooting1.isAlive[i] == 0)
+                {
+                    for(j=i; j<strikerShooting1.amountOfBalls; j++)
+                    {
+                        strikerShooting1.position[j] = strikerShooting1.position[j+1];
+                        strikerShooting1.oldPosition[j] = strikerShooting1.oldPosition[j+1];
+                        strikerShooting1.isAlive[j] = strikerShooting1.isAlive[j+1];
+                    }
+                    strikerShooting1.position[strikerShooting1.amountOfBalls - 1] = strikerShooting1.position[strikerShooting1.amountOfBalls];
+                    strikerShooting1.oldPosition[strikerShooting1.amountOfBalls - 1] = strikerShooting1.oldPosition[strikerShooting1.amountOfBalls];
+                    strikerShooting1.isAlive[strikerShooting1.amountOfBalls - 1] = strikerShooting1.isAlive[strikerShooting1.amountOfBalls];
+                    strikerShooting1.amountOfBalls--;
+                }
+
+            }
 
             if(multiplyBalls == 1 && numberOfBalls < 10)
             {
