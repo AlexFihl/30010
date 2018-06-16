@@ -18,6 +18,6 @@
 #define AGAME_H
 
 
-void fullGame(struct player_t *p, int32_t startBallSpeed, int8_t deltaStrikerStart, int8_t deltaGamingSpeed);
+void fullGame(struct player_t *p, int32_t startBallSpeed, int8_t deltaStrikerStart, int8_t deltaGamingSpeed, int8_t *scoreMultiplier);
 
 #endif //AGAME_H

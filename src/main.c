@@ -23,7 +23,7 @@
 #define startAddress 0x0800F800
 
 
-static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct wall_t *w, int8_t * deltaStrikerStart, int8_t * deltaGamingSpeed)
+static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct wall_t *w, int8_t * deltaStrikerStart, int8_t * deltaGamingSpeed, int8_t *scoreMultiplier)
 {
     int8_t menuPoint = 0, oldMenuPoint = 1, returnFromSubMenu = 0, backS = 0;
     clrsrc();
@@ -31,248 +31,263 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
     uint8_t currentJoyStick, oldJoystick = readJoyStick();
     while(1)
     {
-        currentJoyStick = readJoyStick();
-        if (currentJoyStick != oldJoystick)
+        if(updateMenu == 1)
         {
-            if      ((currentJoyStick & 0x01) == 0x01) //When clicking the up button
-                menuPoint--;
-            else if ((currentJoyStick & 0x02) == 0x02) //When clicking the down button
-                menuPoint++;
-            if(menuPoint < 0) menuPoint = 4;
-            else if(menuPoint > 4) menuPoint = 0;
-        }
-        if(returnFromSubMenu == 1)
-        {
-            clrsrc();
-            window(w, "Settings", 0);
-            gotoxy(104, 23);
-            printf("Player name");
-            gotoxy(104, 25);
-            printf("Striker lenght");
-            gotoxy(104, 27);
-            printf("Game speed");
-            gotoxy(104, 29);
-            printf("Ball speed");
-            gotoxy(104, 31);
-            printf("Back");
-            returnFromSubMenu = 0;
-        }
-        if(menuPoint != oldMenuPoint)
-        {
-            gotoxy(104, 23);
-            printf("Player name");
-            gotoxy(104, 25);
-            printf("Striker lenght");
-            gotoxy(104, 27);
-            printf("Game speed");
-            gotoxy(104, 29);
-            printf("Ball speed");
-            gotoxy(104, 31);
-            printf("Back");
-            inverse(1);
-        }
-        switch(menuPoint)
-        {
-        case 0:
+            currentJoyStick = readJoyStick();
+            if (currentJoyStick != oldJoystick)
+            {
+                if      ((currentJoyStick & 0x01) == 0x01) //When clicking the up button
+                    menuPoint--;
+                else if ((currentJoyStick & 0x02) == 0x02) //When clicking the down button
+                    menuPoint++;
+                if(menuPoint < 0) menuPoint = 4;
+                else if(menuPoint > 4) menuPoint = 0;
+            }
+            if(returnFromSubMenu == 1)
+            {
+                clrsrc();
+                window(w, "Settings", 0);
+                gotoxy(104, 23);
+                printf("Player name");
+                gotoxy(104, 25);
+                printf("Striker lenght");
+                gotoxy(104, 27);
+                printf("Game speed");
+                gotoxy(104, 29);
+                printf("Ball speed");
+                gotoxy(104, 31);
+                printf("Back");
+                returnFromSubMenu = 0;
+            }
             if(menuPoint != oldMenuPoint)
             {
                 gotoxy(104, 23);
                 printf("Player name");
-                inverse(0);
-            }
-            if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
-            {
-                clrsrc();
-                window(w, "Name", 0);
-                char * name;
-                gotoxy(101, 23);
-                printf("Player name:");
-                gotoxy(101, 24);
-                printf("Max 10 charters!");
-                gotoxy(101, 25);
-                name = getInput();
-                setPlayerName(p, name);
-                returnFromSubMenu = 1;
-            }
-            break;
-        case 1:
-            if(menuPoint != oldMenuPoint)
-            {
                 gotoxy(104, 25);
                 printf("Striker lenght");
-                inverse(0);
-            }
-            if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
-            {
-                oldJoystick = currentJoyStick;
-                clrsrc();
-                window(w, "Striker lenght", 0);
-                int8_t oldS = 1;
-                while(1)
-                {
-                    if(oldS != (*deltaStrikerStart))
-                    {
-                        gotoxy(101, 23);
-                        printf("Striker start lenght: %02d", (*deltaStrikerStart) + 20);
-                        oldS = (*deltaStrikerStart);
-                    }
-                    currentJoyStick = readJoyStick();
-                    if      ((currentJoyStick & 0x04) == 0x04 && (oldJoystick & 0x04) == 0x00) //When clicking the left button
-                        (*deltaStrikerStart) -= 2;
-                    else if ((currentJoyStick & 0x08) == 0x08 && (oldJoystick & 0x08) == 0x00) //When clicking the right button
-                        (*deltaStrikerStart) += 2;
-                    if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
-                        break;
-                    if((*deltaStrikerStart) > 10)
-                        (*deltaStrikerStart) = 10;
-                    else if((*deltaStrikerStart) < -10)
-                        (*deltaStrikerStart) = -10;
-                    oldJoystick = currentJoyStick;
-
-                }
-                returnFromSubMenu = 1;
-            }
-            break;
-        case 2:
-            if(menuPoint != oldMenuPoint)
-            {
                 gotoxy(104, 27);
                 printf("Game speed");
-                inverse(0);
-            }
-            if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
-            {
-                oldJoystick = currentJoyStick;
-                clrsrc();
-                window(w, "Game speed", 0);
-                int8_t oldG = 1;
-                while(1)
-                {
-                    if(oldG != *deltaGamingSpeed)
-                    {
-                        gotoxy(101, 23);
-                        switch(*deltaGamingSpeed)
-                        {
-                        case -3:
-                            printf("Gaming speed: Fastest ");
-                            break;
-                        case -2:
-                            printf("Gaming speed: Faster ");
-                            break;
-                        case -1:
-                            printf("Gaming speed: Fast   ");
-                            break;
-                        case 0:
-                            printf("Gaming speed: Normal ");
-                            break;
-                        case 1:
-                            printf("Gaming speed: Slow   ");
-                            break;
-                        case 2:
-                            printf("Gaming speed: Slower ");
-                            break;
-                        case 3:
-                            printf("Gaming speed: Slowest");
-                            break;
-                        }
-                        oldG = *deltaGamingSpeed;
-                    }
-                    currentJoyStick = readJoyStick();
-                    if      ((currentJoyStick & 0x01) == 0x01 && (oldJoystick & 0x01) == 0x00) //When clicking the up button
-                        (*deltaGamingSpeed)++;
-                    else if ((currentJoyStick & 0x02) == 0x02 && (oldJoystick & 0x02) == 0x00) //When clicking the down button
-                        (*deltaGamingSpeed)--;
-                    if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
-                        break;
-                    if((*deltaGamingSpeed) > 3)
-                        (*deltaGamingSpeed) = 3;
-                    else if((*deltaGamingSpeed) < -3)
-                        (*deltaGamingSpeed) = -3;
-                    oldJoystick = currentJoyStick;
-                }
-                returnFromSubMenu = 1;
-            }
-            break;
-        case 3:
-            if(menuPoint != oldMenuPoint)
-            {
                 gotoxy(104, 29);
                 printf("Ball speed");
-                inverse(0);
-            }
-            if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
-            {
-                oldJoystick = currentJoyStick;
-                clrsrc();
-                window(w, "Ball speed", 0);
-                int32_t oldB = 1;
-                while(1)
-                {
-                    if(oldB != *startBallSpeed)
-                    {
-                        gotoxy(101, 23);
-                        switch(*startBallSpeed)
-                        {
-                        case -3:
-                            printf("Ball speed: Fastest   ");
-                            break;
-                        case -2:
-                            printf("Ball speed: Faster   ");
-                            break;
-                        case -1:
-                            printf("Ball speed: Fast     ");
-                            break;
-                        case 0:
-                            printf("Ball speed: Normal   ");
-                            break;
-                        case 1:
-                            printf("Ball speed: Slow   ");
-                            break;
-                        case 2:
-                            printf("Ball speed: Slower ");
-                            break;
-                        case 3:
-                            printf("Ball speed: Slowest");
-                            break;
-                        }
-                        oldB = *startBallSpeed;
-                    }
-                    currentJoyStick = readJoyStick();
-                    if      ((currentJoyStick & 0x01) == 0x01 && (oldJoystick & 0x01) == 0x00) //When clicking the up button
-                        (*startBallSpeed)++;
-                    else if ((currentJoyStick & 0x02) == 0x02 && (oldJoystick & 0x02) == 0x00) //When clicking the down button
-                        (*startBallSpeed)--;
-                    if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
-                        break;
-                    if((*startBallSpeed) > 3)
-                        (*startBallSpeed) = 3;
-                    else if((*startBallSpeed) < -3)
-                        (*startBallSpeed) = -3;
-                    oldJoystick = currentJoyStick;
-                }
-                (*startBallSpeed) = (*startBallSpeed * 8) << 12;
-                returnFromSubMenu = 1;
-            }
-            break;
-        case 4:
-            if(menuPoint != oldMenuPoint)
-            {
                 gotoxy(104, 31);
                 printf("Back");
-                inverse(0);
+                inverse(1);
             }
-            if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+            switch(menuPoint)
             {
-                backS = 1;
+            case 0:
+                if(menuPoint != oldMenuPoint)
+                {
+                    gotoxy(104, 23);
+                    printf("Player name");
+                    inverse(0);
+                }
+                if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                {
+                    clrsrc();
+                    window(w, "Name", 0);
+                    char * name;
+                    gotoxy(101, 23);
+                    printf("Player name:");
+                    gotoxy(101, 24);
+                    printf("Max 10 charters!");
+                    gotoxy(101, 25);
+                    name = getInput();
+                    setPlayerName(p, name);
+                    returnFromSubMenu = 1;
+                }
+                break;
+            case 1:
+                if(menuPoint != oldMenuPoint)
+                {
+                    gotoxy(104, 25);
+                    printf("Striker lenght");
+                    inverse(0);
+                }
+                if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                {
+                    oldJoystick = currentJoyStick;
+                    clrsrc();
+                    window(w, "Striker lenght", 0);
+                    int8_t oldS = 1;
+                    while(1)
+                    {
+                        if(updateMenu == 1)
+                        {
+                            if(oldS != (*deltaStrikerStart))
+                            {
+                                gotoxy(101, 23);
+                                printf("Striker start lenght: %02d", (*deltaStrikerStart) + 20);
+                                oldS = (*deltaStrikerStart);
+                            }
+                            currentJoyStick = readJoyStick();
+                            if      ((currentJoyStick & 0x04) == 0x04 && (oldJoystick & 0x04) == 0x00) //When clicking the left button
+                                (*deltaStrikerStart) -= 2;
+                            else if ((currentJoyStick & 0x08) == 0x08 && (oldJoystick & 0x08) == 0x00) //When clicking the right button
+                                (*deltaStrikerStart) += 2;
+                            if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                                break;
+                            if((*deltaStrikerStart) > 10)
+                                (*deltaStrikerStart) = 10;
+                            else if((*deltaStrikerStart) < -10)
+                                (*deltaStrikerStart) = -10;
+                            oldJoystick = currentJoyStick;
+                            updateMenu = 0;
+                        }
+                    }
+                    returnFromSubMenu = 1;
+                }
+                break;
+            case 2:
+                if(menuPoint != oldMenuPoint)
+                {
+                    gotoxy(104, 27);
+                    printf("Game speed");
+                    inverse(0);
+                }
+                if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                {
+                    oldJoystick = currentJoyStick;
+                    clrsrc();
+                    window(w, "Game speed", 0);
+                    int8_t oldG = 1;
+                    while(1)
+                    {
+                        if(updateMenu == 1)
+                        {
+                            if(oldG != *deltaGamingSpeed)
+                            {
+                                gotoxy(101, 23);
+                                switch(*deltaGamingSpeed)
+                                {
+                                case -3:
+                                    printf("Gaming speed: Fastest ");
+                                    break;
+                                case -2:
+                                    printf("Gaming speed: Faster ");
+                                    break;
+                                case -1:
+                                    printf("Gaming speed: Fast   ");
+                                    break;
+                                case 0:
+                                    printf("Gaming speed: Normal ");
+                                    break;
+                                case 1:
+                                    printf("Gaming speed: Slow   ");
+                                    break;
+                                case 2:
+                                    printf("Gaming speed: Slower ");
+                                    break;
+                                case 3:
+                                    printf("Gaming speed: Slowest");
+                                    break;
+                                }
+                                oldG = *deltaGamingSpeed;
+                            }
+                            currentJoyStick = readJoyStick();
+                            if      ((currentJoyStick & 0x01) == 0x01 && (oldJoystick & 0x01) == 0x00) //When clicking the up button
+                                (*deltaGamingSpeed)++;
+                            else if ((currentJoyStick & 0x02) == 0x02 && (oldJoystick & 0x02) == 0x00) //When clicking the down button
+                                (*deltaGamingSpeed)--;
+                            if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                                break;
+                            if((*deltaGamingSpeed) > 3)
+                                (*deltaGamingSpeed) = 3;
+                            else if((*deltaGamingSpeed) < -3)
+                                (*deltaGamingSpeed) = -3;
+                            oldJoystick = currentJoyStick;
+                            updateMenu = 0;
+                        }
+                    }
+                    returnFromSubMenu = 1;
+                }
+                break;
+            case 3:
+                if(menuPoint != oldMenuPoint)
+                {
+                    gotoxy(104, 29);
+                    printf("Ball speed");
+                    inverse(0);
+                }
+                if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                {
+                    oldJoystick = currentJoyStick;
+                    clrsrc();
+                    window(w, "Ball speed", 0);
+                    int32_t oldB = 1;
+                    while(1)
+                    {
+                        if(updateMenu == 1)
+                        {
+                            if(oldB != *startBallSpeed)
+                            {
+                                gotoxy(101, 23);
+                                switch(*startBallSpeed)
+                                {
+                                case -3:
+                                    printf("Ball speed: Fastest   ");
+                                    break;
+                                case -2:
+                                    printf("Ball speed: Faster   ");
+                                    break;
+                                case -1:
+                                    printf("Ball speed: Fast     ");
+                                    break;
+                                case 0:
+                                    printf("Ball speed: Normal   ");
+                                    break;
+                                case 1:
+                                    printf("Ball speed: Slow   ");
+                                    break;
+                                case 2:
+                                    printf("Ball speed: Slower ");
+                                    break;
+                                case 3:
+                                    printf("Ball speed: Slowest");
+                                    break;
+                                }
+                                oldB = *startBallSpeed;
+                            }
+                            currentJoyStick = readJoyStick();
+                            if      ((currentJoyStick & 0x01) == 0x01 && (oldJoystick & 0x01) == 0x00) //When clicking the up button
+                                (*startBallSpeed)++;
+                            else if ((currentJoyStick & 0x02) == 0x02 && (oldJoystick & 0x02) == 0x00) //When clicking the down button
+                                (*startBallSpeed)--;
+                            if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                                break;
+                            if((*startBallSpeed) > 3)
+                                (*startBallSpeed) = 3;
+                            else if((*startBallSpeed) < -3)
+                                (*startBallSpeed) = -3;
+                            oldJoystick = currentJoyStick;
+                            updateMenu = 0;
+                        }
+                    }
+                    (*startBallSpeed) = *startBallSpeed << 9;
+                    returnFromSubMenu = 1;
+                }
+                break;
+            case 4:
+                if(menuPoint != oldMenuPoint)
+                {
+                    gotoxy(104, 31);
+                    printf("Back");
+                    inverse(0);
+                }
+                if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                {
+                    backS = 1;
+                }
+                break;
+            default:
+                menuPoint = 0;
+                break;
             }
-            break;
-        default:
-            menuPoint = 0;
-            break;
+            oldMenuPoint = menuPoint;
+            oldJoystick = currentJoyStick;
+            if(backS == 1) break;
+            updateMenu = 0;
         }
-        oldMenuPoint = menuPoint;
-        oldJoystick = currentJoyStick;
-        if(backS == 1) break;
     }
 }
 
@@ -438,6 +453,7 @@ static void printFullMainMenu()
 static void menu()
 {
     int8_t menuPoint = 0, oldMenuPoint = 1, returnFromSubMenu = 1;
+    int8_t scoreMultiplier = 1;
     int8_t deltaStrikerStart = 0, deltaGamingSpeed = 0;
     int32_t startBallSpeed = 0;
     clrsrc();
@@ -494,7 +510,7 @@ static void menu()
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
                 setPlayerLife(&player, 3);
-                fullGame(&player, startBallSpeed, deltaStrikerStart, deltaGamingSpeed);
+                fullGame(&player, startBallSpeed, deltaStrikerStart, deltaGamingSpeed, &scoreMultiplier);
                 //Set player name should be implemtentet
                 saveHighScore(&player);
                 resetPlayer(&player);
@@ -510,7 +526,7 @@ static void menu()
             }
             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
             {
-                subSettingsMenu(&player, &startBallSpeed, &w, &deltaStrikerStart, &deltaGamingSpeed);
+                subSettingsMenu(&player, &startBallSpeed, &w, &deltaStrikerStart, &deltaGamingSpeed, &scoreMultiplier);
                 returnFromSubMenu = 1;
             }
             break;
@@ -529,10 +545,14 @@ static void menu()
                 printHighScore();
                 while(1)
                 {
-                    currentJoyStick = readJoyStick();
-                    if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
-                        break;
-                    oldJoystick = currentJoyStick;
+                    if(updateMenu == 1)
+                    {
+                        currentJoyStick = readJoyStick();
+                        if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                            break;
+                        oldJoystick = currentJoyStick;
+                        updateMenu = 0;
+                    }
                 }
                 oldJoystick = currentJoyStick;
                 returnFromSubMenu = 1;
@@ -553,12 +573,16 @@ static void menu()
                 printHelp();
                 while(1)
                 {
-                    currentJoyStick = readJoyStick();
-                    if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
-                        break;
-                    oldJoystick = currentJoyStick;
+                    if(updateMenu == 1)
+                    {
+                        currentJoyStick = readJoyStick();
+                        if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
+                            break;
+                        oldJoystick = currentJoyStick;
+                        updateMenu = 0;
+                    }
                 }
-                returnFromSubMenu = 1;
+                             returnFromSubMenu = 1;
             }
 
             break;
@@ -578,7 +602,7 @@ static void menu()
                 window(&w, "Score", 0);
                 gotoxy(102, 28);
                 printf("Finale score:  %04lu", score);
-                while((readJoyStick() & 0x10) == 0x00){}
+                while((readJoyStick() & 0x10) == 0x00) {}
                 returnFromSubMenu = 1;
             }
             break;
