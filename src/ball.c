@@ -102,18 +102,6 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
                     b->hitCount++;
                 }
                 (((*blocks)[i]).hits)++;
-                if (FIX14_DIV((*blocks)[i].hits, block.life) >= 0x00004000)
-                {
-                     (((*blocks)[i]).state) = 0;
-                }
-                else if (FIX14_DIV((*blocks)[i].hits, block.life) >= 0x00003000)
-                     (((*blocks)[i]).state) = 1;
-                else if (FIX14_DIV((*blocks)[i].hits, block.life) >= 0x00002000)
-                     (((*blocks)[i]).state) = 2;
-                else if (FIX14_DIV((*blocks)[i].hits, block.life) >= 0x00001000)
-                     (((*blocks)[i]).state) = 3;
-                else (((*blocks)[i]).state) = 4;
-
             }
         }
     }

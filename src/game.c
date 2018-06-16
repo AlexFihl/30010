@@ -275,8 +275,10 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
 
             //Drawing the blocks
             for (i = 0; i < x*y; i++)
+            {
+                updateBlockState(&blocks[i]);
                 drawBlock(&blocks[i]);
-
+            }
 
             //Printing a power up
             for(i = 0; i < powerUpsInUse; i++)

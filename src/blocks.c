@@ -81,4 +81,13 @@ void drawBlock(struct block_t *b) //08/06
     }
 }
 
-
+void updateBlockState(struct block_t *b)
+{
+    if(b->state == 0) return; //so it dosn't need to check its hits and life
+    uint32_t x = FIX14_DIV(b->hits, b->life);
+    if (x >= 0x00004000)        b->state = 0;
+    else if (x >= 0x00003000)   b->state = 1;
+    else if (x >= 0x00002000)   b->state = 2;
+    else if (x >= 0x00001000)   b->state = 3;
+    else                        b->state = 4;
+}
