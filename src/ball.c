@@ -75,6 +75,7 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
     }
     else if (newY >= (wally2 << FIX14_SHIFT))
     {
+        setFreq(500);
         b->dead = 1;
         return;
     }
@@ -109,7 +110,7 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
     int32_t lenghtHalf = (s->length) >> 1;
     if ((newX >= s->center.x - lenghtHalf) && (newX <= s->center.x + lenghtHalf) && (newY >= s->center.y - 0x00003000)) //0x00003000 = 0.750
     {
-        setFreq(10000);
+        setFreq(5000);
         int32_t y=s->length;
         b->angle =  256 - b->angle + (((newX - s->center.x) * 60 )/(y >> 1));
         while (b->angle > 256 && b->angle < -256)
