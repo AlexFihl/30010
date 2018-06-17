@@ -28,5 +28,5 @@ void resetPlayer(struct player_t *p)
 {
     p->score = 0;
     p->life = 3;
-    p->name = "Player 1\0";
+    p->name = "Player\0";
 }
