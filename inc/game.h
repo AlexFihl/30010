@@ -13,6 +13,7 @@
 #include "time.h"
 #include "powerUp.h"
 #include "minigame.h"
+#include "charset.h"
 
 #ifndef AGAME_H
 #define AGAME_H

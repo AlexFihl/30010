@@ -40,5 +40,7 @@ Note:
 extern const char character_data[95][5];
 extern const char customcharacter_data[7][16];
 extern const char customfullscreen[6][128];
+extern const char heart[];
+extern const char keys[];
 
 #endif /*! _ACHARSET_H_ */
