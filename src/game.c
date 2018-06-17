@@ -1,9 +1,6 @@
 #include "game.h"
 
-const uint8_t heart[] =   //09/06
-{
-    0x1C, 0x3E, 0x7E, 0xFC, 0xFC, 0x7E, 0x3E, 0x1C
-};
+
 
 static void endGameScreen(struct player_t *p)
 {
@@ -62,6 +59,10 @@ static void printLCDGame(uint16_t numberOfBlocksLeft, struct player_t *p)
     for(i = 0; i < p->life; i++)
         for (j = 0; j < 8; j++)
             putInBuffer(heart[j], 6*5 + j + i * 9, 2);
+    for(i = 0; i < p->catchKeys; i++)
+        for (j = 0; j < 16; j++)
+            putInBuffer(keys[j], j + i * 17, 3);
+
     lcd_update();
 }
 
@@ -188,7 +189,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
             //Spawning a power up
             for (i = 0; i < numberOfBlocks; i++)
             {
-                if((blocks[i]).state == 0 && (blocks[i]).oldState >= 1 && powerUpsInUse < 5 && rand()%100 < 10) //Uncomment this 10% chance for an power up
+                if((blocks[i]).hits >= (blocks[i]).life && (blocks[i]).oldState != 0 && powerUpsInUse < 5 && rand()%10 < 10)
                 {
                     uint32_t x1,y1,xTemp,yTemp;
                     xTemp = (blocks[i].v2.x - blocks[i].v1.x) >> FIX14_SHIFT;
@@ -210,9 +211,6 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                 for (i = 0; i < numberOfBlocks; i++)
                 {
                     blocks[i].hits = blocks[i].life;
-                    if(blocks[i].state > 0)
-                        p->score += blocks[i].pointGiver;
-                    blocks[i].state = 0;
                 }
                 skipLevel = 0;
             }
@@ -267,16 +265,13 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                 multiplyBalls = 0;
                 numberOfBalls++;
             }
-
+            //Updating, giving points, and drawing the blocks
             //Giving the player points per
             for (i = 0; i < numberOfBlocks; i++)
-                if(blocks[i].oldState != 0 && blocks[i].state == 0)
-                    (p->score) += 1 * (*scoreMultiplier);
-
-            //Drawing the blocks
-            for (i = 0; i < x*y; i++)
             {
                 updateBlockState(&blocks[i]);
+                if(blocks[i].oldState != 0 && blocks[i].state == 0)
+                    (p->score) += 1 * (*scoreMultiplier);
                 drawBlock(&blocks[i]);
             }
 
