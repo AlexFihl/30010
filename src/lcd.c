@@ -78,9 +78,19 @@ void setScrolling(uint8_t x)
     scrolling = x;
 }
 
+void push_Buffer()
+{
+    lcd_push_buffer(lcdBuffer);
+}
+
 void putInBuffer(uint8_t byte, uint16_t slice, uint16_t line) //09/06
 {
     lcdBuffer[slice + line*128] = byte;
+}
+
+uint8_t getBuffer(int8_t slice, int8_t line)
+{
+    return lcdBuffer[slice + line*128];
 }
 
 void printADC()

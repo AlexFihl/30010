@@ -16,11 +16,10 @@ void drawSpaceship (struct minigame_t *s) //08/06
     uint8_t i;
 
     for(i=0; i<16; i++)
-        lcdBuffer[i+(s->oldShipLine*128)]=0x00;
+        putInBuffer(0x00, i, (s->oldShipLine));
     for(i=0; i<16; i++)
-        lcdBuffer[i+(s->shipLine*128)]=customcharacter_data[0][i];
-    lcd_push_buffer(lcdBuffer);
-
+        putInBuffer(customcharacter_data[0][i], i, (s->shipLine));
+    push_Buffer();
     s->oldShipLine=s->shipLine;
 }
 
@@ -29,25 +28,22 @@ void moveShip (struct minigame_t *s, int8_t deltaLine) //08/06
     if (s->shipLine+deltaLine>=0 && s->shipLine+deltaLine<=3)
         s->shipLine+=deltaLine;
 }
+
 static void minigameSrolling (struct minigame_t *s)
 {
-    int16_t i;
-    for (i = 0; i < 511; i++)
-    {
-        if (i!=127 && i!=255 && i!=383)
-            lcdBuffer[i] = lcdBuffer[i + 1];
-    }
+    int16_t i, j;
+    for(j = 0; j < 4; j++)
+        for (i = 0; i < 127; i++)
+            putInBuffer(getBuffer(i+1, j), i, j);
 
-    lcdBuffer[127] = s->obstacleBuffer[0];
-    lcdBuffer[255] = s->obstacleBuffer[16];
-    lcdBuffer[383] = s->obstacleBuffer[32];
-    lcdBuffer[511] = s->obstacleBuffer[48];
+    putInBuffer(s->obstacleBuffer[0], 127, 0);
+    putInBuffer(s->obstacleBuffer[16], 127, 1);
+    putInBuffer(s->obstacleBuffer[32], 127, 2);
+    putInBuffer(s->obstacleBuffer[48], 127, 3);
 
     for (i = 0; i < 64; i++)
-    {
         if (i!=15 && i!=31 && i!=47 && i!=63)
             s->obstacleBuffer[i] = s->obstacleBuffer[i + 1];
-    }
     s->obstacleBuffer[15] = 0x00;
     s->obstacleBuffer[31] = 0x00;
     s->obstacleBuffer[47] = 0x00;
@@ -88,17 +84,17 @@ static void drawShoot(struct minigame_t *s)
 {
     uint8_t j;
     uint8_t i;
-    if (s->shootIsAlive>1)
+    if (s->shootIsAlive > 1)
     {
         for (i = 0; i <16 ; i++)
         {
-            lcdBuffer[i+16+128*s->shootLine] = customcharacter_data[5][i];
+            putInBuffer(customcharacter_data[5][i], i+16, s->shootLine);
         }
         for (j=0; j<6; j++)
         {
             for (i = 0; i <16 ; i++)
             {
-                lcdBuffer[i+32+(j*16)+128*s->shootLine] = customcharacter_data[6][i];
+                putInBuffer(customcharacter_data[6][i], i+32+j*16, s->shootLine);
             }
         }
     }
@@ -108,7 +104,7 @@ static void drawShoot(struct minigame_t *s)
         {
             for (i = 0; i <16 ; i++)
             {
-                lcdBuffer[i+16+(j*16)+128*s->shootLine] = 0x00;
+                putInBuffer(0x00, i+16+(j*16), s->shootLine);
             }
         }
     }
@@ -149,12 +145,11 @@ static void startScreen()
     bufferReset();
     for (i=0; i<3; i++)
         for (j=0; j<127; j++)
-            lcdBuffer[j+(i*128)]=customfullscreen[i][j];
-
+            putInBuffer(customfullscreen[i][j], j, i);
     char str1[22];
     sprintf(str1, "Press center to start"); //16 long
     lcd_write_string(str1, 2, 3);
-    lcd_push_buffer(lcdBuffer);
+    push_Buffer();
 
 
 }
@@ -166,14 +161,11 @@ static void endScreen(struct minigame_t *s)
     bufferReset();
     for (i=0; i<3; i++)
         for (j=0; j<127; j++)
-            lcdBuffer[j+(i*128)]=customfullscreen[i+3][j];
-
+            putInBuffer(customfullscreen[i+3][j], j, i);
     char str1[7];
     sprintf(str1, "%04lu", s->timeSinceStart); //16 long
     lcd_write_string(str1, 55, 3);
-    lcd_push_buffer(lcdBuffer);
-
-
+    push_Buffer();
 }
 
 uint32_t playMinigame1() //08/06
