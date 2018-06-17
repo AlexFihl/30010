@@ -188,7 +188,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
             //Spawning a power up
             for (i = 0; i < numberOfBlocks; i++)
             {
-                if((blocks[i]).state == 0 && (blocks[i]).oldState >= 1 && powerUpsInUse < 5 && rand()%100 < 10) //Uncomment this 10% chance for an power up
+                if((blocks[i]).hits >= (blocks[i]).life && (blocks[i]).oldState != 0 && powerUpsInUse < 5 && rand()%10 < 10) //Uncomment this 10% chance for an power up
                 {
                     uint32_t x1,y1,xTemp,yTemp;
                     xTemp = (blocks[i].v2.x - blocks[i].v1.x) >> FIX14_SHIFT;
@@ -210,9 +210,6 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                 for (i = 0; i < numberOfBlocks; i++)
                 {
                     blocks[i].hits = blocks[i].life;
-                    if(blocks[i].state > 0)
-                        p->score += blocks[i].pointGiver;
-                    blocks[i].state = 0;
                 }
                 skipLevel = 0;
             }
@@ -267,16 +264,13 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                 multiplyBalls = 0;
                 numberOfBalls++;
             }
-
+            //Updating, giving points, and drawing the blocks
             //Giving the player points per
             for (i = 0; i < numberOfBlocks; i++)
-                if(blocks[i].oldState != 0 && blocks[i].state == 0)
-                    (p->score) += 1 * (*scoreMultiplier);
-
-            //Drawing the blocks
-            for (i = 0; i < x*y; i++)
             {
                 updateBlockState(&blocks[i]);
+                if(blocks[i].oldState != 0 && blocks[i].state == 0)
+                    (p->score) += 1 * (*scoreMultiplier);
                 drawBlock(&blocks[i]);
             }
 
