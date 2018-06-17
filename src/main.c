@@ -307,32 +307,35 @@ static void printHighScore()
     for (i=0; i<5; i++)
     {
         gotoxy(104, 23+i*2);
-        for(j=0; j<10; j++)
+        for(j=0; j<11; j++)
         {
-            if(*(uint16_t *)(startAddress + j*2 + i*24) == '\0')
+            if(*(uint16_t *)(startAddress + j*2 + i*26) == '\0')
                 break;
             else
-                printf("%c", *(uint16_t *)(startAddress + j*2 + i*24));
+                printf("%c", *(uint16_t *)(startAddress + j*2 + i*26));
         }
         gotoxy(114, 23+i*2);
         uint32_t point;
-        point = *(uint16_t *)(startAddress + 20 + i*24) << 16;
-        point |= *(uint16_t *)(startAddress + 22 + i*24);
+        point = *(uint16_t *)(startAddress + 22 + i*26) << 16;
+        point |= *(uint16_t *)(startAddress + 24 + i*26);
         printf("%04lu", point);
     }
 }
 
 static void saveHighScore(struct player_t *p)
 {
-    char names[5][10];
+    char names[5][11];
     uint32_t point[5];
     uint32_t i, j, h;
     for(i=0; i<5; i++)
     {
-        for(j=0; j<10; j++)
-            names[i][j] = *(uint16_t *)(startAddress + j*2 + i*24);
-        point[i] = *(uint16_t *)(startAddress + 20 + i*24) << 16;
-        point[i] |= *(uint16_t *)(startAddress + 22 + i*24);
+        for(j=0; j<11; j++)
+            if(*(uint16_t *)(startAddress + j*2 + i*26) == '\0')
+                break;
+            else
+                names[i][j] = *(uint16_t *)(startAddress + j*2 + i*26);
+        point[i] = *(uint16_t *)(startAddress + 22 + i*26) << 16;
+        point[i] |= *(uint16_t *)(startAddress + 24 + i*26);
     }
 
     if(point[4] >= p->score)
@@ -359,12 +362,12 @@ static void saveHighScore(struct player_t *p)
     FLASH_ErasePage( startAddress ); // Erase entire page before writing
     for(j=0; j<5; j++)
     {
-        for(i=0; i<10; i++)
+        for(i=0; i<11; i++)
         {
-            FLASH_ProgramHalfWord(startAddress + i*2 + j * 24, names[j][i]);
+            FLASH_ProgramHalfWord(startAddress + i*2 + j * 26, names[j][i]);
         }
-        FLASH_ProgramHalfWord(startAddress + 20 + j*24, point[j] >> 16); //For getting the top 4 byte of point
-        FLASH_ProgramHalfWord(startAddress + 20 + 2 + j*24, point[j]);
+        FLASH_ProgramHalfWord(startAddress + 22 + j*26, point[j] >> 16); //For getting the top 4 byte of point
+        FLASH_ProgramHalfWord(startAddress + 24 + j*26, point[j]);
     }
     FLASH_Lock();
 }
@@ -645,7 +648,7 @@ void alex()
 static void resetHighScore()
 {
     uint8_t i, j;
-    char name[5][10] = {"Best\0", "Better\0", "Good\0", "Bad\0", "Worst\0"};
+    char name[5][11] = {"Best\0", "Better\0", "Good\0", "Bad\0", "Worst\0"};
     uint32_t point[5] = {0x000003E8,0x000001F4,0x000000FA,0x00000064,0x00000020};
     FLASH_Unlock(); // Unlock FLASH for modification
     FLASH_ClearFlag( FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPERR );
@@ -653,15 +656,14 @@ static void resetHighScore()
     for(j=0; j<5; j++)
     {
         gotoxy(1,1);
-        for(i=0; i<10; i++)
+        for(i=0; i<11; i++)
         {
             printf("%c", name[j][i]);
-            FLASH_ProgramHalfWord(startAddress + i*2 + j * 24, name[j][i]);
+            FLASH_ProgramHalfWord(startAddress + i*2 + j * 26, name[j][i]);
         }
-        FLASH_ProgramHalfWord(startAddress + 20 + j*24, point[j] >> 16); //For getting the top 4 byte of point
-        FLASH_ProgramHalfWord(startAddress + 20 + 2 + j*24, point[j]);
+        FLASH_ProgramHalfWord(startAddress + 22 + j*26, point[j] >> 16); //For getting the top 4 byte of point
+        FLASH_ProgramHalfWord(startAddress + 24 + j*26, point[j]);
     }
-    FLASH_ProgramHalfWord(startAddress + 142, 0x0001);
     FLASH_Lock();
 }
 
