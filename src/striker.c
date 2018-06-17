@@ -2,7 +2,7 @@
 
 
 
-void intStriker(struct striker_t *s, int8_t deltaStrikerStart) //08/06
+void intStriker(struct striker_t *s, int8_t deltaStrikerStart)
 {
     struct vector_t v;
     intVector(&v, 110, 61);
@@ -13,12 +13,12 @@ void intStriker(struct striker_t *s, int8_t deltaStrikerStart) //08/06
     s->oldLength = (19 + deltaStrikerStart) << FIX14_SHIFT;
 }
 
-void updateStriker(struct striker_t *s, int32_t deltaCenter) //08/06
+void updateStriker(struct striker_t *s, int32_t deltaCenter)
 {
     s->center.x += (deltaCenter << FIX14_SHIFT);
 }
 
-void changeStrikerLength(struct striker_t *s, int32_t deltaLength, struct wall_t *w) //08/06
+void changeStrikerLength(struct striker_t *s, int32_t deltaLength, struct wall_t *w)
 {
     s->length += (deltaLength << FIX14_SHIFT);
     if(((s->center.x - (s->length >> 1)) >> FIX14_SHIFT) <= (w->v1.x >> FIX14_SHIFT))
@@ -27,7 +27,7 @@ void changeStrikerLength(struct striker_t *s, int32_t deltaLength, struct wall_t
         s->center.x -= (s->length >> 1) - (w->v2.x - s->center.x) + (0x00004000);   //0x00004000 = 1
 }
 
-void drawStriker(struct striker_t *s) //08/06
+void drawStriker(struct striker_t *s)
 {
     int i;
     if ((s->center.x >> FIX14_SHIFT) != (s->oldCenter.x >> FIX14_SHIFT) || (s->length >> FIX14_SHIFT) != (s->oldLength >> FIX14_SHIFT))
@@ -43,12 +43,12 @@ void drawStriker(struct striker_t *s) //08/06
     }
 }
 
-void resetStriker(struct striker_t *s) //09/06
+void resetStriker(struct striker_t *s)
 {
     s->center.x = 110 << FIX14_SHIFT;
 }
 
-int8_t updateStrikerPlacment(struct striker_t *s) //09/06
+int8_t updateStrikerPlacment(struct striker_t *s)
 {
     uint8_t currentJoyStick = readJoyStick();
     if      ((currentJoyStick & 0x04) == 0x04) //When clicking the left button

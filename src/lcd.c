@@ -1,6 +1,5 @@
 #include "lcd.h"
 
-uint8_t updateLCD;
 uint8_t scrolling;
 uint8_t adcPrinting;
 uint8_t lcdBuffer[512];

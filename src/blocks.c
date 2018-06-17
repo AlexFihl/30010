@@ -14,7 +14,7 @@ void intBlock(struct block_t *b, struct vector_t *v1, struct vector_t *v2, uint8
     b->pointGiver = 1;
 }
 
-uint16_t intMultipleBlocks(struct block_t ** blocks, struct vector_t v1, struct vector_t v2, uint8_t quantityX, uint8_t quantityY, uint8_t lifeOnBlocks) //08/06
+uint16_t intMultipleBlocks(struct block_t ** blocks, struct vector_t v1, struct vector_t v2, uint8_t quantityX, uint8_t quantityY, uint8_t lifeOnBlocks)
 {
     struct vector_t v3, v4;
     uint32_t deltaX, deltaY;
@@ -47,7 +47,7 @@ uint16_t intMultipleBlocks(struct block_t ** blocks, struct vector_t v1, struct 
     return countBlocks;
 }
 
-void drawBlock(struct block_t *b) //08/06
+void drawBlock(struct block_t *b)
 {
     if(b->oldState != b->state)
     {
@@ -83,7 +83,7 @@ void drawBlock(struct block_t *b) //08/06
 
 void updateBlockState(struct block_t *b)
 {
-    if(b->state == 0) return; //so it dosn't need to check its hits and life
+    if(b->state == 0) return;
     uint32_t x = FIX14_DIV(b->hits, b->life);
     if (x >= 0x00004000)        b->state = 0;
     else if (x >= 0x00003000)   b->state = 1;

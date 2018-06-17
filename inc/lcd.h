@@ -4,13 +4,12 @@
 #include "charset.h"
 #include "30010_io.h"
 #include "io.h"
-
+#include "time.h"
 
 #ifndef LCD_H
 #define LCD_H
 
-extern uint8_t updateLCD;
-//extern uint8_t lcdBuffer[512];
+
 
 void setupLCD();
 void lcd_write_string(char * s, uint16_t slice, uint16_t line);

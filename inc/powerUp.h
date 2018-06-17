@@ -12,8 +12,6 @@
 #ifndef POWERUP_H
 #define POWERUP_H
 
-extern const uint16_t signA[12];
-
 struct powerUp_t{
     struct vector_t v;
     struct vector_t old;
@@ -42,7 +40,7 @@ void initStrikerShooting (struct strikerShooting_t *s, struct striker_t *st);
 void shotCaller(struct strikerShooting_t *s, struct striker_t *st, uint8_t shotNumber);
 void drawShot(struct strikerShooting_t *u, uint8_t shotNumber);
 void updateShot(struct wall_t *w, struct block_t ** blocks, uint16_t numberOfBlocks, struct player_t *p, struct striker_t *s, struct strikerShooting_t *u, uint8_t shotNumber);
-
+void printPowerupHelp();
 
 
 #endif //POWERUP_H

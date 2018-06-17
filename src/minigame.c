@@ -191,7 +191,7 @@ uint32_t playMinigame1() //08/06
     initObstacle(&obstacle2,&minigame1,1);
     initObstacle(&obstacle3,&minigame1,2);
     initObstacle(&obstacle4,&minigame1,3);
-    minigameSpeed = 8;
+    setMiniGameSpeed(8);
     oldJoystick = currentJoyStick;
     while (1)
     {
@@ -233,23 +233,23 @@ uint32_t playMinigame1() //08/06
             updateMinigame = 0;
             minigame1.timeSinceStart++;
             if (minigame1.timeSinceStart==400)
-                minigameSpeed = 7;
+                setMiniGameSpeed(7);
             else if (minigame1.timeSinceStart==600)
                 minigame1.chanceOfSpawn = 94;
             else if (minigame1.timeSinceStart==800)
-                minigameSpeed = 6;
+                setMiniGameSpeed(6);
             else if (minigame1.timeSinceStart==1000)
                 minigame1.chanceOfSpawn = 90;
             else if (minigame1.timeSinceStart==1200)
-                minigameSpeed = 5;
+                setMiniGameSpeed(5);
             else if (minigame1.timeSinceStart==1500)
-                minigameSpeed = 4;
+                setMiniGameSpeed(4);
             else if (minigame1.timeSinceStart==1900)
-                minigameSpeed = 3;
+                setMiniGameSpeed(3);
             else if (minigame1.timeSinceStart==2400)
-                minigameSpeed = 2;
+                setMiniGameSpeed(2);
             else if (minigame1.timeSinceStart==3000)
-                minigameSpeed = 1;
+                setMiniGameSpeed(1);
         }
     }
 }
