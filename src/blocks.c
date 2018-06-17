@@ -11,7 +11,6 @@ void intBlock(struct block_t *b, struct vector_t *v1, struct vector_t *v2, uint8
     b->hits = 0;
     b->life = life;
     b->color = color;
-    b->pointGiver = 1;
 }
 
 uint16_t intMultipleBlocks(struct block_t ** blocks, struct vector_t v1, struct vector_t v2, uint8_t quantityX, uint8_t quantityY, uint8_t lifeOnBlocks)
