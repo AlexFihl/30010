@@ -517,6 +517,8 @@ static void menu()
                 //Set player name should be implemtentet
                 saveHighScore(&player);
                 resetPlayer(&player);
+                bufferReset();
+                push_Buffer();
                 returnFromSubMenu = 1;
             }
             break;
@@ -697,7 +699,7 @@ int main(void)
     //Setting up the lcd
     setupLCD();
     bufferReset();
-    lcd_update();
+    push_Buffer();
     //The actual game
     //alex();
     menu();
