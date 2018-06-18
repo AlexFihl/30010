@@ -200,6 +200,24 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                 }
             }
 
+            //Printing a power up
+            for(i = 0; i < powerUpsInUse; i++)
+            {
+                updatePowerUp(&power[i], &striker1, &wall);
+                applyPowerUp(&power[i], &striker1, &wall, &b, p, &ballOnStriker, &skipLevel, &strikerShoting, &multiplyBalls);
+                drawPowerUp(&power[i], blocks, yEnd, numberOfBlocks);
+            }
+            //removing a catched powerUp
+            for(i=0; i < powerUpsInUse; i++)
+            {
+                if(power[i].catched == 1 || power[i].dead == 1)
+                {
+                    for(j=i; j<powerUpsInUse; j++)
+                        power[j] = power[j+1];
+                    power[powerUpsInUse-1] = power[powerUpsInUse];
+                    powerUpsInUse--;
+                }
+            }
 
             if(skipLevel == 1)
             {
@@ -270,25 +288,6 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                 drawBlock(&blocks[i]);
             }
 
-            //Printing a power up
-            for(i = 0; i < powerUpsInUse; i++)
-            {
-                updatePowerUp(&power[i], &striker1, &wall);
-                applyPowerUp(&power[i], &striker1, &wall, &b, p, &ballOnStriker, &skipLevel, &strikerShoting, &multiplyBalls);
-                drawPowerUp(&power[i], blocks, yEnd, numberOfBlocks);
-            }
-            //removing a catched powerUp
-            for(i=0; i < powerUpsInUse; i++)
-            {
-                if(power[i].catched == 1 || power[i].dead == 1)
-                {
-                    for(j=i; j<powerUpsInUse; j++)
-                        power[j] = power[j+1];
-                    power[powerUpsInUse-1] = power[powerUpsInUse];
-                    powerUpsInUse--;
-                }
-
-            }
             //Check have many blocks there are
             numberOfBlocksLeft = 0;
             for (i = 0; i < numberOfBlocks; i++)
