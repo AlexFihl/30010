@@ -326,5 +326,6 @@ void fullGame(struct player_t *p, int32_t startBallSpeed, int8_t deltaStrikerSta
     clrsrc();
     if (gameEnd == 0)
         deathScreen(p);
-    endGameScreen(p);
+    else
+        endGameScreen(p);
 }
