@@ -158,11 +158,6 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                 }
                 oldLife = p->life;
             }
-            if (readADC1() >= 3000) //Skip a level
-            {
-                free(blocks);
-                return 1;
-            }
 
             //Moving the striker
             deltaX = getDeltaX(&striker1, &wall);
