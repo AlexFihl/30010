@@ -111,8 +111,7 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
     if ((newX >= s->center.x - lenghtHalf) && (newX <= s->center.x + lenghtHalf) && (newY >= s->center.y - 0x00003000)) //0x00003000 = 0.750
     {
         setFreq(5000);
-        int32_t y=s->length;
-        b->angle =  256 - b->angle + (((newX - s->center.x) * 60 )/(y >> 1));
+        b->angle =  256 - b->angle;
         while (b->angle > 256 && b->angle < -256)
         {
             if (b->angle >= 256)
@@ -120,6 +119,7 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
             if (b->angle <= -256)
                 b->angle += 512;
         }
+        b->angle += ((newX - s->center.x) * 60 )/lenghtHalf;
         if (b->angle <= -128) b->angle = -120;
         else if (b->angle >= 128) b->angle = 120;
         newX = b->position.x + getXVel(b);
