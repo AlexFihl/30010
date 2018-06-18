@@ -184,7 +184,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
             //Spawning a power up
             for (i = 0; i < numberOfBlocks; i++)
             {
-                if((blocks[i]).hits >= (blocks[i]).life && (blocks[i]).oldState != 0 && powerUpsInUse < 5 && rand()%10 < 10)
+                if((blocks[i]).hits >= (blocks[i]).life && (blocks[i]).oldState != 0 && powerUpsInUse < 5)
                 {
                     uint32_t x1,y1,xTemp,yTemp;
                     xTemp = (blocks[i].v2.x - blocks[i].v1.x) >> FIX14_SHIFT;
@@ -279,7 +279,6 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                 numberOfBalls++;
             }
             //Updating, giving points, and drawing the blocks
-            //Giving the player points per
             for (i = 0; i < numberOfBlocks; i++)
             {
                 updateBlockState(&blocks[i]);
