@@ -372,37 +372,6 @@ static void saveHighScore(struct player_t *p)
     FLASH_Lock();
 }
 
-static void printPowerupHelp()
-{
-    gotoxy(83, 22);
-    printf("%c = longer striker", signA[0]);
-    gotoxy(83, 23);
-    printf("%c = shorter striker", signA[1]);
-    gotoxy(83, 24);
-    fgcolor(2);
-    printf("%c", signA[2]);
-    resetbgcolor();
-    printf(" = one extra life");
-    gotoxy(83, 25);
-    printf("%c = instant death", signA[3]);
-    gotoxy(83, 26);
-    printf("%c = double balls", signA[4]);
-    gotoxy(83, 27);
-    printf("%c = faster ball", signA[5]);
-    gotoxy(83, 28);
-    printf("%c = slower ball", signA[6]);
-    gotoxy(83, 29);
-    printf("%c = instant win", signA[7]);
-    gotoxy(83, 30);
-    printf("%c = key to unlock mingame (3 is required)", signA[8]);
-    gotoxy(83, 31);
-    printf("%c = striker shoots", signA[9]);
-    gotoxy(83, 32);
-    printf("%c = catch ball on striker (multiple balls will disappear)", signA[10]);
-    gotoxy(83, 33);
-    printf("%c = teleport behind blocks", signA[11]);
-}
-
 static void printHelp()
 {
     gotoxy(83, 22);
@@ -517,6 +486,8 @@ static void menu()
                 //Set player name should be implemtentet
                 saveHighScore(&player);
                 resetPlayer(&player);
+                bufferReset();
+                push_Buffer();
                 returnFromSubMenu = 1;
             }
             break;
@@ -697,7 +668,7 @@ int main(void)
     //Setting up the lcd
     setupLCD();
     bufferReset();
-    lcd_update();
+    push_Buffer();
     //The actual game
     //alex();
     menu();

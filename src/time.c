@@ -2,6 +2,7 @@
 
 struct timer_t mainTimer = {0,0,0,0,0};
 
+uint8_t updateLCD;
 uint8_t minigameSpeed;
 uint8_t gameSpeedCounter;
 uint8_t minigameSpeedCounter;
@@ -116,4 +117,5 @@ void stopTimer2()
     TIM2->CR1 &= ~0x0001;
 }
 
-void setGameSpeed(int8_t gameSpeedIn) {gameSpeed = gameSpeedIn;} //09/06
+void setGameSpeed(int8_t gameSpeedIn) {gameSpeed = gameSpeedIn;}
+void setMiniGameSpeed(int8_t gameSpeedIn) {minigameSpeed = gameSpeedIn;}

@@ -11,7 +11,7 @@ void intBall(struct ball_t *b, int32_t x, int32_t y)
     b->dead = 0;
 }
 
-void setBallSpeedFactor(int32_t speedFactor) //09/06
+void setBallSpeedFactor(int32_t speedFactor)
 {
     ballSpeed = speedFactor;
 }
@@ -23,7 +23,7 @@ void addToBallSpeedFactor(int32_t deltaSpeed)
         ballSpeed = 0x00000800;
 }
 
-void moveBall(struct ball_t *b, int32_t deltaX, int32_t deltaY) //09/06
+void moveBall(struct ball_t *b, int32_t deltaX, int32_t deltaY)
 {
     b->position.x += deltaX;
     b->position.y += deltaY;
@@ -34,14 +34,14 @@ void teleportBall(struct ball_t *b)
     b->position.y = 5 << FIX14_SHIFT;
 }
 
-static int32_t getXVel(struct ball_t *b) //09/06
+static int32_t getXVel(struct ball_t *b)
 {
     int32_t rad = sinn(b->angle);
     int32_t vel = b->velocity;
     return FIX14_MULT(FIX14_MULT(vel, rad), ballSpeed);
 }
 
-static int32_t getYVel(struct ball_t *b) //09/06
+static int32_t getYVel(struct ball_t *b)
 {
     int32_t rad = -coss(b->angle);
     int32_t vel = b->velocity;

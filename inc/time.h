@@ -9,7 +9,6 @@ extern struct timer_t mainTimer;
 extern uint8_t updateLCD;
 extern uint8_t updateGame;
 extern uint8_t updateMinigame;
-extern uint8_t minigameSpeed;
 extern uint8_t updateMenu;
 #define updateSpeed 0x000a
 
@@ -30,5 +29,6 @@ void setUpTimer2();
 void startTimer2();
 void stopTimer2();
 void setGameSpeed(int8_t gameSpeedIn);
+void setMiniGameSpeed(int8_t gameSpeedIn);
 
 #endif //TIME_H

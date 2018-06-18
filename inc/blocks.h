@@ -21,7 +21,6 @@ struct block_t {
     uint8_t life;
     uint8_t hits;
     uint8_t color;
-    uint8_t pointGiver;
 };
 //Taking from ANSI
 /*  Value      foreground     Value     foreground
