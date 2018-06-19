@@ -30,7 +30,7 @@ void changeStrikerLength(struct striker_t *s, int32_t deltaLength, struct wall_t
 void drawStriker(struct striker_t *s)
 {
     int i;
-    if ((s->center.x >> FIX14_SHIFT) != (s->oldCenter.x >> FIX14_SHIFT) || (s->length >> FIX14_SHIFT) != (s->oldLength >> FIX14_SHIFT))
+    if ((s->center.x >> FIX14_SHIFT) != (s->oldCenter.x >> FIX14_SHIFT) || (s->length >> FIX14_SHIFT) != (s->oldLength >> FIX14_SHIFT) || s->boss>0)
     {
         gotoxy((s->oldCenter.x - (s->oldLength >> 1) ) >> FIX14_SHIFT, s->center.y >> FIX14_SHIFT);
         for(i = 0; i < ((s->oldLength) >> FIX14_SHIFT); i++)
@@ -40,6 +40,7 @@ void drawStriker(struct striker_t *s)
             printf("%c", 219); //Ellers prøv 223
         s->oldCenter.x = s->center.x;
         s->oldLength = s->length;
+        s->boss=0;
     }
 }
 
