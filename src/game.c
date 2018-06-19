@@ -78,7 +78,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
     struct powerUp_t power[5];
     uint8_t powerUpsInUse = 0, numberOfBalls = 0;
     //The power ups flags
-    int8_t skipLevel = 0, ballOnStriker = 0, strikerShoting = 0, multiplyBalls = 0;
+    int8_t skipLevel = 0, ballOnStriker = 0, strikerShoting = 0, multiplyBalls = 0, teleportBallFlag = 0;
     uint16_t i, j, x, y; //used for blocks
     intVector(&v1, 3, 1);
     intVector(&v2, 218, 63);
@@ -204,7 +204,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
             for(i = 0; i < powerUpsInUse; i++)
             {
                 updatePowerUp(&power[i], &striker1, &wall);
-                applyPowerUp(&power[i], &striker1, &wall, &b, p, &ballOnStriker, &skipLevel, &strikerShoting, &multiplyBalls);
+                applyPowerUp(&power[i], &striker1, &wall, p, &ballOnStriker, &skipLevel, &strikerShoting, &multiplyBalls, &teleportBallFlag);
                 drawPowerUp(&power[i], blocks, yEnd, numberOfBlocks);
             }
             //removing a catched powerUp
@@ -226,6 +226,13 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                     blocks[i].hits = blocks[i].life;
                 }
                 skipLevel = 0;
+            }
+
+            if(teleportBallFlag == 1)
+            {
+                for(i = 0; i < numberOfBalls; i++)
+                    teleportBall(&balls[i]);
+                teleportBallFlag = 0;
             }
 
             if(strikerShoting == 1)
@@ -299,6 +306,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                 return 1;
             }
             printLCDGame(numberOfBlocksLeft, p);
+
             //Chehcing the power up flag for the minigame
             if(p->catchKeys == 3)
             {
