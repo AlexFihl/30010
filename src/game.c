@@ -273,7 +273,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
             if(multiplyBalls == 1 && numberOfBalls < 10)
             {
                 struct ball_t bTemp;
-                intBall(&bTemp, striker1.center.x, 60);
+                intBall(&bTemp, striker1.center.x >> FIX14_SHIFT, 60);
                 balls[numberOfBalls] = bTemp;
                 multiplyBalls = 0;
                 numberOfBalls++;
@@ -302,6 +302,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
             //Chehcing the power up flag for the minigame
             if(p->catchKeys == 3)
             {
+                setFreq(0);
                 uint32_t scoreFromMinigame = playMinigame1();
                 p->score += scoreFromMinigame / 100;
                 while((readJoyStick() & 0x10) == 0x10) {};
@@ -326,5 +327,6 @@ void fullGame(struct player_t *p, int32_t startBallSpeed, int8_t deltaStrikerSta
     clrsrc();
     if (gameEnd == 0)
         deathScreen(p);
-    endGameScreen(p);
+    else
+        endGameScreen(p);
 }
