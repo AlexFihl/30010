@@ -2,15 +2,12 @@
 #include "30010_io.h"
 #include "ansi.h"
 #include "trigomentri.h"
-#include "ball.h"
 #include "io.h"
 #include "time.h"
 #include "lcd.h"
-#include "blocks.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "gameWall.h"
-#include "striker.h"
 #include "player.h"
 #include "minigame.h"
 #include "game.h"
