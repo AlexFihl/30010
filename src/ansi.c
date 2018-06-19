@@ -65,7 +65,7 @@ void resetbgcolor()
     printf("%c[m", ESC);
 }
 
-void showCursor()
+void removeCursor()
 {
     printf("%c[?25l", ESC);
 }

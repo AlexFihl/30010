@@ -656,7 +656,7 @@ int main(void)
     //resetingPutty
     resetbgcolor();
     clrsrc();
-    showCursor();
+    removeCursor();
     joyStickSetUp();
     if((readJoyStick() & 0x02) == 0x02) //When pressed down
         resetHighScore(); //For getting a clean high score
