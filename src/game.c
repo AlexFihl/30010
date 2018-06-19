@@ -273,7 +273,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
             if(multiplyBalls == 1 && numberOfBalls < 10)
             {
                 struct ball_t bTemp;
-                intBall(&bTemp, striker1.center.x, 60);
+                intBall(&bTemp, striker1.center.x >> FIX14_SHIFT, 60);
                 balls[numberOfBalls] = bTemp;
                 multiplyBalls = 0;
                 numberOfBalls++;
