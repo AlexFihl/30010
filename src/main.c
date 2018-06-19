@@ -121,10 +121,10 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                                 oldS = (*deltaStrikerStart);
                             }
                             currentJoyStick = readJoyStick();
-                            if      ((currentJoyStick & 0x04) == 0x04 && (oldJoystick & 0x04) == 0x00) //When clicking the left button
-                                (*deltaStrikerStart) -= 2;
-                            else if ((currentJoyStick & 0x08) == 0x08 && (oldJoystick & 0x08) == 0x00) //When clicking the right button
+                            if      ((currentJoyStick & 0x01) == 0x01 && (oldJoystick & 0x01) == 0x00) //When clicking the up button
                                 (*deltaStrikerStart) += 2;
+                            else if ((currentJoyStick & 0x02) == 0x02 && (oldJoystick & 0x02) == 0x00) //When clicking the down button
+                                (*deltaStrikerStart) -= 2;
                             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
                                 break;
                             if((*deltaStrikerStart) > 10)
@@ -186,9 +186,9 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                             }
                             currentJoyStick = readJoyStick();
                             if      ((currentJoyStick & 0x01) == 0x01 && (oldJoystick & 0x01) == 0x00) //When clicking the up button
-                                (*deltaGamingSpeed)++;
-                            else if ((currentJoyStick & 0x02) == 0x02 && (oldJoystick & 0x02) == 0x00) //When clicking the down button
                                 (*deltaGamingSpeed)--;
+                            else if ((currentJoyStick & 0x02) == 0x02 && (oldJoystick & 0x02) == 0x00) //When clicking the down button
+                                (*deltaGamingSpeed)++;
                             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
                                 break;
                             if((*deltaGamingSpeed) > 3)
@@ -250,9 +250,9 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                             }
                             currentJoyStick = readJoyStick();
                             if      ((currentJoyStick & 0x01) == 0x01 && (oldJoystick & 0x01) == 0x00) //When clicking the up button
-                                (*startBallSpeed)++;
-                            else if ((currentJoyStick & 0x02) == 0x02 && (oldJoystick & 0x02) == 0x00) //When clicking the down button
                                 (*startBallSpeed)--;
+                            else if ((currentJoyStick & 0x02) == 0x02 && (oldJoystick & 0x02) == 0x00) //When clicking the down button
+                                (*startBallSpeed)++;
                             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
                                 break;
                             if((*startBallSpeed) > 3)
