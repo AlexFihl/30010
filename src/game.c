@@ -302,6 +302,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
             //Chehcing the power up flag for the minigame
             if(p->catchKeys == 3)
             {
+                setFreq(0);
                 uint32_t scoreFromMinigame = playMinigame1();
                 p->score += scoreFromMinigame / 100;
                 while((readJoyStick() & 0x10) == 0x10) {};
