@@ -647,7 +647,6 @@ void mads()
 
 int main(void)
 {
-    //this is a test
     startUpABC();
     //PuTTy need to be in 220 times 65.
     init_usb_uart(460800); // Initialize USB serial at 9600 baud
