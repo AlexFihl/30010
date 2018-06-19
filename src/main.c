@@ -110,6 +110,7 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                     clrsrc();
                     window(w, "Striker lenght", 0);
                     int8_t oldS = 1;
+                    *scoreMultiplier -= *deltaStrikerStart/5;
                     while(1)
                     {
                         if(updateMenu == 1)
@@ -135,6 +136,7 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                             updateMenu = 0;
                         }
                     }
+                    *scoreMultiplier += *deltaStrikerStart/5;
                     returnFromSubMenu = 1;
                 }
                 break;
@@ -151,6 +153,7 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                     clrsrc();
                     window(w, "Game speed", 0);
                     int8_t oldG = 1;
+                    *scoreMultiplier += *deltaGamingSpeed;
                     while(1)
                     {
                         if(updateMenu == 1)
@@ -199,6 +202,7 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                             updateMenu = 0;
                         }
                     }
+                    *scoreMultiplier -= *deltaGamingSpeed;
                     returnFromSubMenu = 1;
                 }
                 break;
@@ -215,6 +219,7 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                     clrsrc();
                     window(w, "Ball speed", 0);
                     int32_t oldB = 1;
+                    *scoreMultiplier -= *startBallSpeed;
                     while(1)
                     {
                         if(updateMenu == 1)
@@ -224,25 +229,25 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                                 gotoxy(101, 23);
                                 switch(*startBallSpeed)
                                 {
-                                case -3:
+                                case 3:
                                     printf("Ball speed: Fastest   ");
                                     break;
-                                case -2:
+                                case 2:
                                     printf("Ball speed: Faster   ");
                                     break;
-                                case -1:
+                                case 1:
                                     printf("Ball speed: Fast     ");
                                     break;
                                 case 0:
                                     printf("Ball speed: Normal   ");
                                     break;
-                                case 1:
+                                case -1:
                                     printf("Ball speed: Slow   ");
                                     break;
-                                case 2:
+                                case -2:
                                     printf("Ball speed: Slower ");
                                     break;
-                                case 3:
+                                case -3:
                                     printf("Ball speed: Slowest");
                                     break;
                                 }
@@ -250,9 +255,9 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                             }
                             currentJoyStick = readJoyStick();
                             if      ((currentJoyStick & 0x01) == 0x01 && (oldJoystick & 0x01) == 0x00) //When clicking the up button
-                                (*startBallSpeed)--;
-                            else if ((currentJoyStick & 0x02) == 0x02 && (oldJoystick & 0x02) == 0x00) //When clicking the down button
                                 (*startBallSpeed)++;
+                            else if ((currentJoyStick & 0x02) == 0x02 && (oldJoystick & 0x02) == 0x00) //When clicking the down button
+                                (*startBallSpeed)--;
                             if((currentJoyStick & 0x10) == 0x10 && (oldJoystick & 0x10) == 0x00)
                                 break;
                             if((*startBallSpeed) > 3)
@@ -263,7 +268,7 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                             updateMenu = 0;
                         }
                     }
-                    (*startBallSpeed) = *startBallSpeed << 9;
+                    *scoreMultiplier += *startBallSpeed;
                     returnFromSubMenu = 1;
                 }
                 break;
@@ -318,7 +323,7 @@ static void printHighScore()
         uint32_t point;
         point = *(uint16_t *)(startAddress + 22 + i*26) << 16;
         point |= *(uint16_t *)(startAddress + 24 + i*26);
-        printf("%04lu", point);
+        printf("%06lu", point);
     }
 }
 
@@ -425,7 +430,7 @@ static void printFullMainMenu()
 static void menu()
 {
     int8_t menuPoint = 0, oldMenuPoint = 1, returnFromSubMenu = 1;
-    int8_t scoreMultiplier = 1;
+    int8_t scoreMultiplier = 10;
     int8_t deltaStrikerStart = 0, deltaGamingSpeed = 0;
     int32_t startBallSpeed = 0;
     clrsrc();
@@ -502,6 +507,7 @@ static void menu()
             {
                 subSettingsMenu(&player, &startBallSpeed, &w, &deltaStrikerStart, &deltaGamingSpeed, &scoreMultiplier);
                 returnFromSubMenu = 1;
+                if(scoreMultiplier <= 0) scoreMultiplier = 1;
             }
             break;
         case 2:
@@ -620,7 +626,7 @@ static void resetHighScore()
 {
     uint8_t i, j;
     char name[5][11] = {"Best\0", "Better\0", "Good\0", "Bad\0", "Worst\0"};
-    uint32_t point[5] = {0x000003E8,0x000001F4,0x000000FA,0x00000064,0x00000020};
+    uint32_t point[5] = {0x00002710,0x00001388,0x000009C4,0x000003E8,0x000001F4};
     FLASH_Unlock(); // Unlock FLASH for modification
     FLASH_ClearFlag( FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPERR );
     FLASH_ErasePage( startAddress ); // Erase entire page before writing

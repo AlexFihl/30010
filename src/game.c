@@ -70,7 +70,7 @@ static void printLCDGame(uint16_t numberOfBlocksLeft, struct player_t *p)
 static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSpeed, int8_t deltaStrikerStart, int8_t deltaGamingSpeed, int8_t *scoreMultiplier)
 {
     //Setting the ball speed
-    setBallSpeedFactor(0x00002000 + startBallSpeed + (gameCount << 8)); //0x00002000 = 0.500
+    setBallSpeedFactor(0x00002000 + (startBallSpeed<<9) + (gameCount << 8)); //0x00002000 = 0.500
     //It will rise 0x00000100 per game
     //Making the wall
     struct wall_t wall;
