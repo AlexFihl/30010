@@ -232,3 +232,29 @@ void setFreq(uint16_t freq)
     TIM2->CCR3 = reload/2; // Set compare register
     TIM2->EGR |= 0x01;
 }
+
+uint16_t cusRandom()
+{
+    pinSetup(2, 'C', 0, 0);
+
+    RCC->CFGR2  &=  ~RCC_CFGR2_ADCPRE12;
+    RCC->CFGR2  |=  RCC_CFGR2_ADCPRE12_DIV6;
+    RCC->AHBENR |=  RCC_AHBPeriph_ADC12;
+
+    ADC1->CR    =   0x00000000;
+    ADC1->CFGR  &=  0xFDFFC007;
+    ADC1->SQR1  &=  ~ADC_SQR1_L;
+
+    ADC1->CR    |=  0x10000000;
+    for(int i = 0; i < 1000; i++);
+    ADC1->CR    |=  0x80000000;
+    for(int i = 0; i < 100; i++);
+
+    ADC1->CR    |=  0x00000001;
+    while(!(ADC1->ISR & 0x00000001));
+
+    ADC_RegularChannelConfig(ADC1, ADC_Channel_8, 1, ADC_SampleTime_1Cycles5);
+    ADC_StartConversion(ADC1);
+    while (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == 0);
+    return ADC_GetConversionValue(ADC1);
+}

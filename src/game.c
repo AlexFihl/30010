@@ -194,7 +194,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                     struct vector_t vP;
                     intVector(&vP, x1, y1);
                     struct powerUp_t powerTemp;
-                    initPowerUp(&powerTemp, &vP, rand()%12); //Real thing
+                    initPowerUp(&powerTemp, &vP, cusRandom()%12); //Real thing
                     power[powerUpsInUse] = powerTemp;
                     powerUpsInUse++;
                 }
