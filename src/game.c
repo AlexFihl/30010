@@ -240,7 +240,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                 if (strikerShooting1.shootSpeed == 0 && shootBalls < 10)
                 {
                     setFreq(500);
-                    shotCaller(&strikerShooting1, &striker1, shootBalls);
+                    shotCaller(&strikerShooting1, &striker1, strikerShooting1.amountOfBalls);
                     strikerShooting1.shootSpeed=10;
                     shootBalls++;
                     strikerShooting1.amountOfBalls++;
