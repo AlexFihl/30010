@@ -199,7 +199,7 @@ void printPowerupHelp()
     gotoxy(83, 24);
     fgcolor(2);
     printf("%c", signA[2]);
-    resetbgcolor();
+    fgcolor(15);
     printf(" = one extra life");
     gotoxy(83, 25);
     printf("%c = instant death", signA[3]);
