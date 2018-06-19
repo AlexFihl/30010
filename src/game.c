@@ -66,6 +66,23 @@ static void printLCDGame(uint16_t numberOfBlocksLeft, struct player_t *p)
     lcd_update();
 }
 
+static void bossKey(struct block_t **a,struct ball_t **b, struct striker_t *s,struct wall_t *w,uint16_t numberOfBlocks)
+{
+    uint8_t i;
+    bufferReset();
+    push_Buffer();
+    clrsrc();
+    while(readADC1()>2000)//while not clicking center
+    {
+
+    }
+    drawWall(w);
+    s->boss=1;
+    for (i = 0; i < numberOfBlocks; i++)
+        ((*a)[i]).boss=1;
+
+
+}
 
 static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSpeed, int8_t deltaStrikerStart, int8_t deltaGamingSpeed, int8_t *scoreMultiplier)
 {
@@ -110,7 +127,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
     struct strikerShooting_t strikerShooting1;
     initStrikerShooting(&strikerShooting1, &striker1);
 
-    //Setting up the wall
+    //Setting up the ball
     struct ball_t b;
     struct ball_t *balls = malloc(10 * sizeof *balls);
     intBall(&b, 110, 60);
@@ -119,6 +136,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
     numberOfBalls = 1;
     uint8_t oldLife = p->life + 1;
     int8_t deltaX;
+
     while(1)
     {
         if (updateGame > 0)
@@ -158,6 +176,9 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                 }
                 oldLife = p->life;
             }
+
+            if (readADC1()>2000)
+                bossKey(&blocks,&balls,&striker1,&wall,numberOfBlocks);
 
             //Moving the striker
             deltaX = getDeltaX(&striker1, &wall);
@@ -240,7 +261,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                 if (strikerShooting1.shootSpeed == 0 && shootBalls < 10)
                 {
                     setFreq(500);
-                    shotCaller(&strikerShooting1, &striker1, shootBalls);
+                    shotCaller(&strikerShooting1, &striker1, strikerShooting1.amountOfBalls);
                     strikerShooting1.shootSpeed=10;
                     shootBalls++;
                     strikerShooting1.amountOfBalls++;

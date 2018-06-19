@@ -18,6 +18,7 @@ struct striker_t {
     struct vector_t oldCenter;
     uint32_t length;
     uint32_t oldLength;
+    uint8_t boss;
 
 };
 
