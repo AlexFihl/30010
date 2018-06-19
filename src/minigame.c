@@ -64,7 +64,7 @@ static void rndStartObstacle(struct obstacle_t *s,struct minigame_t *t, uint32_t
     if (s->isAlive==0)
     {
         uint16_t r;
-        r = rand()%100;
+        r = cusRandom()%100;
         if (r>t->chanceOfSpawn)
             startObstacle(s,t,timeSinceStart);
     }
