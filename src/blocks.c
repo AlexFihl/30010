@@ -48,7 +48,7 @@ uint16_t intMultipleBlocks(struct block_t ** blocks, struct vector_t v1, struct 
 
 void drawBlock(struct block_t *b)
 {
-    if(b->oldState != b->state)
+    if((b->oldState != b->state)||(b->boss>0))
     {
         fgcolor(b->color);
         uint16_t i, j;
@@ -77,6 +77,7 @@ void drawBlock(struct block_t *b)
         }
         b->oldState = b->state;
         fgcolor(15);
+        b->boss=0;
     }
 }
 
