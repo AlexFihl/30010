@@ -27,6 +27,6 @@ char * getInput();
 
 void setUpSpeaker();
 void setFreq(uint16_t freq);
-
+uint16_t cusRandom();
 
 #endif //io_custom_h
