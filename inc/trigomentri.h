@@ -16,13 +16,8 @@ struct vector_t
     int32_t x, y;
 };
 
-extern const signed short SIN[512];
-void printFix(int32_t i);
-int32_t expand(int32_t i);
 int32_t sinn(int32_t i);
 int32_t coss(int32_t i);
 void intVector(struct vector_t *v, int32_t x, int32_t y);
-void rotate(struct vector_t *v, int32_t angle);
-
 
 #endif	// TRIGOMENTRI_H

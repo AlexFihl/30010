@@ -86,22 +86,6 @@ const signed short SIN[512]=
     0xF9BA,0xFA82,0xFB4B,0xFC13,0xFCDC,0xFDA5,0xFE6E,0xFF37,
 };
 
-void printFix(int32_t i)
-{
-    // Prints a signed 16.16 fixed point number
-    if((i & 0x80000000) != 0)
-    {
-        printf("-");
-        i = ~i + 1;
-    }
-    printf("%ld.%04ld", i >> 16, 10000 * (uint32_t)(i & 0xFFFF) >> 16);
-}
-
-int32_t expand(int32_t i) //converts an 18.14 to 16.16
-{
-    return i << 2;
-}
-
 int32_t sinn(int32_t i)
 {
     return SIN[i & 0x1FF];
@@ -116,11 +100,4 @@ void intVector(struct vector_t *v, int32_t x, int32_t y)
 {
     v->x = x << FIX14_SHIFT;
     v->y = y << FIX14_SHIFT;
-}
-
-void rotate(struct vector_t *v, int32_t angle)
-{
-    int32_t newX = FIX14_MULT(v->x,coss(angle)) - FIX14_MULT(v->y,sinn(angle));
-    v->y = FIX14_MULT(v->x,sinn(angle)) + FIX14_MULT(v->y,coss(angle));
-    v->x = newX;
 }
