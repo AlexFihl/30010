@@ -25,7 +25,7 @@ void initPowerUp(struct powerUp_t *p, struct vector_t *v, uint8_t powerUpType)
 void drawPowerUp(struct powerUp_t *p, struct block_t * b, uint16_t lowerBond, uint32_t numberOfBlocks)
 {
     fgcolor(p->color);
-    if(p->v.y > (lowerBond<< FIX14_SHIFT))
+    if(p->v.y > (lowerBond << FIX14_SHIFT))
     {
         gotoxy(p->old.x >> FIX14_SHIFT, p->old.y >> FIX14_SHIFT);
         if(p->old.y > lowerBond)
@@ -39,12 +39,12 @@ void drawPowerUp(struct powerUp_t *p, struct block_t * b, uint16_t lowerBond, ui
         uint16_t j;
         for(j=0; j < numberOfBlocks; j++)
         {
-            if(p->old.x >= b[j].v1.x && p->old.x <= b[j].v2.x && p->old.y >= b[j].v1.y && p->old.y <= b[j].v2.y + 0x4000 && b[j].state == 0)
+            if(p->old.x >= b[j].v1.x    && p->old.x <= b[j].v2.x    && p->old.y >= b[j].v1.y - 0x4000   && p->old.y <= b[j].v2.y + 0x4000   && b[j].state == 0)
             {
                 gotoxy(p->old.x >> FIX14_SHIFT, p->old.y >> FIX14_SHIFT);
                 printf("%c", 32);
             }
-            if(p->v.x >= b[j].v1.x && p->v.x <= b[j].v2.x && p->v.y >= b[j].v1.y && p->v.y <= b[j].v2.y + 0x4000 && p->catched == 0 && b[j].state == 0)
+            if(p->v.x >= b[j].v1.x      && p->v.x <= b[j].v2.x      && p->v.y >= b[j].v1.y - 0x4000     && p->v.y <= b[j].v2.y + 0x4000     && p->catched == 0 && b[j].state == 0)
             {
                 gotoxy(p->v.x >> FIX14_SHIFT, p->v.y >> FIX14_SHIFT);
                 printf("%c", p->sign);
