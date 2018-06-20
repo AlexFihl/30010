@@ -1,7 +1,5 @@
 #include "lcd.h"
 
-uint8_t scrolling;
-uint8_t adcPrinting;
 uint8_t lcdBuffer[512];
 
 void setupLCD()
@@ -9,8 +7,6 @@ void setupLCD()
     bufferReset();
     init_spi_lcd();
     lcd_reset();
-    scrolling = 0;
-    adcPrinting = 0;
 }
 
 void lcd_write_string(char * s, uint16_t slice, uint16_t line)
@@ -27,8 +23,6 @@ void lcd_update()
 {
     if (updateLCD == 1)
     {
-        printADC();
-        leftScrollingText(scrolling);
         lcd_push_buffer(lcdBuffer);
         updateLCD = 0;
     }
@@ -72,11 +66,6 @@ void leftScrollingText(uint8_t lineNumber)
         lcdBuffer[511] = temp[3];
 }
 
-void setScrolling(uint8_t x)
-{
-    scrolling = x;
-}
-
 void push_Buffer()
 {
     lcd_push_buffer(lcdBuffer);
@@ -90,27 +79,4 @@ void putInBuffer(uint8_t byte, uint16_t slice, uint16_t line) //09/06
 uint8_t getBuffer(int8_t slice, int8_t line)
 {
     return lcdBuffer[slice + line*128];
-}
-
-void printADC()
-{
-    uint16_t x, y;
-    char str1[12];
-    if ((adcPrinting & 0x01) == 0x01)
-    {
-        x = readADC1();
-        sprintf(str1, "ADC1 = %04d", x);
-        lcd_write_string(str1,0x0000,0x0000);
-    }
-    if ((adcPrinting & 0x02) == 0x02)
-    {
-        y = readADC2();
-        sprintf(str1, "ADC2 = %04d", y);
-        lcd_write_string(str1,0x0000,0x0001);
-    }
-}
-
-void setADCPrinting(uint8_t x)
-{
-    adcPrinting = x;
 }
