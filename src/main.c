@@ -609,16 +609,6 @@ static void menu()
     }
 }
 
-void simon()
-{
-
-}
-
-void alex()
-{
-
-}
-
 static void resetHighScore()
 {
     uint8_t i, j;
@@ -639,13 +629,6 @@ static void resetHighScore()
         FLASH_ProgramHalfWord(startAddress + 24 + j*26, point[j]);
     }
     FLASH_Lock();
-}
-
-void mads()
-{
-    int32_t x;
-    x = playMinigame1();
-    x++;
 }
 
 int main(void)
@@ -672,13 +655,8 @@ int main(void)
     setupLCD();
     bufferReset();
     push_Buffer();
-    //The actual game
-    //alex();
+    //The actual menu
     menu();
-    //mads();
 
-    while(1)
-    {
-
-    }
+    while(1){}
 }
