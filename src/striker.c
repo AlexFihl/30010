@@ -37,7 +37,7 @@ void drawStriker(struct striker_t *s)
             printf("%c", 32);
         gotoxy((s->center.x - (s->length >> 1) ) >> FIX14_SHIFT, s->center.y >> FIX14_SHIFT);
         for(i = 0; i < ((s->length) >> FIX14_SHIFT); i++)
-            printf("%c", 219); //Ellers prøv 223
+            printf("%c", 219);
         s->oldCenter.x = s->center.x;
         s->oldLength = s->length;
         s->boss=0;
