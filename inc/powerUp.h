@@ -20,6 +20,7 @@ struct powerUp_t{
     uint8_t dead;
     uint8_t type;
     uint16_t sign;
+    uint8_t color;
 };
 
 struct strikerShooting_t

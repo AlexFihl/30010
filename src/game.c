@@ -136,7 +136,6 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
     numberOfBalls = 1;
     uint8_t oldLife = p->life + 1;
     int8_t deltaX;
-
     while(1)
     {
         if (updateGame > 0)
@@ -158,19 +157,24 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
             {
                 ballOnStriker = 0;
                 printLCDGame(numberOfBlocksLeft, p);
-                intBall(&balls[0], 110, 60);
-                resetBall(&balls[0]);
+                for(i = 0; i < numberOfBalls; i++)
+                {
+                    intBall(&balls[i], 110, 60);
+                    resetBall(&balls[i]);
+                }
                 resetStriker(&striker1);
                 while(((readJoyStick() & 0x10) != 0x10))
                 {
                     if (updateGame > 0)
                     {
-                        numberOfBalls = 1;
                         deltaX = getDeltaX(&striker1, &wall);
-                        moveBall(&balls[0], deltaX << FIX14_SHIFT, 0);
+                        for(i = 0; i < numberOfBalls; i++)
+                        {
+                            moveBall(&balls[i], deltaX << FIX14_SHIFT, 0);
+                            drawBall(&balls[i]);
+                        }
                         updateStriker(&striker1, deltaX);
                         drawStriker(&striker1);
-                        drawBall(&balls[0]);
                         updateGame = 0;
                     }
                 }
@@ -200,11 +204,13 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                     balls[numberOfBalls-1] = balls[numberOfBalls];
                     numberOfBalls--;
                     if(numberOfBalls == 0)
+                    {
                         lossLife(p);
+                        numberOfBalls = 1;
+                    }
                 }
             //Spawning a power up
             for (i = 0; i < numberOfBlocks; i++)
-            {
                 if((blocks[i]).hits >= (blocks[i]).life && (blocks[i]).oldState != 0 && powerUpsInUse < 5)
                 {
                     uint32_t x1,y1,xTemp,yTemp;
@@ -219,7 +225,6 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                     power[powerUpsInUse] = powerTemp;
                     powerUpsInUse++;
                 }
-            }
 
             //Printing a power up
             for(i = 0; i < powerUpsInUse; i++)

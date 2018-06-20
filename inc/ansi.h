@@ -11,7 +11,7 @@ void fgcolor(uint8_t foreground);
 void bgcolor(uint8_t background);
 void color(uint8_t foreground, uint8_t background);
 void resetbgcolor();
-void showCursor();
+void removeCursor();
 void clrsrc();
 void clreol();
 void gotoxy(uint8_t x, uint8_t y);
