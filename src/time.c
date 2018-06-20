@@ -1,8 +1,7 @@
 #include "time.h"
 
-struct timer_t mainTimer = {0,0,0,0,0};
-
 uint8_t updateLCD;
+uint8_t updateLCDCounter;
 uint8_t minigameSpeed;
 uint8_t gameSpeedCounter;
 uint8_t minigameSpeedCounter;
@@ -10,35 +9,24 @@ uint8_t gameSpeed;
 uint8_t gameSpeedCounter;
 uint8_t updateGame;
 uint8_t updateMenu;
+uint8_t updateMenuCounter;
 
 void TIM1_BRK_TIM15_IRQHandler(void)
 {
-    mainTimer.twothHS++;
-    if(mainTimer.twothHS == 2)
-    {
-        mainTimer.hseconds++;
-        updateMenu = 1;
-        mainTimer.twothHS = 0;
-    }
-    if (mainTimer.hseconds == 100)
-    {
-        mainTimer.hseconds = 0;
-        mainTimer.seconds++;
-    }
-    if (mainTimer.seconds == 60)
-    {
-        mainTimer.seconds = 0;
-        mainTimer.minuts++;
-    }
-    if (mainTimer.minuts == 60)
-    {
-        mainTimer.hours++;
-        mainTimer.minuts = 0;
-    }
-    if (mainTimer.hseconds == 0x0000 || (mainTimer.hseconds & updateSpeed) == updateSpeed)
-        updateLCD = 1;
     gameSpeedCounter++;
     minigameSpeedCounter++;
+    updateMenuCounter++;
+    updateLCDCounter++;
+    if(updateMenuCounter == 10) //Every 5 100 part of a secound
+    {
+        updateMenu = 1;
+        updateMenuCounter = 0;
+    }
+    if (updateLCDCounter == 10) //Every 5 100 part of a secound
+    {
+        updateLCD = 1;
+        updateLCDCounter = 0;
+    }
     if (gameSpeedCounter == gameSpeed)
     {
         updateGame = 1;
@@ -49,22 +37,7 @@ void TIM1_BRK_TIM15_IRQHandler(void)
         updateMinigame = 1;
         minigameSpeedCounter = 0;
     }
-
     TIM15->SR &= ~0x0001;
-}
-
-void resetTimer(struct timer_t *t)
-{
-    t->hours = 0;
-    t->minuts = 0;
-    t->seconds = 0;
-    t->hseconds = 0;
-    t->twothHS = 0;
-}
-
-void drawAWatch(struct timer_t t) //Prints the time for hr:mm:ss.hs
-{
-    printf("%02d:%02d:%02d.%02d",t.hours,t.minuts,t.seconds,t.hseconds);
 }
 
 void setUpTimer15()
@@ -88,6 +61,8 @@ void setUpTimer15()
     gameSpeedCounter = 0;
     minigameSpeedCounter = 0;
     updateMenu = 1;
+    updateLCDCounter = 0;
+    updateMenuCounter = 0;
 }
 
 void setUpTimer2()
