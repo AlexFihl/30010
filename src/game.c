@@ -66,22 +66,23 @@ static void printLCDGame(uint16_t numberOfBlocksLeft, struct player_t *p)
     lcd_update();
 }
 
-static void bossKey(struct block_t **a,struct ball_t **b, struct striker_t *s,struct wall_t *w,uint16_t numberOfBlocks)
+static void bossKey(struct block_t **a, struct striker_t *s, struct wall_t *w,uint16_t numberOfBlocks)
 {
-    uint8_t i;
-    bufferReset();
-    push_Buffer();
-    clrsrc();
-    while(readADC1()>2000)//while not clicking center
+    if (readADC1()>2000)
     {
+        uint8_t i;
+        bufferReset();
+        push_Buffer();
+        clrsrc();
+        while(readADC1()>2000)//while not clicking center
+        {
 
-    }
-    drawWall(w);
-    s->boss=1;
-    for (i = 0; i < numberOfBlocks; i++)
-        ((*a)[i]).boss=1;
-
-
+        }
+        drawWall(w);
+        s->boss=1;
+        for (i = 0; i < numberOfBlocks; i++)
+            ((*a)[i]).boss=1;
+        }
 }
 
 static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSpeed, int8_t deltaStrikerStart, int8_t deltaGamingSpeed, int8_t *scoreMultiplier)
@@ -181,8 +182,7 @@ static uint8_t aGame1(struct player_t *p, uint8_t gameCount, int32_t startBallSp
                 oldLife = p->life;
             }
 
-            if (readADC1()>2000)
-                bossKey(&blocks,&balls,&striker1,&wall,numberOfBlocks);
+            bossKey(&blocks,&striker1,&wall,numberOfBlocks);
 
             //Moving the striker
             deltaX = getDeltaX(&striker1, &wall);
