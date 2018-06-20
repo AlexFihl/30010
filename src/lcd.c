@@ -1,5 +1,11 @@
 #include "lcd.h"
 
+/*
+** We have used to global variable lcdBuffer, for we dosn't need to pass it around different files.
+** This variable is only available in this file, when it can't be change from somewhere else in the
+** program.
+** It is also global so it just knows what and where the pixel are on the screen.
+*/
 uint8_t lcdBuffer[512];
 
 void setupLCD()
