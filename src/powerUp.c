@@ -4,6 +4,10 @@ const uint16_t signA[12] =
 {
     43, 45, 49, 158, 249, 175, 174, 33, 159, 190, 241, 207
 };
+const uint8_t colorA[12] =
+{
+    2, 1, 2, 1, 2, 1, 2, 2, 2, 2, 2, 2
+};
 
 void initPowerUp(struct powerUp_t *p, struct vector_t *v, uint8_t powerUpType)
 {
@@ -16,12 +20,12 @@ void initPowerUp(struct powerUp_t *p, struct vector_t *v, uint8_t powerUpType)
     p->dead = 0;
     p->type = powerUpType;
     p->sign = signA[powerUpType];
+    p->color = colorA[powerUpType];
 }
 
 void drawPowerUp(struct powerUp_t *p, struct block_t * b, uint16_t lowerBond, uint32_t numberOfBlocks)
 {
-    if(p->type == 2)
-        fgcolor(2);
+    fgcolor(p->color);
     if(p->v.y > (lowerBond<< FIX14_SHIFT))
     {
         gotoxy(p->old.x >> FIX14_SHIFT, p->old.y >> FIX14_SHIFT);
@@ -49,7 +53,7 @@ void drawPowerUp(struct powerUp_t *p, struct block_t * b, uint16_t lowerBond, ui
 
         }
     }
-    resetbgcolor();
+    fgcolor(15);
 }
 
 void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w, struct player_t *pl, int8_t * ballOnStriker, int8_t *skipLevel, int8_t *strikerShoting, int8_t *multiplyBalls, int8_t *telePortBallFlag)
@@ -193,30 +197,63 @@ void updatePowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w)
 void printPowerupHelp()
 {
     gotoxy(83, 22);
-    printf("%c = longer striker", signA[0]);
+    fgcolor(colorA[0]);
+    printf("%c", signA[0]);
+    fgcolor(15);
+    printf(" = longer striker");
     gotoxy(83, 23);
-    printf("%c = shorter striker", signA[1]);
+    fgcolor(colorA[1]);
+    printf("%c", signA[1]);
+    fgcolor(15);
+    printf(" = shorter striker");
     gotoxy(83, 24);
-    fgcolor(2);
+    fgcolor(colorA[2]);
     printf("%c", signA[2]);
     fgcolor(15);
     printf(" = one extra life");
     gotoxy(83, 25);
-    printf("%c = instant death", signA[3]);
+    fgcolor(colorA[3]);
+    printf("%c", signA[3]);
+    fgcolor(15);
+    printf(" = instant death");
     gotoxy(83, 26);
-    printf("%c = double balls", signA[4]);
+    fgcolor(colorA[4]);
+    printf("%c", signA[4]);
+    fgcolor(15);
+    printf(" = double balls");
     gotoxy(83, 27);
-    printf("%c = faster ball", signA[5]);
+    fgcolor(colorA[5]);
+    printf("%c", signA[5]);
+    fgcolor(15);
+    printf(" = faster ball");
     gotoxy(83, 28);
-    printf("%c = slower ball", signA[6]);
+    fgcolor(colorA[6]);
+    printf("%c", signA[6]);
+    fgcolor(15);
+    printf(" = slower ball");
     gotoxy(83, 29);
-    printf("%c = instant win", signA[7]);
+    fgcolor(colorA[7]);
+    printf("%c", signA[7]);
+    fgcolor(15);
+    printf(" = instant win");
     gotoxy(83, 30);
-    printf("%c = key to unlock mingame (3 is required)", signA[8]);
+    fgcolor(colorA[8]);
+    printf("%c", signA[8]);
+    fgcolor(15);
+    printf(" = key to unlock mingame (3 is required)");
     gotoxy(83, 31);
-    printf("%c = striker shoots", signA[9]);
+    fgcolor(colorA[9]);
+    printf("%c", signA[9]);
+    fgcolor(15);
+    printf(" = striker shoots");
     gotoxy(83, 32);
-    printf("%c = catch ball on striker (multiple balls will disappear)", signA[10]);
+    fgcolor(colorA[10]);
+    printf("%c", signA[10]);
+    fgcolor(15);
+    printf(" = catch ball on striker (multiple balls will disappear)");
     gotoxy(83, 33);
-    printf("%c = teleport behind blocks", signA[11]);
+    fgcolor(colorA[11]);
+    printf("%c", signA[11]);
+    fgcolor(15);
+    printf(" = teleport behind block");
 }
