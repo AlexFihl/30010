@@ -86,15 +86,9 @@ const signed short SIN[512]=
     0xF9BA,0xFA82,0xFB4B,0xFC13,0xFCDC,0xFDA5,0xFE6E,0xFF37,
 };
 
-int32_t sinn(int32_t i)
-{
-    return SIN[i & 0x1FF];
-}
+int32_t sinn(int32_t i) { return SIN[i & 0x1FF];}
 
-int32_t coss(int32_t i)
-{
-    return sinn(i + 128);
-}
+int32_t coss(int32_t i) { return sinn(i + 128); }
 
 void intVector(struct vector_t *v, int32_t x, int32_t y)
 {
