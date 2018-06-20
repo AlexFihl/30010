@@ -25,31 +25,27 @@ void initPowerUp(struct powerUp_t *p, struct vector_t *v, uint8_t powerUpType)
 void drawPowerUp(struct powerUp_t *p, struct block_t * b, uint16_t lowerBond, uint32_t numberOfBlocks)
 {
     fgcolor(p->color);
-    if(p->v.y > (lowerBond<< FIX14_SHIFT))
+    if((p->v.y >> FIX14_SHIFT) > lowerBond)
     {
         gotoxy(p->old.x >> FIX14_SHIFT, p->old.y >> FIX14_SHIFT);
-        if(p->old.y > lowerBond)
+        if((p->old.y >> FIX14_SHIFT) > lowerBond)
             printf("%c", 32);
         gotoxy(p->v.x >> FIX14_SHIFT, p->v.y >> FIX14_SHIFT);
         if(p->catched == 0 && p->dead == 0)
             printf("%c", p->sign);
     }
-    else
+    uint16_t j;
+    for(j=0; j < numberOfBlocks; j++)
     {
-        uint16_t j;
-        for(j=0; j < numberOfBlocks; j++)
+        if(p->old.x >= b[j].v1.x    && p->old.x <= b[j].v2.x    && p->old.y >= b[j].v1.y   && p->old.y <= b[j].v2.y  && b[j].hits == b[j].life ) // 0x00004000 = 1, 0x00006000 = 1.5
         {
-            if(p->old.x >= b[j].v1.x && p->old.x <= b[j].v2.x && p->old.y >= b[j].v1.y && p->old.y <= b[j].v2.y + 0x4000 && b[j].state == 0)
-            {
-                gotoxy(p->old.x >> FIX14_SHIFT, p->old.y >> FIX14_SHIFT);
-                printf("%c", 32);
-            }
-            if(p->v.x >= b[j].v1.x && p->v.x <= b[j].v2.x && p->v.y >= b[j].v1.y && p->v.y <= b[j].v2.y + 0x4000 && p->catched == 0 && b[j].state == 0)
-            {
-                gotoxy(p->v.x >> FIX14_SHIFT, p->v.y >> FIX14_SHIFT);
-                printf("%c", p->sign);
-            }
-
+            gotoxy(p->old.x >> FIX14_SHIFT, p->old.y >> FIX14_SHIFT);
+            printf("%c", 32);
+        }
+        if(p->v.x >= b[j].v1.x      && p->v.x <= b[j].v2.x      && p->v.y >= b[j].v1.y     && p->v.y <= b[j].v2.y    && b[j].hits == b[j].life)
+        {
+            gotoxy(p->v.x >> FIX14_SHIFT, p->v.y >> FIX14_SHIFT);
+            printf("%c", p->sign);
         }
     }
     fgcolor(15);
@@ -159,14 +155,12 @@ void updateShot(struct wall_t *w, struct block_t ** blocks, uint16_t numberOfBlo
         struct block_t block;
         block = (*blocks)[i];
         if(block.state > 0)
-        {
             if (newY >= block.v1.y && newY <= (block.v2.y + (1 << 14)) && u->position[shotNumber].x >= block.v1.x && u->position[shotNumber].x <= (block.v2.x + (1 << 14)))
             {
                 setFreq(1300);
                 u->isAlive[shotNumber]=0;
                 (((*blocks)[i]).hits) = block.life;
             }
-        }
     }
 
 
@@ -175,7 +169,7 @@ void updateShot(struct wall_t *w, struct block_t ** blocks, uint16_t numberOfBlo
 
 void drawShot(struct strikerShooting_t *u, uint8_t shotNumber)
 {
-    if((u->isAlive[shotNumber] == 0) /*&& ((u->oldPosition[shotNumber].y >> FIX14_SHIFT) != (u->position[shotNumber].y >> FIX14_SHIFT))*/)
+    if(u->isAlive[shotNumber] == 0)
     {
         gotoxy((u->oldPosition[shotNumber].x) >> FIX14_SHIFT, (u->oldPosition[shotNumber].y) >> FIX14_SHIFT);
         printf("%c", 32);
