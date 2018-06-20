@@ -75,24 +75,9 @@ void clrsrc()
     printf("%c[2J", ESC);
 }
 
-void clreol()
-{
-    printf("%c[K", ESC);
-}
-
 void gotoxy(uint8_t x, uint8_t y)
 {
     printf("%c[%d;%dH", ESC, y, x);
-}
-
-void underline(uint8_t on)
-{
-    printf("%c[%dm", ESC,  (on == 1) ? 04 : 24);
-}
-
-void blink(uint8_t on)
-{
-    printf("%c[%dm", ESC,  (on == 1) ? 05 : 25);
 }
 
 void inverse(uint8_t on)

@@ -13,10 +13,7 @@ void color(uint8_t foreground, uint8_t background);
 void resetbgcolor();
 void removeCursor();
 void clrsrc();
-void clreol();
 void gotoxy(uint8_t x, uint8_t y);
-void underline(uint8_t on);
-void blink(uint8_t on);
 void inverse(uint8_t on);
 
 
