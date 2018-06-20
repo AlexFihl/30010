@@ -14,7 +14,6 @@ void intminigame(struct minigame_t *s) //08/06
 void drawSpaceship (struct minigame_t *s) //08/06
 {
     uint8_t i;
-
     for(i=0; i<16; i++)
         putInBuffer(0x00, i, (s->oldShipLine));
     for(i=0; i<16; i++)
@@ -87,28 +86,15 @@ static void drawShoot(struct minigame_t *s)
     if (s->shootIsAlive > 1)
     {
         for (i = 0; i <16 ; i++)
-        {
             putInBuffer(customcharacter_data[5][i], i+16, s->shootLine);
-        }
         for (j=0; j<6; j++)
-        {
             for (i = 0; i <16 ; i++)
-            {
                 putInBuffer(customcharacter_data[6][i], i+32+j*16, s->shootLine);
-            }
-        }
     }
     else if (s->shootIsAlive==1)
-    {
         for (j=0; j<7; j++)
-        {
             for (i = 0; i <16 ; i++)
-            {
                 putInBuffer(0x00, i+16+(j*16), s->shootLine);
-            }
-        }
-    }
-
     if (s->shootIsAlive>0)
         s->shootIsAlive--;
 
