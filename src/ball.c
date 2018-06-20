@@ -85,7 +85,7 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
     {
         struct block_t block;
         block = (*blocks)[i];
-        if(block.state > 0)
+        if(block.life > block.hits)
         {
             if (newX >= block.v1.x && newX <= (block.v2.x + (1 << 14)) && newY >= block.v1.y && newY <= (block.v2.y + (1 << 14)))
             {
