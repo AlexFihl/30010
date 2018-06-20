@@ -7,8 +7,6 @@
 #ifndef MINIGAME_H
 #define MINIGAME_H
 
-uint8_t updateMinigame;
-
 
 struct minigame_t
 {

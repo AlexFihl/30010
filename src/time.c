@@ -1,15 +1,29 @@
 #include "time.h"
 
+/*
+** These global variables are flags that are been used to been able to update
+** various things
+*/
 uint8_t updateLCD;
-uint8_t updateLCDCounter;
-uint8_t minigameSpeed;
-uint8_t gameSpeedCounter;
-uint8_t minigameSpeedCounter;
-uint8_t gameSpeed;
-uint8_t gameSpeedCounter;
 uint8_t updateGame;
 uint8_t updateMenu;
+uint8_t updateMinigame;
+/*
+** All of these values are counters for the IRQHandler for TIM15.
+*/
+uint8_t updateLCDCounter;
+uint8_t gameSpeedCounter;
+uint8_t minigameSpeedCounter;
+uint8_t gameSpeedCounter;
 uint8_t updateMenuCounter;
+
+/*
+** These variables are for setting the speed for game and minigame.
+** These can be set by set functions seen longer down in the flie.
+** The are what the counters need to count up to.
+*/
+uint8_t minigameSpeed;
+uint8_t gameSpeed;
 
 void TIM1_BRK_TIM15_IRQHandler(void)
 {

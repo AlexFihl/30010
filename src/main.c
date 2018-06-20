@@ -107,7 +107,7 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                     clrsrc();
                     window(w, "Striker lenght", 0);
                     int8_t oldS = 1;
-                    *scoreMultiplier -= *deltaStrikerStart/5;
+                    *scoreMultiplier += *deltaStrikerStart/5;
                     while(1)
                     {
                         if(updateMenu == 1)
@@ -133,7 +133,7 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                             updateMenu = 0;
                         }
                     }
-                    *scoreMultiplier += *deltaStrikerStart/5;
+                    *scoreMultiplier -= *deltaStrikerStart/5;
                     returnFromSubMenu = 1;
                 }
                 break;
