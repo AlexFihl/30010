@@ -635,7 +635,7 @@ int main(void)
 {
     startUpABC();
     //PuTTy need to be in 220 times 65.
-    init_usb_uart(460800); // Initialize USB serial at 9600 baud
+    init_usb_uart(115200);
     //resetingPutty
     resetbgcolor();
     clrsrc();
