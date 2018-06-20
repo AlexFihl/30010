@@ -28,16 +28,6 @@ void drawWall(struct wall_t *w) //The same style as the windows style 0  //08/06
 
 void window(struct wall_t *w, char text[], uint8_t style)
 {
-    windowBG(w, text, style, 15, 0, 15, 0);
-}
-
-void windowFG(struct wall_t *w, char text[], uint8_t style, uint8_t colorText, uint8_t colorBond)
-{
-    windowBG(w, text, style, colorText, 0, colorBond, 0);
-}
-
-void windowBG(struct wall_t *w, char text[], uint8_t style, uint8_t colorText, uint8_t colorTextbg, uint8_t colorBond, uint8_t colorBondbg)
-{
     uint32_t x1, y1, x2, y2;
     x1 = (w->v1.x) >> FIX14_SHIFT;
     y1 = (w->v1.y) >> FIX14_SHIFT;
@@ -92,13 +82,11 @@ void windowBG(struct wall_t *w, char text[], uint8_t style, uint8_t colorText, u
         break;
     }
     gotoxy(x1, y1);
-    color(colorBond,colorBondbg);
     printf("%c", lhC); //Printing the upper most left corner
     uint8_t i;
     if (style < 2)
     {
         printf("%c",lC); //Printing the left bar for text
-        color(colorText, colorTextbg);
         for (i = 0; i < spaces1; i++)
             printf(" ");
         for (i = 0; i < strlen(text) && i + x1 + 2 < x2 - 1 ; i++)
@@ -127,7 +115,6 @@ void windowBG(struct wall_t *w, char text[], uint8_t style, uint8_t colorText, u
             for(i = 0; i < spaces2; i++)
                 printf(" ");
         }
-        color(colorBond,colorBondbg);
         gotoxy(x2-1,y1);
         printf("%c",rC);
     } else
@@ -151,5 +138,4 @@ void windowBG(struct wall_t *w, char text[], uint8_t style, uint8_t colorText, u
     for (i = x1 + 1; i < x2; i++)
         printf("%c",hC); //Printing the lover line
     printf("%c",rlC); //Printing the lower right corner
-    color(15, 0);
 }

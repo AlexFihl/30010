@@ -15,7 +15,6 @@ void initPowerUp(struct powerUp_t *p, struct vector_t *v, uint8_t powerUpType)
     p->v.y = v->y;
     p->old.x = v->x;
     p->old.y = v->y;
-    p->downSpeed = 1 << FIX14_SHIFT;
     p->catched = 0;
     p->dead = 0;
     p->type = powerUpType;
@@ -54,6 +53,20 @@ void drawPowerUp(struct powerUp_t *p, struct block_t * b, uint16_t lowerBond, ui
         }
     }
     fgcolor(15);
+}
+
+void updatePowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w)
+{
+    p->old.y = p->v.y;
+    uint32_t newY;
+    newY = p->v.y + 0x00004000; // = 1
+    int32_t hl = FIX14_DIV((s->length >> FIX14_SHIFT), 2);
+    if(p->v.x > (s->center.x - hl) && p->v.x < (s->center.x + hl) && (s->center.y >> FIX14_SHIFT) == (newY >> FIX14_SHIFT))
+        p->catched = 1;
+    else if(p->v.y >= w->v2.y)
+        p->dead = 1;
+    else
+        p->v.y = newY;
 }
 
 void applyPowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w, struct player_t *pl, int8_t * ballOnStriker, int8_t *skipLevel, int8_t *strikerShoting, int8_t *multiplyBalls, int8_t *telePortBallFlag)
@@ -178,20 +191,6 @@ void drawShot(struct strikerShooting_t *u, uint8_t shotNumber)
         u->oldPosition[shotNumber].x = u->position[shotNumber].x;
         u->oldPosition[shotNumber].y = u->position[shotNumber].y;
     }
-}
-
-void updatePowerUp(struct powerUp_t *p, struct striker_t *s, struct wall_t *w)
-{
-    p->old.y = p->v.y;
-    uint32_t newY;
-    newY = p->v.y + p->downSpeed;
-    int32_t hl = FIX14_DIV((s->length >> FIX14_SHIFT), 2);
-    if(p->v.x > (s->center.x - hl) && p->v.x < (s->center.x + hl) && (s->center.y >> FIX14_SHIFT) == (newY >> FIX14_SHIFT))
-        p->catched = 1;
-    else if(p->v.y >= w->v2.y)
-        p->dead = 1;
-    else
-        p->v.y = newY;
 }
 
 void printPowerupHelp()

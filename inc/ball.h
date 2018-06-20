@@ -17,7 +17,6 @@ struct ball_t
     struct vector_t oldPos;
     uint32_t velocity;
     int32_t angle;
-    uint16_t hitCount;
     uint8_t dead;
 };
 

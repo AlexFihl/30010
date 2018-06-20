@@ -7,7 +7,6 @@ void intBall(struct ball_t *b, int32_t x, int32_t y)
     intVector(&(b->position), x, y);
     b->velocity = 2 << FIX14_SHIFT;
     b->angle = 0; //0 deg
-    b->hitCount = 0;
     b->dead = 0;
 }
 
@@ -64,14 +63,12 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
         setFreq(3000);
         b->angle =  -b->angle;
         newX = b->position.x + getXVel(b);
-        b->hitCount++;
     }
     if (newY < ((wally1 + 1) << FIX14_SHIFT))
     {
         setFreq(3000);
         b->angle =  256 - b->angle;
         newY = b->position.y + getYVel(b);
-        b->hitCount++;
     }
     else if (newY >= (wally2 << FIX14_SHIFT))
     {
@@ -94,13 +91,11 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
                 {
                     b->angle =  - b->angle;
                     newX = b->position.x + getXVel(b);
-                    b->hitCount++;
                 }
                 if(block.v1.y >= b->oldPos.y || (block.v2.y  + (1 << 14)) <= b->oldPos.y)
                 {
                     b->angle = 256 - b->angle;
                     newY = b->position.y + getYVel(b);
-                    b->hitCount++;
                 }
                 (((*blocks)[i]).hits)++;
             }
@@ -122,7 +117,6 @@ void updatePosition(struct ball_t *b, struct wall_t *w, struct block_t ** blocks
         else if (b->angle >= 128) b->angle = 120;
         newX = b->position.x + getXVel(b);
         newY = b->position.y + getYVel(b);
-        b->hitCount++;
     }
     b->position.x = newX;
     b->position.y = newY;
