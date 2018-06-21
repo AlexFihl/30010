@@ -133,7 +133,7 @@ static void subSettingsMenu(struct player_t *p, int32_t * startBallSpeed, struct
                             updateMenu = 0;
                         }
                     }
-                    *scoreMultiplier -= *deltaStrikerStart/5;
+                    *scoreMultiplier -= *deltaStrikerStart/2;
                     returnFromSubMenu = 1;
                 }
                 break;
